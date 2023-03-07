@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/css/pluginsCss.css' />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/plugins.css' />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet/dist/css/luckysheet.css' />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet/dist/assets/iconfont/iconfont.css' />
+<script src="https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/js/plugin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luckysheet/dist/luckysheet.umd.js"></script>
+
+
+    <title>Document</title>
+</head>
+<body>
+    <!-- <table id="tablee0" data-type="luckysheet_copy_action_table">
+        <colgroup width="72px"></colgroup>
+        <tr>
+            <td  style="height:19px;">ooooo</td>
+        </tr>
+    </table> -->
+    <div id="luckysheet" 
+    style="margin:0px;
+    padding:0px;
+    position:absolute;
+    width:100%;
+    height:100%;
+    left: 0px;top: 0px;">
+</div>
+<!-- https://dream-num.github.io/LuckysheetDocs/     -->
+    <script>
+        //const textaa = '<table id="tablee0" data-type="luckysheet_copy_action_table"><colgroup width="72px"></colgroup>       <tr><td  style="height:19px;">ooooo</td></tr></table>'
+        //console.log(textaa)
+        var uu=0;
+        var stringToHTML = function (str) {
+                        	var dom = document.createElement('div');
+                            dom.innerHTML = str;
+                            return dom;
+                    };
+        //const vaa =
+        $(function () {
+            //Configuration item
+            var options = {
+                container: 'luckysheet', //luckysheet is the container id
+                title:'Luckysheet Demo', // set the name of the table
+                //lang:'fr' // set language
+                row:5,
+                column:10,
+                showtoolbar:true,
+                allowCopy:false,
+                showinfobar:false,
+                showsheetbar:true,
+                showstatisticBar:false,
+                //userInfo:'<i style="font-size:36px;color:#ff6a00;" class="fa fa-taxi" aria-hidden="true"></i> Lucky',
+                userInfo:false,
+                enableAddRow:false,
+                enableAddBackTop:false,
+                rowHeaderWidth:46,
+                columnHeaderHeight:20,
+                sheetFormulaBar:false,
+                hook:{
+                //cellRenderAfter: function (cell, position, sheetFile, ctx) {
+                // rangeSelect: function (sheet,range) {    
+                //     console.log(range[0].column[0])
+                // },
+                // rangeMoveAfter: function(oldRange,newRange) {
+                //     console.log(oldRange)
+                //     console.log(newRange)
+                // },
+                // rangeEditAfter: (obj) => {
+                //     console.log(obj);
+                // },
+                // cellEditBefore: (range)=>{
+                //     console.log(range[0])
+                // },                
+                rangeSelect : (sheet,range) =>{
+                    //luckysheet.setCellFormat(0, 0, "bg", "#ffc7ce")
+                    //luckysheet.setCellValue(0,0, 8889)
+                    //console.log(luckysheet.getdatabyselection())
+                    //console.log(luckysheet.flowdata())
+                    // console.log(range[0].row)
+                    // console.log(range[0].column)
+                    // // is the same of : 
+                     //console.log(luckysheet.getRange())
+
+                     //console.log(luckysheet.getRangeValue(range))
+
+
+
+                    //console.log(luckysheet.getCellValue())
+                    //console.log(luckysheet.getRange())
+                    // console.log(range[0].row[0])
+                    // console.log(range[0].row[1])
+
+                    // console.log(range[0].column[0])
+                    // console.log(range[0].column[1])
+                    // luckysheet.setCellValue(range[0].row[0],range[0].column[0],333,options = {})
+
+                },
+                cellEditBefore:(range)=>{
+                    //console.info(range[0].row[0])
+                    //console.info(luckysheet.getCellValue(range[0].row[0],range[0].column[0]))
+                },
+                
+                cellUpdateBefore:(r,c,value,isRefresh)=>{  // WE NEED IT
+                    // isRefresh=false;
+                    // console.info("row is : "+ r + "and c : " + c + " and value is : " + value + " and is refresh is : " + isRefresh)
+                    // //console.info(luckysheet.getCellValue(range[0].row[0],range[0].column[0]))
+                    // if( Number(value)>20 ){
+                    //     return false
+                    // }                  
+                
+                },
+                cellUpdated: (r,c,oldValue,newValue,isRefresh)=>{
+                    //console.info("row is : "+ r + "and c : " + c + " and old value is : " + oldValue + 
+                    //"and new value is : " + newValue + " and is refresh is : " + isRefresh)
+                    //console.info(oldValue)
+                    //console.info(newValue)
+                },
+                 rangePasteBefore:(rangee,data)=>{   // WE NEED IT
+                     
+                    rrr0=rangee;
+                    console.log(rrr0)
+                    rrr=rrr0[0].valueOf().row;
+                    console.log(rrr)
+                    
+                    console.log(rrr[0].row)
+                     console.log(rangee)
+                     console.log(rangee[0])
+                     console.log(rangee[0].row)
+                     console.log(rangee[0].row[1])
+
+                    //  console.info(rangee[0].row[0])
+                    //  console.info(rangee[0].row[1])
+
+                    //  console.info(rangee[0].column[0])
+                    //  console.info(rangee[0].column[1])
+
+
+
+                     console.info(luckysheet.getRangeValue(
+                        setting={range:{
+                            row:[0,1], //[rangee[0].row[0],rangee[0].row[1]],
+                            column:[0,1] //[rangee[0].column[0] ,rangee[0].column[1]]
+                        }}
+                        ))
+                     //console.info(luckysheet.getCellValue(range[0].row[0],range[0].column[0]))
+                     tabnew=stringToHTML(data)
+                     lengthh=tabnew.children[0].rows.length
+                     for(var i=0;i<lengthh;i++){
+                        console.log(tabnew.children[0].rows[i].cells[0].firstChild.nodeValue)
+                    }
+
+                 },
+               
+                
+            //    rangeEditAfter:(range,oldData,newData)=>{
+            //         console.log(oldData)
+            //     },
+            //     rangePasteBefore:function(range,data){
+            //                  console.info(range)
+            //                  console.info(data)
+			// 				 //console.info('rangePasteBefore',range,data)
+			// 				 //return false; //Can intercept paste
+			// 			},
+
+                
+                updated: (e)=>{      
+                    //luckysheet.setCellFormat(0, 0, "bg", "#ffc7ce")            
+                 
+                    //var luulength = luckysheet.getAllSheets()[0].celldata.length
+                    //var luu = luckysheet.getAllSheets()[0].celldata[luulength-1].r;
+                    // var luu2x = luckysheet.getAllSheets()[0].luckysheet_select_save[0].moveXY.x-1
+                    // var luu2y = luckysheet.getAllSheets()[0].luckysheet_select_save[0].moveXY.y
+
+                    // var luu = luckysheet.getAllSheets()[0].data[luu2x][luu2y] ;
+                    // if(isNaN(luu)==true){
+                    //     console.log(luu.v)
+                    // }
+
+                    //console.log(luckysheet.getRange())
+
+                    //console.log(e)
+                    // var luu2 = luckysheet.getAllSheets()[0].luckysheet_select_save[0].moveXY.x
+                    // console.log(luu2)                    
+                    // var luu22 = luckysheet.getAllSheets()[0].luckysheet_select_save[0].moveXY.y
+                    // console.log(luu22)                    
+
+
+                                  //uu=uu+luu;
+                    //console.log("uu : "+uu)
+                }
+            },
+                cellRightClickConfig:{
+	copy: true, // copy
+	copyAs: false, // copy as
+	paste: true, // paste
+	insertRow: false, // insert row
+	insertColumn: false, // insert column
+	deleteRow: false, // delete the selected row
+	deleteColumn: false, // delete the selected column
+	deleteCell: false, // delete cell
+	hideRow: false, // hide the selected row and display the selected row
+	hideColumn: false, // hide the selected column and display the selected column
+	rowHeight: false, // row height
+	columnWidth: false, // column width
+	clear: false, // clear content
+	matrix: false, // matrix operation selection
+	sort: false, // sort selection
+	filter: false, // filter selection
+	chart: false, // chart generation
+	image: false, // insert picture
+	link: false, // insert link
+	data: false, // data verification
+	cellFormat: false // Set cell format
+},
+                
+              
+                  showtoolbarConfig:{
+                    undoRedo: true, //Undo redo
+    paintFormat: false, //Format brush
+    currencyFormat: false, //currency format
+    percentageFormat: false, //Percentage format
+    numberDecrease: false, //'Decrease the number of decimal places'
+    numberIncrease: false, //'Increase the number of decimal places
+    moreFormats: false, //'More Formats'
+    font: false, //'font'
+    fontSize: false, //'Font size'
+    bold: true, //'Bold (Ctrl+B)'
+    italic: false, //'Italic (Ctrl+I)'
+    strikethrough: false, //'Strikethrough (Alt+Shift+5)'
+	underline: false, // 'Underline (Alt+Shift+6)'
+	textColor: false, //'Text color'
+    fillColor: false, //'Cell color'
+    border: false, //'border'
+    mergeCell: false, //'Merge cells'
+    horizontalAlignMode: false, //'Horizontal alignment'
+    verticalAlignMode: false, //'Vertical alignment'
+    textWrapMode: false, //'Wrap mode'
+    textRotateMode: false, //'Text Rotation Mode'
+	image:false, // 'Insert picture'
+	link:false, // 'Insert link'
+	chart: false, //'chart' (the icon is hidden, but if the chart plugin is configured, you can still create a new chart by right click)
+	postil: false, //'comment'
+	pivotTable: false, //'PivotTable'
+	function: false, //'formula'
+	frozenMode: false, //'freeze mode'
+	sortAndFilter: false, //'Sort and filter'
+	conditionalFormat: false, //'Conditional Format'
+	dataVerification: false, // 'Data Verification'
+	splitColumn: false, //'Split column'
+	screenshot: false, //'screenshot'
+	findAndReplace: false, //'Find and Replace'
+	protection:false, // 'Worksheet protection'
+	print:true, // 'Print'
+
+                }
+            }
+            luckysheet.create(options)
+        })
+    </script>
+</body>
+</html>

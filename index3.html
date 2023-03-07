@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Handsontable with custom validator and decimal separator switcher</title>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  </head>
+  <body>
+    <div id="example"></div>
+    <button id="decimal-switcher">Switch decimal separator</button>
+    <script>
+      // Get the user's language and regional settings
+      const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+
+// Create options for toLocaleString() based on the user's locale
+const options = { style: 'decimal' };
+const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
+
+// Extract the decimal separator and thousand separator from the formatted number
+const decimalseprator0 = formattedNumber.substring(9,10)
+const decimalSeparator = decimalseprator0;
+
+      const data = [
+        [1, ''],
+        [2, ''],
+        [3, '']
+      ];
+
+      const hot = new Handsontable(document.getElementById('example'), {
+        data: data,
+        columns: [
+          { type: 'numeric' },
+          { 
+            validator: function(value, callback) {
+              if (/^\d+(\.\d+)?$/.test(value) || /^\d+(,\d+)?$/.test(value) ) {
+                callback(true);
+                console.log('we are inside true')
+              } else {
+                callback(false);
+              }
+            }
+          }
+        ],
+        afterValidate: function(isValid, value, row, prop, source) {
+          if (isValid && value !== undefined && typeof value === 'string' && /^\d+(,\d+)?$/.test(value) ) {
+            if ( decimalSeparator=='.'){
+            this.setDataAtCell(row, prop, value.replace(',', '.'));
+            console.log('condition 1 ')
+          } else if (decimalSeparator==',') {
+              // do nothing
+              console.log('condition 2 ta3 do nothing ')
+          } 
+        } else if (isValid && value !== undefined && typeof value === 'string' && /^\d+(\.\d+)?$/.test(value) ){
+          if ( decimalSeparator=='.'){
+            console.log('condition 3 ta3 do nothing')
+            // do nothing
+          } else if (decimalSeparator==',') {
+            console.log('condition 4')
+            this.setDataAtCell(row, prop, value.replace('.', ','));
+          }
+        } else {
+          console.log('condition out 5 ')
+          console.log(isValid)
+          console.log(value !== undefined)
+          console.log(typeof value)
+          console.log(/^\d+(\.\d+)?$/.test(value) )
+          console.log(/^\d+(,\d+)?$/.test(value))
+        }
+      },
+   
+
+
+      });
+
+      const decimalSwitcher = document.getElementById('decimal-switcher');
+
+      //let decimalSeparator = '.';
+
+      decimalSwitcher.addEventListener('click', function() {
+        if (decimalSeparator === '.') {
+          decimalSeparator = ',';
+          const data = hot.getSourceData();
+          const newData = data.map(row => row.map(cell => {
+            if (/^\d+(\.\d+)?$/.test(cell)) {
+              return cell.toString().replace('.', ',');
+            } else {
+              return cell;
+            }
+          }));
+          hot.loadData(newData);
+        } else {
+          decimalSeparator = '.';
+          const data = hot.getSourceData();
+          const newData = data.map(row => row.map(cell => {
+            if (/^\d+(,\d+)?$/.test(cell)) {
+              return cell.toString().replace(',', '.');
+            } else {
+              return cell;
+            }
+          }));
+          hot.loadData(newData);
+        }
+      });
+    </script>
+  </body>
+</html>

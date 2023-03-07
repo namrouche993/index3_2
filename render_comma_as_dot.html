@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Handsontable with custom validator</title>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  </head>
+  <body>
+    <div id="example"></div>
+    <script>
+      function numericValidator(value, callback) {
+        if (/^\d+(\.\d+)?$/.test(value)) {
+          callback(true);
+        } else if (/^\d+(,\d+)?$/.test(value)) {
+          if (confirm("Do you want to use the default numeric format?")) {
+            const newValue = value.replace(',', '.');
+            callback(true, newValue);
+          } else {
+            callback(false);
+          }
+        } else {
+          callback(false);
+        }
+      }
+
+      const data = [
+        [1, ''],
+        [2, ''],
+        [3, '']
+      ];
+
+      const hot = new Handsontable(document.getElementById('example'), {
+        data: data,
+        columns: [
+          { type: 'numeric' },
+          { validator: numericValidator }
+        ],
+        afterValidate: function(isValid, value, row, prop, source) {
+          if (isValid && value !== undefined && typeof value === 'string' && value.includes(',')) {
+            this.setDataAtCell(row, 1, parseFloat(value.replace(',', '.')));
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

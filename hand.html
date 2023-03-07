@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Handsontable Example</title>
+  <!-- Include Handsontable CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.min.css">
+</head>
+<body>
+  <div id="example"></div>
+
+  <!-- Include Handsontable JavaScript library -->
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+
+  <script>
+    // Create Handsontable instance
+    var hot = new Handsontable(document.getElementById('example'), {
+      data: [
+        ['John', 30],
+        ['Jane', ''],
+        ['Bob', 40]
+      ],
+      columns: [
+        { type: 'text', title: 'Name' },
+        { title: 'Age', validator: function(value, callback) {
+          if(/^\d+$/.test(value)) {
+            callback(true);
+            //changecolorcell(this.row,this.col,'red')
+            console.log('we are inside callback == true')
+          } else {
+            //hot.getCell(this.row, this.col).style.backgroundColor = 'red',
+            callback(false,
+            console.log('we are beofre setimeout '),
+            alert("the cell : " + this.row + ' '+ this.col + 'with the value'+ value +' is not accepted '),
+            setTimeout(() => {
+              console.log('we are inside setimeout ')
+              //hot.setDataAtCell(this.row,this.col,hot.getData()[this.row][this.col])
+              hot.undo(true)
+            }, 5000),
+            console.log('we are after setimeout ')
+            
+            /*setTimeout(() => {
+              changecolorcell(this.row,this.col,'white')
+            }, 5000)
+            */
+            
+          );
+          }
+        }}
+      ]
+    });
+    const changecolorcell=(row,col,couleur)=>{
+      hot.getCell(row, col).style.backgroundColor = couleur;
+    }
+  </script>
+</body>
+</html>

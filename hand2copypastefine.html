@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</style><!-- Ugly Hack due to jsFiddle issue -->
+
+<script src="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.min.css">
+<script src="http://docs.handsontable.com/0.20.2/bower_components/numeraljs/languages/de.js"></script>
+<script src="https://unpkg.com/sheetclip"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://cdn.jsdelivr.net/npm/numbro@2.3.6/dist/numbro.min.js"></script>
+
+<script src="jspdf.min.js"></script>
+<script src="jspdf.plugin.autotable.js"></script>
+
+</head>
+<body>
+    <div id="example2"></div>
+<script>
+     var container2 = document.getElementById('example2');
+  
+
+     function getData() {
+           return [
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+             ['20200', 10, 11, 12, 13,'','','','','','','','','','','','','',''],
+
+           ];
+         }
+
+  var hot2 = new Handsontable(container2, {
+    data:getData(),
+    licenseKey: 'non-commercial-and-evaluation', // for non-commercial use only
+
+    rowHeaders: true,
+          wordWrap: true,
+          colHeaders: true,
+          manualColumnResize: true,
+          manualRowResize: true,
+          //colWidths: [20,200,100,120,120, 120,120,120,120,100,100,  120,120,120,120,100,100,    20 ],
+          undo: true,
+          DragToScroll: true,
+          copyPaste: true,
+
+          //columns: columnsdata(0,18),
+          contextMenu: {
+            items:{
+              "copy":{name:"Copier"},
+              "cut":{name:'Couper'},
+              "paste":{
+                name: 'Coller (Utiliser <b>Ctrl + V</b> avec le clavier)',
+                disabled:true
+             }
+            }
+          },
+          cells:(row,column)=>{
+            var cellProperties = {};
+            if(row<6){
+              cellProperties.readOnly = true;
+            }
+            return cellProperties;
+          },
+      }
+  
+  );
+  
+
+</script>
+</body>
+</html>

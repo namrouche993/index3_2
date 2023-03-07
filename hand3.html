@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script>
+  let numOfPopups = 0;
+
+function showPopup() {
+  if (numOfPopups >= 3) {
+    return;
+  }
+
+  toastr.options = {
+    onHidden: function() {
+      numOfPopups--;
+      console.log(`Number of popups: ${numOfPopups}`);
+    }
+  };
+
+  toastr.info("This is a sample popup");
+  numOfPopups++;
+  console.log(`Number of popups: ${numOfPopups}`);
+}
+   </script>
+  </head>
+  <body>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  
+    <button onclick="showPopup()"> Show Popup </button>
+  </body>
+</html>
