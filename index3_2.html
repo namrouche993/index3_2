@@ -42,7 +42,7 @@
 
       }
       
-
+const currencyht = ' DA'
 const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
 
 // Create options for toLocaleString() based on the user's locale
@@ -105,10 +105,11 @@ console.log('decimal separateur est :' + decimalSeparator +
       beforeChange: (changes, source) => {
           console.log('we are inside beforeChange x y z :')
           console.log(changes)
+          console.log(source)
           const commentsPlugin = hot.getPlugin('comments');
 
           changes.forEach(([row, prop, oldValue, newValue]) => {
-                if(oldValue=='' && newValue==null){
+                if(oldValue=='' && newValue==null || oldValue=='' && newValue=='' && source=='UndoRedo.undo'){
                     commentsPlugin.removeCommentAtCell(row,prop);
                     console.log('comments removed')
                 }
@@ -120,7 +121,7 @@ console.log('decimal separateur est :' + decimalSeparator +
           { 
             validator: function(value, callback) {
               if ( value==null ||
-                   /^\s*[-+]?(\d+)\s*$/.test(value) || // when the value is whole number like 45 1987 2 36 ...
+                   /^\s*[-+]?(\d+)\s*$/.test(value) || // /^\s*[-+]?(\d+)\s*\$?\s*$/.test("  1235$  ")  // when the value is whole number like 45 1987 2 36 ...
                    /^\s*[-+]?(\s*\d+(\.\d*)?|\.\d+)\s*$/.test(value) || //1234567.89 (BY DEFAULT VALUE) AMERICAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR 
                   /^\s*[-+]?(\s*\d+(,\d*)?|,\d+)\s*$/.test(value)  || //1234567,89 EUROPEAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR
                   /^\s*[-+]?(\s*\d{1,3}( \d{3})*(,\d*)?|,\d+)\s*$/.test(value) || // 1 234 567,89 FRENCH NUMERIC FORMAT WITH THOUSAND SEPARATOR as space
@@ -159,7 +160,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                    });
                     const formattedNumber = formatter.format(Number(value));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
 
                 } else if (decimalSeparator == "," && /^\s*[-+]?(\d+)\s*$/.test(value)){
                   console.log('we are inside rendere , whole number')
@@ -171,7 +172,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                    });
                     const formattedNumber = formatter.format(Number(value));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
 
 
                 } else if( decimalSeparator=='.' && /^\s*[-+]?(\s*\d+(\.\d*)?|\.\d+)\s*$/.test(value) ){
@@ -191,13 +192,13 @@ console.log('decimal separateur est :' + decimalSeparator +
                    });
                    const formattedNumber22 = formatter22.format(value);
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML=formattedNumber22
+                    td.innerHTML=formattedNumber22 + currencyht
                     console.log('we are inside td.innerhtml < 0.01')
                    } else {
                     console.log('we are inside . and default and else (number value>0.01)')
                     const formattedNumber = formatter.format(Number(value));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
                    }
 
                    console.log(td.innerHTML)
@@ -226,13 +227,13 @@ console.log('decimal separateur est :' + decimalSeparator +
                    });
                    const formattedNumber33 = formatter33.format(value2);
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML=formattedNumber33
+                    td.innerHTML=formattedNumber33 + currencyht
                    } else {                               
                     const formattedNumber = formatter.format(value2);
                     console.log(formattedNumber)
 
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
                    }
                    
                 } else if (decimalSeparator==',' &&  /^\s*[-+]?(\s*\d{1,3}( \d{3})*(,\d*)?|,\d+)\s*$/.test(value) ){
@@ -248,7 +249,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                     const value3 = value.replace(/\s/g, '').replace(',', '.');
                     const formattedNumber = formatter.format(Number(value3).toFixed(2));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
 
                 } else if (decimalSeparator=='.' && /^\s*[-+]?(\s*\d{1,3}(,\d{3})*(\.\d+)?|\.\d+)\s*$/.test(value) ){
                   console.log('we are inside rendere 4')
@@ -265,7 +266,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                     console.log(value4)
                     const formattedNumber = formatter.format(Number(value4).toFixed(2));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
 
                 } else if (decimalSeparator==',' && /^\s*[-+]?(\d{1,3}(?:[.,\s]\d{3})*(?:,\d+)?)\s*$/.test(value)){
                      // 1.234.567,89 EUROPEAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as dot  
@@ -280,7 +281,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                     const value5 = value.trim().replace(/\./g, '').replace(',', '.')
                     const formattedNumber = formatter.format(Number(value5).toFixed(2));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
                 } else if (decimalSeparator=='.' &&  /^\s*[-+]?(\s*\d{1,3}( \d{3})*(\.\d*)?|\.\d+)\s*$/.test(value) ){
                   console.log('we are inside rendere 6') 
                   console.log('we are inside else if 300 000.00')
@@ -294,7 +295,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                     const value6 = value.replace(/\s/g, '');
                     const formattedNumber = formatter.format(Number(value6).toFixed(2));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
                   } else if (decimalSeparator=='.' &&  /^\s*[-+]?[\s]*[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) ){
                     console.log('we are inside rendere 7')
                     console.log('we are inside scientific notation :');
@@ -307,7 +308,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                     const value7 = parseFloat(value.replace(/\s/g, ''));
                     const formattedNumber = formatter.format(Number(value7));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
                   } else if (decimalSeparator==',' &&  /^\s*[-+]?[\s]*[0-9]*,?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) ){
                     console.log('we are inside rendere 8')
                     console.log('we are inside scientific notation with comma :');
@@ -321,7 +322,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                     const value8 = parseFloat(value.replace(',', '.').replace(/\s/g, ''));
                     const formattedNumber = formatter.format(Number(value8));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
-                    td.innerHTML = formattedNumber;
+                    td.innerHTML = formattedNumber + currencyht;
                   }
                   }
           },
@@ -338,6 +339,8 @@ console.log('decimal separateur est :' + decimalSeparator +
 
         if (isValid && value == null ){
           console.log('we are inside afterValidate value==null')
+          console.log('COULD END HERE')
+
         } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\d+)\s*$/.test(value) ){
           if ( decimalSeparator=='.'){
             console.log('condition afterValidate whole number .')
@@ -446,6 +449,8 @@ console.log('decimal separateur est :' + decimalSeparator +
             console.log('end conditon 10')
           } else if(value==''){
             console.log('do nothing , we are in last invalid')
+            console.log('COULD END HERE')
+
             //commentsPlugin.removeCommentAtCell(row,prop); //aa
 
           } else if(isValid==false){
