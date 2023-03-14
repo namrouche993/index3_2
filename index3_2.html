@@ -146,8 +146,15 @@ console.log('decimal separateur est :' + decimalSeparator +
           { 
             validator: function(oldvalue, callback) {
               //const value = oldvalue.replace(regexcurrenciesht, '');
-              const value = oldvalue.replace(currencyht,'') ;
-              console.log('new VALuE in validator is : ' +  value);
+              console.log('validator')
+              if(oldvalue!==null){
+                          var value = oldvalue.replace(currencyht_toshow,'') ;
+                          console.log('new VALuE in afterValidator is : ' +  value)
+                   } else {
+                         var value = null;
+                  }
+           //   const value = oldvalue.replace(currencyht,'') ;
+           // console.log('new VALuE in validator is : ' +  value);
               const thisrow = this.row;
               const thiscol = this.col;
               if ( value==null ||
@@ -185,9 +192,12 @@ console.log('decimal separateur est :' + decimalSeparator +
                 //console.log(decimalSeparator)
 
                 //const value = oldvalue.replace(regexcurrenciesht, '');
-                const value = oldvalue.replace(currencyht,'') ;
-                console.log('new VALuE in renderer is : ' +  value)
-
+                if(oldvalue!==null){
+          var value = oldvalue.replace(currencyht_toshow,'') ;
+          console.log('new VALuE in afterValidator is : ' +  value)
+        } else {
+          var value = null
+        }
                 
                 if(value==null  || value ==''){
                   //console.log('value is null , we are inside rendere value == null')
@@ -405,9 +415,7 @@ console.log('decimal separateur est :' + decimalSeparator +
           var value = oldvalue.replace(currencyht_toshow,'') ;
           console.log('new VALuE in afterValidator is : ' +  value)
         } else {
-          console.log('vv')
-          console.log(oldvalue)
-          var value = ''
+          var value = null
         }
        //const value = oldvalue.replace(regexcurrenciesht, '');
 
