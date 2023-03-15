@@ -47,7 +47,7 @@ const currencyht_toshow = '' // ' $' // ' DA'
 //const currenciesht = ['$','USD','Euro',"£"];
 //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
-const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+const userLocale = 'de' //Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
 
 // Create options for toLocaleString() based on the user's locale
 const options = { style: 'decimal' };
@@ -456,8 +456,17 @@ if(col==1){
             // do nothing
           } else if (decimalSeparator==',') { 
             console.log('condition 4')
-            //this.setDataAtCell(row, prop, Number(value.trim()).toFixed(2).replace('.', ','));
-            this.setDataAtCell(row, prop, value.trim().replace('.', ','));
+            //this.setDataAtCell(row, prop, value.trim().replace('.', ','));
+            if(/^\s*[-+]?(\s*\d{1,3}(\.\d{3})*|\d+)(,\d+)?\s*$/.test(value)){
+              console.log('condition 4.1 do nothing')
+              commentsPlugin.removeCommentAtCell(row,prop);
+            } else {
+              console.log('condition 4.2')
+              //alert('voulez vous dire que 3.16 egale a 3,14 ? si oui changer svp ')
+              commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value +"' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
+              this.setDataAtCell(row, prop,'');
+            }
+
           }
         } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\s*\d+(,\d*)?|,\d+)\s*$/.test(value) ) { 
             //1234567,89 EUROPEAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR
