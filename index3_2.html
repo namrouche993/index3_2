@@ -190,7 +190,8 @@ console.log('decimal separateur est :' + decimalSeparator +
                 //console.log('start renderer, value is :')
                 //console.log(value)
                 //console.log(decimalSeparator)
-
+if(col==1){
+  
                 //const value = oldvalue.replace(regexcurrenciesht, '');
                 if(oldvalue!==null){
           var value = oldvalue.replace(currencyht_toshow,'') ;
@@ -401,6 +402,7 @@ console.log('decimal separateur est :' + decimalSeparator +
 
                   }
                   }
+}
           },
           { type: 'numeric' },
           { type: 'numeric' },
@@ -409,6 +411,7 @@ console.log('decimal separateur est :' + decimalSeparator +
           { type: 'numeric' }
         ],
        afterValidate: function(isValid, oldvalue, row, prop, source) {
+  if(prop==1){
         console.log('value : aftervalidate')
         console.log(oldvalue)
         if(oldvalue!==null){
@@ -577,7 +580,8 @@ console.log('decimal separateur est :' + decimalSeparator +
           console.log(/^\s*[-+]?(\s*\d+(,\d*)?|,\d+)\s*$/.test(value))
 
         }
-      },
+      }
+    },
    
 
 
