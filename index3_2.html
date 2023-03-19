@@ -7,8 +7,12 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <!-- https://handsontable.com/docs/javascript-data-grid/software-license/ -->
     <!-- https://github.com/handsontable/handsontable/tree/6.2.2 is the latest MIT LICENCE version -->  
+    <!-- <link rel="stylesheet" href="handsontable.full.min.css"> -->
+
   </head>
   <body>
+    <!-- <script src="handsontable.full.min.js"></script> -->
+
     <style>
       .handsontable .htCommentCell:after {
       content: "";
@@ -49,7 +53,7 @@ const currencyht_toshow = '' // ' $' // ' DA'
 //const currenciesht = ['$','USD','Euro',"£"];
 //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
-const userLocale = 'fr' //Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+const userLocale = 'en' //Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
 
 // Create options for toLocaleString() based on the user's locale
 const options = { style: 'decimal' };
@@ -171,7 +175,7 @@ console.log('decimal separateur est :' + decimalSeparator +
            //   const value = oldvalue.replace(currencyht,'') ;
            // console.log('new VALuE in validator is : ' +  value);
 
-              if ( value==null ||
+              if ( value==null ||             
                    /^\s*[-+]?(\s*\d+)\s*$/.test(value) || // /^\s*[-+]?(\d+)\s*$/.test(value) || // when the value is whole number like 45 1987 2 36 ... // /^\s*[-+]?(\d+)\s*\$?\s*$/.test("  1235$  ")
                    /^\s*[-+]?(\s*\d+(\.\d*)?|\.\d+)\s*$/.test(value) || //1234567.89 (BY DEFAULT VALUE) AMERICAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR
                   /^\s*[-+]?(\s*\d+(,\d*)?|,\d+)\s*$/.test(value)  || //1234567,89 EUROPEAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR
@@ -252,18 +256,20 @@ if(col==1){
                     console.log('we are inside rendere 1')
                     console.log('//1234567.89 (BY DEFAULT VALUE) AMERICAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR')
                     console.log(value)
+                    const value_without_whitespace2= value.replace(/^\s*([-+])\s*(\d+)/, '$1$2');
+
                    //const userLocale = Intl.NumberFormat().resolvedOptions().locale || 'fr' || 'en'
                    const formatter = new Intl.NumberFormat(userLocale,{
                         style: 'decimal',
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                    }); //('en')
-                   if(Number(value)<0.01){
+                   if(Math.abs(Number(value_without_whitespace2))<0.01){
                     const formatter22 = new Intl.NumberFormat(userLocale,{
                         style: 'decimal',
                         maximumFractionDigits: 20,
                    });
-                   const formattedNumber22 = formatter22.format(value);
+                   const formattedNumber22 = formatter22.format(value_without_whitespace2);
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
                     td.innerHTML=formattedNumber22 + currencyht_toshow
                     console.log('we are inside td.innerhtml < 0.01')
@@ -271,7 +277,7 @@ if(col==1){
 
                    } else {
                     console.log('we are inside . and default and else (number value>0.01)')
-                    const formattedNumber = formatter.format(Number(value));
+                    const formattedNumber = formatter.format(Number(value_without_whitespace2));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
                     td.innerHTML = formattedNumber + currencyht_toshow;
                     data22[row][col]=td.innerHTML;
@@ -289,26 +295,28 @@ if(col==1){
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                     });
+                    const value_without_whitespace3= value.replace(/^\s*([-+])\s*(\d+)/, '$1$2');
+
                     console.log('value in second :')
-                    console.log(value)
-                    const value2 = value.toString().replace(',', '.')
+                    console.log(value_without_whitespace3)
+                    const value_without_whitespace32 = value_without_whitespace3.toString().replace(',', '.')
                     //console.log('value2 :')
                     //console.log(value2)
-                    console.log(Number(value2))
+                    console.log(Number(value_without_whitespace32))
 
-                    if(Number(value2)<0.01){
+                    if(Math.abs(Number(value_without_whitespace32)<0.01)){
                       console.log('ifnumbervalue2<0.01 comma')
                       const formatter33 = new Intl.NumberFormat(userLocale,{
                         style: 'decimal',
                         maximumFractionDigits: 20,
                    });
-                   const formattedNumber33 = formatter33.format(value2);
+                   const formattedNumber33 = formatter33.format(value_without_whitespace32);
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
                     td.innerHTML=formattedNumber33 + currencyht_toshow;
                     data22[row][col]=td.innerHTML;
 
                    } else {
-                    const formattedNumber = formatter.format(value2);
+                    const formattedNumber = formatter.format(value_without_whitespace32);
                     console.log(formattedNumber)
 
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -473,6 +481,12 @@ if(col==1){
         }
         } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\s*\d+(\.\d*)?|\.\d+)\s*$/.test(value) ){
           //1234567.89 (BY DEFAULT VALUE) AMERICAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR
+          //const value_without_whitespace2= value.replace(/^\s*([-+])\s*(\d+)/, '$1$2');
+
+          if(/^\s*[-+]\s+\d/.test(value.trim())){
+            console.log('if there is whitespaces between sign +/- and the value so remove this whitespace like + 123456.89  ')
+            this.setDataAtCell(row, prop,value.replace(/^\s*([-+])\s*(\d+)/, '$1$2'));
+          } else {
           if ( decimalSeparator=='.'){
             console.log('condition 3 ta3 do nothing')
             console.log('//1234567.89 (BY DEFAULT VALUE) AMERICAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR')
@@ -498,7 +512,7 @@ if(col==1){
             }
 
           }
-        } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\s*\d+(,\d*)?|,\d+)\s*$/.test(value) ) {
+        }} else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\s*\d+(,\d*)?|,\d+)\s*$/.test(value) ) {
             //1234567,89 EUROPEAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR
             if ( decimalSeparator=='.'){
 
