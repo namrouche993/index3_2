@@ -53,7 +53,7 @@ const currencyht_toshow = '' // ' $' // ' DA'
 //const currenciesht = ['$','USD','Euro',"£"];
 //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
-const userLocale = 'fr' //Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+const userLocale = 'en' //Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
 
 // Create options for toLocaleString() based on the user's locale
 const options = { style: 'decimal' };
@@ -181,11 +181,12 @@ console.log('decimal separateur est :' + decimalSeparator +
                   /^\s*[-+]?(\s*\d+(,\d*)?|,\d+)\s*$/.test(value)  || //1234567,89 EUROPEAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR
                   /^\s*[-+]?(\s*\d{1,3}( \d{3})*(,\d*)?|,\d+)\s*$/.test(value) || // 1 234 567,89 FRENCH NUMERIC FORMAT WITH THOUSAND SEPARATOR as space
                   /^\s*[-+]?(\s*\d{1,3}(,\d{3})*(\.\d+)?|\.\d+)\s*$/.test(value) || // 1,234,567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as comma
-                  /^\s*[-+]?(\d{1,3}(?:[.,\s]\d{3})*(?:,\d+)?)\s*$/.test(value) || // 1.234.567,89 EUROPEAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as dot
+                  /^\s*[-+]?(\s*\d{1,3}(?:[.,\s]\d{3})(?:,\d+)?)\s*(?=\s|$)/.test(value) || // 1.234.567,89 EUROPEAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as dot /^\s*[-+]?(\d{1,3}(?:[.,\s]\d{3})*(?:,\d+)?)\s*$/
                   /^\s*[-+]?(\s*\d{1,3}( \d{3})*(\.\d*)?|\.\d+)\s*$/.test(value) ||   // 1 234 567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as space
                   /^\s*[-+]?[\s]*[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) || // 1.6e6 1.60E+04  -13.65E4  - 12.3E+03  scientific notation with E sign
                   /^\s*[-+]?[\s]*[0-9]*,?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value)    // 1,6e6 1,60E+04  -13,65E4  - 12.3E+03  scientific notation with E sign
 
+                  
                   ) {
                 console.log('it returns true in validator')
                 if(value!==oldvalue){
@@ -197,6 +198,7 @@ console.log('decimal separateur est :' + decimalSeparator +
                   callback(true)
                 }
               } else {
+                console.log('we are in callback false')
                 callback(false);
               }
             },
@@ -362,7 +364,7 @@ if(col==1){
                     data22[row][col]=td.innerHTML;
 
 
-                } else if (decimalSeparator==',' && /^\s*[-+]?(\d{1,3}(?:[.,\s]\d{3})*(?:,\d+)?)\s*$/.test(value)){
+                } else if (decimalSeparator==',' && /^\s*[-+]?(\s*\d{1,3}(?:[.,\s]\d{3})(?:,\d+)?)\s*(?=\s|$)/.test(value)){
                      // 1.234.567,89 EUROPEAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as dot
                      console.log('we are inside rendere 5')
                      console.log('5.300.000,00')
@@ -372,10 +374,11 @@ if(col==1){
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                     });
-                    const value5 = value.trim().replace(/\./g, '').replace(',', '.')
+                    const value_without_whitespace4=value.replace(/^\s*([-+])\s*(\d+)/, '$1$2')
+                    const value_without_whitespace45 = value_without_whitespace4.trim().replace(/\./g, '').replace(',', '.')
                     //const value5 = value.trim().replace(/\./g, '')
 
-                    const formattedNumber = formatter.format(Number(value5).toFixed(2));
+                    const formattedNumber = formatter.format(Number(value_without_whitespace45).toFixed(2));
                     Handsontable.renderers.TextRenderer.apply(this, arguments);
                     td.innerHTML = formattedNumber + currencyht_toshow;
                     data22[row][col]=td.innerHTML;
@@ -586,8 +589,12 @@ if(col==1){
             //this.setDataAtCell(row, prop, value.replace(/,/g, '') );
             // 1,234,567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR
 
-        } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\d{1,3}(?:[.,\s]\d{3})*(?:,\d+)?)\s*$/.test(value) ){
+        } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\s*\d{1,3}(?:[.,\s]\d{3})(?:,\d+)?)\s*(?=\s|$)/.test(value) ){
           // 1.234.567,89 EUROPEAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as dot
+          if(/^\s*[-+]\s+\d/.test(value.trim())){
+            console.log('if there is whitespaces between sign +/- and the value so remove this whitespace like + 1.234.567,89  ')
+            this.setDataAtCell(row, prop,value.replace(/^\s*([-+])\s*(\d+)/, '$1$2'));
+          } else {         
           if (/^\s*[-+]?(?=\d)(?:(?:\d{1,3}(?:[.,\s]\d{3}){0,2})|(?:\d+))(?:,\d+)?(?<=,[\d,]*),(?!\d*,)\d+(?:\.\d+)?\s*$/.test(value)){
             console.log('condition out 7.1')
             console.log('like 1,234,56 or 1.234.567,8956,78')
@@ -609,7 +616,7 @@ if(col==1){
             this.setDataAtCell(row, prop,'');
             }
           }
-
+        }
           } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?(\s*\d{1,3}( \d{3})*(\.\d*)?|\.\d+)\s*$/.test(value) ){
             // 1 234 567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR
             console.log('condition out 8')
