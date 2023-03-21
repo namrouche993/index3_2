@@ -5,6 +5,8 @@
     <title>Handsontable with custom validator and decimal separator switcher</title>
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
+
     <!-- https://handsontable.com/docs/javascript-data-grid/software-license/ -->
     <!-- https://github.com/handsontable/handsontable/tree/6.2.2 is the latest MIT LICENCE version -->  
     <!-- <link rel="stylesheet" href="handsontable.full.min.css"> -->
@@ -416,7 +418,7 @@ if(col==1){
                     data22[row][col]=td.innerHTML;
 
                   } else if (decimalSeparator==',' &&  /^\s*[-+]?[\s]*[0-9]*,?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) ){
-                    console.log('----------------------------------------rendere 8 ---------------------------------------- rendere 8 ------------------------')
+                    //console.log('----------------------------------------rendere 8 ---------------------------------------- rendere 8 ------------------------')
                     console.log('we are inside rendere 8')
                     console.log('we are inside scientific notation with comma :');
                     console.log('// 1,6e6 1,60E+04  -13,65E4  - 12,3E+03  scientific notation with E sign');
@@ -642,42 +644,117 @@ if(col==1){
             console.log('// 1 234 567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR')
             this.setDataAtCell(row, prop, value.replace(/\s/g, '') );
             console.log(value.replace(/\s/g, ''))
+            commentsPlugin.removeCommentAtCell(row,prop);
 
+          } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?[\s]*[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) ){
+            console.log('condition out 12 ')
+            // we a re inside scientific notation when mantissa is integer
+            if(/^[+-]?[\s]+\d+(\.\d+)?([eE][+-]?\d+)?$/.test(value.trim())){
+            console.log('if there is whitespaces between sign +/- and the value so remove this whitespace like + 5e6  ')
+            this.setDataAtCell(row, prop,value.trim().replace(/\s/g, ''));
+            commentsPlugin.removeCommentAtCell(row,prop);
 
+          } else {
+            if(Math.abs(Number(value))<0.01){
+              console.log('we are in the case when integer scientific notation less than 0.01')
+              if(decimalSeparator=='.'){
+              this.setDataAtCell(row, prop, Number(value).toFixed(Math.abs(BigNumber(value).e)).toString() );
+              commentsPlugin.removeCommentAtCell(row,prop);
+
+            } else {
+              this.setDataAtCell(row, prop, Number(value).toFixed(Math.abs(BigNumber(value).e)).toString().replace('.',',') );
+              commentsPlugin.removeCommentAtCell(row,prop);
+
+            }
+          } else {
+            if(decimalSeparator=='.'){
+              console.log('integer scinetific notation and english dot')
+              this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '') ) );
+              console.log(parseFloat(value.replace(/\s/g, '') ))
+              commentsPlugin.removeCommentAtCell(row,prop);
+
+            } else if (decimalSeparator==','){
+              console.log('integer scinetific notation and european comma')
+              this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') );
+              console.log(parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') )
+              commentsPlugin.removeCommentAtCell(row,prop);
+
+            }
+          } 
+          }
           } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?[\s]*[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) ){
             // we are inside scientific notation :
             // 1.6e6 1.60E+04  -13.65E4  - 12.3E+03  scientific notation with E sign
             console.log('condition out 9')
             console.log(value)
+            if(Math.abs(Number(value))<0.01){
+              if(decimalSeparator=='.'){
+              console.log('scientific format float mantissa and decimal separator is dot/dot and less than 0.01')
+              this.setDataAtCell(row, prop, Number(value).toFixed(Math.abs(BigNumber(value).e)).toString() );
+              commentsPlugin.removeCommentAtCell(row,prop);
 
+            } else if (decimalSeparator==','){
+              console.log('scientific format float mantissa and decimal separator is dot/comma and less than 0.01')
+              commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value +"' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+              this.setDataAtCell(row, prop,'');
+                   }
+          } else {
             if(decimalSeparator=='.'){
               console.log('scinetific notation and english dot')
+              console.log('scientific format float mantissa and decimal separator is dot/dot and greater than 0.01')
+
               this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '') ) );
               console.log(parseFloat(value.replace(/\s/g, '') ))
+              commentsPlugin.removeCommentAtCell(row,prop)
+
             } else if (decimalSeparator==','){
+              console.log('scientific format float mantissa and decimal separator is dot/comma and greater than 0.01')
               console.log('scinetific notation and european comma')
-              this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') );
-              console.log(parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') )
+              commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value +"' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+              this.setDataAtCell(row, prop,'');
+              // this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') );
+             // console.log(parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') )
             }
-             commentsPlugin.removeCommentAtCell(row,prop);
+             //commentsPlugin.removeCommentAtCell(row,prop);
 
              console.log('end conditon 9')
-          } else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?[\s]*[0-9]*,?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) ){
+          }} else if (isValid && value !== undefined && typeof value === 'string' && /^\s*[-+]?[\s]*[0-9]*,?[0-9]+([eE][-+]?[0-9]+)?\s*$/.test(value) ){
             // we are inside scientific notation with comma :
             // 1,6e6 1.60E+04  -13,65E4  - 12,3E+03  scientific notation with E sign
             console.log('condition out 10')
             console.log(value)
+            const value1010 = value.replace(',', '.')
+            if(Math.abs(Number(value1010))<0.01){
+              if(decimalSeparator=='.'){
+                console.log('scientific format float mantissa and decimal separator is comma/dot and less than 0.01')
+                 commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value +"' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+                 this.setDataAtCell(row, prop,'');
+              } else if (decimalSeparator==',') {
+              //bg=BigNumber(val)
+              //expo=Math.abs(BigNumber(value1010).e)
+              //Number(value1010).toFixed(Math.abs(BigNumber(value1010).e))
+              //console.log('******************************************* we are inside condition out 10 less than 0.01 *******************************************')
+              console.log('scientific format float mantissa and decimal separator is comma/comma and less than 0.01')
+              this.setDataAtCell(row, prop, Number(value1010).toFixed(Math.abs(BigNumber(value1010).e)).toString().replace('.',',') );
+              commentsPlugin.removeCommentAtCell(row,prop);
+              }
+              
+            } else {
             if(decimalSeparator=='.'){
               //maybe it will be a problem here : to fix after
+              console.log('scientific format float mantissa and decimal separator is comma/dot and greather than 0.01')
               commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value +"' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
               hot.setDataAtCell(row,prop,'')
-
             } else if (decimalSeparator==','){
+              //console.log(' ////////////////////////////// we are inside condition out 10 decimal separator , /////////////////////////////////////////////')
+              console.log('scientific format float mantissa and decimal separator is comma/comma and greather than 0.01')
               console.log(parseFloat(value.replace(',', '.').replace(/\s/g, '') ))
               this.setDataAtCell(row, prop, parseFloat(value.replace(',', '.').replace(/\s/g, '') ).toString().replace('.',',') );
+              commentsPlugin.removeCommentAtCell(row,prop);
+
             }
             console.log('end conditon 10')
-          } else if(value==''){
+          }} else if(value==''){
             console.log('do nothing , we are in last invalid')
             console.log('COULD END HERE')
 
