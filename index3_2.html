@@ -170,7 +170,7 @@ console.log('decimal separateur est :' + decimalSeparator +
               console.log('validator')
               console.log(oldvalue)
               if(oldvalue.toString()!==null){
-                          var value = oldvalue.toString().replace(currencyht_toshow,'') ;
+                          var value = oldvalue.toString().replace(currencyht,'') ;
                           console.log('new VALuE in afterValidator is : ' +  value)
                    } else {
                          var value = null;
@@ -193,9 +193,11 @@ console.log('decimal separateur est :' + decimalSeparator +
                   ) {
                 console.log('it returns true in validator')
                 if(value!==oldvalue){
-                  callback(true,
-                    hot.setDataAtCell(thisrow, thiscol, value)
-                  )
+                  console.log('it returns true inside validator and value != oldvalud')
+                  //callback(true,
+                  //  hot.setDataAtCell(thisrow, thiscol, value)
+                  //)
+                  callback(true)
                   //hot.setDataAtCell(row,prop,this.getData()[row][prop])
                 } else {
                   callback(true)
@@ -217,7 +219,7 @@ if(col==1){
 
                 //const value = oldvalue.replace(regexcurrenciesht, '');
                 if(oldvalue!==null){
-          var value = oldvalue.replace(currencyht_toshow,'') ;
+          var value = oldvalue.replace(currencyht,'') ;
           console.log('new VALuE in afterValidator is : ' +  value)
         } else {
           var value = null
@@ -468,7 +470,7 @@ if(col==1){
         console.log('value : aftervalidate')
         console.log(oldvalue)
         if(oldvalue!==null){
-          var value = oldvalue.replace(currencyht_toshow,'') ;
+          var value = oldvalue.replace(currencyht,'') ;
           console.log('new VALuE in afterValidator is : ' +  value)
         } else {
           var value = null
