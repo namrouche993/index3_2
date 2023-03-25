@@ -55,7 +55,7 @@ const currencyht_toshow = '' // ' $' // ' DA'
 //const currenciesht = ['$','USD','Euro',"£"];
 //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
-const userLocale = 'fr' //Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+const userLocale = 'en' //Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
 
 // Create options for toLocaleString() based on the user's locale
 const options = { style: 'decimal' };
@@ -467,6 +467,17 @@ if(col==1){
           { type: 'numeric' }
         ],
        afterValidate: function(isValid, oldvalue, row, prop, source) {
+        if(source=='my_source'){
+          //console.log(hot.undoRedo.doneActions)
+          hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.forEach((x,y)=>{
+            console.log('we are inside foreach')
+            if(x[0]==row && x[1]==prop){
+                console.log('we are inside condition')
+                    x[3]=oldvalue
+                  }
+                })
+        }
+
   if(prop==1){
         console.log('value : aftervalidate')
         console.log(oldvalue)
@@ -665,7 +676,7 @@ if(col==1){
             // 1 234 567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR
             console.log('condition out 8')
             console.log('// 1 234 567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR')
-            this.setDataAtCell(row, prop, value.replace(/\s/g, '') );
+            this.setDataAtCell(row, prop, value.replace(/\s/g, ''),'my_source');
             console.log(value.replace(/\s/g, ''))
             commentsPlugin.removeCommentAtCell(row,prop);
 
@@ -824,6 +835,14 @@ if(col==1){
 
 
       });
+
+      hot.addHook('afterChange', function(changes, src) {
+        console.log('start afterChange')
+        if(src=='my_source'){
+          hot.undoRedo.doneActions.pop()
+        }
+        console.log('end afterChange')
+      })
 
       const decimalSwitcher = document.getElementById('decimal-switcher');
 
