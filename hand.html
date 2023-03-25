@@ -8,6 +8,7 @@
 </head>
 <body>
   <div id="example"></div>
+  <button id="removeThirdStepButton">Remove Third Step</button>
 
   <!-- Include Handsontable JavaScript library -->
   <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -16,42 +17,65 @@
     // Create Handsontable instance
     var hot = new Handsontable(document.getElementById('example'), {
       data: [
-        ['John', 30],
-        ['Jane', ''],
-        ['Bob', 40]
+        [1],
+        [2],
+        [3],
+        [4],
       ],
       columns: [
-        { type: 'text', title: 'Name' },
-        { title: 'Age', validator: function(value, callback) {
-          if(/^\d+$/.test(value)) {
-            callback(true);
-            //changecolorcell(this.row,this.col,'red')
-            console.log('we are inside callback == true')
-          } else {
-            //hot.getCell(this.row, this.col).style.backgroundColor = 'red',
-            callback(false,
-            console.log('we are beofre setimeout '),
-            alert("the cell : " + this.row + ' '+ this.col + 'with the value'+ value +' is not accepted '),
-            setTimeout(() => {
-              console.log('we are inside setimeout ')
-              //hot.setDataAtCell(this.row,this.col,hot.getData()[this.row][this.col])
-              hot.undo(true)
-            }, 5000),
-            console.log('we are after setimeout ')
-            
-            /*setTimeout(() => {
-              changecolorcell(this.row,this.col,'white')
-            }, 5000)
-            */
-            
-          );
-          }
-        }}
-      ]
-    });
-    const changecolorcell=(row,col,couleur)=>{
-      hot.getCell(row, col).style.backgroundColor = couleur;
-    }
+        { type: 'numeric',title:'Age'}
+      ],
+      afterValidate: function(isValid, value, row, prop, source) {
+        console.log('start aftervalidate')
+        //if(hot.undoRedo.doneActions[0]!=undefined){
+        //  var hota = hot.undoRedo.doneActions.pop()
+        //  console.log('hotundoredo')
+        //  console.log(hota)
+          //console.log(hot.undoRedo.doneActions[0])
+        //}
+        console.log(source)
+        console.log('hot.undoRedo.doneActions : ')
+        //console.log(hot.undoRedo.doneActions)
+         if(source=='my_source'){
+          //console.log(hot.undoRedo.doneActions)
+          hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.forEach((x,y)=>{
+            console.log('we are inside foreach')
+            if(x[0]==row && x[1]==prop){
+              console.log(x)
+              console.log(value)
+                console.log('we are inside condition of foreach')
+                    x[3]=value.toString()
+                  }
+                })
+        }
+        //console.log(hot.undoRedo.doneActions)
+        if (Number(value) > 50) {
+          //console.log('start inside condition 50')
+          this.setDataAtCell(row, prop,value-20,'my_source');
+          //console.log(hot.undoRedo.doneActions.pop().changes[0])
+          //console.log('end inside condition 50')
+        }
+        //console.log(hot.undoRedo.doneActions[6])
+        console.log('end aftervalidate')
+
+      }
+      })
+
+      hot.addHook('afterChange', function(changes, src) {
+        console.log('start afterChange')
+        if(src=='my_source'){
+          hot.undoRedo.doneActions.pop()
+        }
+        console.log('end afterChange')
+      })
+
+      const removeThirdStepButton = document.getElementById('removeThirdStepButton');
+      removeThirdStepButton.addEventListener('click', function() {
+        const actions = hot.undoRedo.doneActions;
+        actions.splice(actions.length, 1);
+        console.log('we removed the 7th step')
+      })
+    
   </script>
 </body>
 </html>
