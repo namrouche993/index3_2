@@ -132,8 +132,8 @@ console.log('decimal separateur est :' + decimalSeparator +
   }
 },
       afterChange:(changes,source)=>{
-             console.log('we are inside afterChange , data22 : ')
-             console.log(data22)
+            // console.log('we are inside afterChange , data22 : ')
+            // console.log(data22)
        },
        afterSelection:(r1, c1, r2, c2)=>{
           var comment = hot.getCellMeta(r1, c1).comment;
@@ -481,12 +481,14 @@ if(col==1){
   if(prop==1){
         console.log('value : aftervalidate')
         console.log(oldvalue)
+        console.log(typeof oldvalue)
+
         if(oldvalue!==null){
           if(oldvalue.toString().includes(currencyht)){
             console.log('new VALuE in afterValidator will be : ' +  oldvalue.toString().replace(currencyht,''))
             this.setDataAtCell(row, prop,oldvalue.toString().replace(currencyht,''),'my_source');
           }else{
-            var value = oldvalue ;
+            var value = oldvalue //.toString() ;
             console.log('new VALuE in afterValidator still be : ' +  value)
           }
 
@@ -497,6 +499,9 @@ if(col==1){
 
         console.log('source in afterValidate is : ')
         console.log(source)
+        console.log(value)
+        console.log(typeof value)
+        console.log(/^\s*[-+]?(\s*\d+)\s*$/.test(value))
         const commentsPlugin = hot.getPlugin('comments');
 
         if (isValid && value == null ){
@@ -707,8 +712,8 @@ if(col==1){
           } else {
             if(decimalSeparator=='.'){
               console.log('integer scinetific notation and english dot')
-              this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '') ),'my_source' );
-              console.log(parseFloat(value.replace(/\s/g, '') ))
+              this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '') ).toString(),'my_source' );
+              console.log(parseFloat(value.replace(/\s/g, '') ).toString() )
               commentsPlugin.removeCommentAtCell(row,prop);
 
             } else if (decimalSeparator==','){
@@ -744,9 +749,8 @@ if(col==1){
             if(decimalSeparator=='.'){
               console.log('scinetific notation and english dot')
               console.log('scientific format float mantissa and decimal separator is dot/dot and greater than 0.01')
-
-              this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '') ) ,'my_source');
               console.log(parseFloat(value.replace(/\s/g, '') ))
+              this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '')).toString() ,'my_source');
               commentsPlugin.removeCommentAtCell(row,prop)
 
             } else if (decimalSeparator==','){
@@ -805,7 +809,6 @@ if(col==1){
           }}} else if(value==''){
             console.log('do nothing , we are in last invalid')
             console.log('COULD END HERE')
-
             //commentsPlugin.removeCommentAtCell(row,prop); //aa
 
           } else if(isValid==false){
