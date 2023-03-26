@@ -17,13 +17,27 @@
     // Create Handsontable instance
     var hot = new Handsontable(document.getElementById('example'), {
       data: [
-        [1],
-        [2],
-        [3],
-        [4],
+        [''],
+        [''],
+        [''],
+        [''],
       ],
+      comments:true,
       columns: [
-        { type: 'numeric',title:'Age'}
+        { title:'Age',
+        validator:(value,callback)=>{
+          console.log(value)
+          if(value==null){
+            callback(true)
+          }else if(value=='' || value==' '){
+            callback(true)
+          }else if(Number(value)>0){
+            callback(true)
+          } else {
+            callback(false)
+          }
+        }
+        }
       ],
       afterValidate: function(isValid, value, row, prop, source) {
         console.log('start aftervalidate')
@@ -34,26 +48,41 @@
           //console.log(hot.undoRedo.doneActions[0])
         //}
         console.log(source)
+        console.log(value)
         console.log('hot.undoRedo.doneActions : ')
-        //console.log(hot.undoRedo.doneActions)
+        console.log(hot.undoRedo.doneActions)
+        const commentsPlugin = hot.getPlugin('comments');
+
          if(source=='my_source'){
           //console.log(hot.undoRedo.doneActions)
-          hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.forEach((x,y)=>{
+       /*   hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.forEach((x,y)=>{
             console.log('we are inside foreach')
             if(x[0]==row && x[1]==prop){
               console.log(x)
               console.log(value)
-                console.log('we are inside condition of foreach')
+              console.log('we are inside condition of foreach')
                     x[3]=value.toString()
                   }
                 })
+        */
         }
         //console.log(hot.undoRedo.doneActions)
         if (Number(value) > 50) {
           //console.log('start inside condition 50')
           this.setDataAtCell(row, prop,value-20,'my_source');
+          commentsPlugin.removeCommentAtCell(row,prop);
           //console.log(hot.undoRedo.doneActions.pop().changes[0])
           //console.log('end inside condition 50')
+        } else if(!isValid){
+          console.log('we are inside !isvalid')
+          commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie nest pas autorisée !!");
+          this.setDataAtCell(row, prop,'','my_source');
+          console.log('we are inside end !isvalid')
+        } else {
+          if(source!='my_source'){
+            commentsPlugin.removeCommentAtCell(row,prop);
+          }
+
         }
         //console.log(hot.undoRedo.doneActions[6])
         console.log('end aftervalidate')
@@ -63,8 +92,12 @@
 
       hot.addHook('afterChange', function(changes, src) {
         console.log('start afterChange')
+        console.log(changes)
+        console.log(src)
         if(src=='my_source'){
-          hot.undoRedo.doneActions.pop()
+          console.log('we are inside src==my_source')
+          console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-2])
+          //hot.undoRedo.doneActions.splice(hot.undoRedo.doneActions.length-2,1)
         }
         console.log('end afterChange')
       })
