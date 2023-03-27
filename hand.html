@@ -55,7 +55,8 @@
 
          if(source=='my_source'){
           //console.log(hot.undoRedo.doneActions)
-       /*   hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.forEach((x,y)=>{
+       /* 
+         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.forEach((x,y)=>{
             console.log('we are inside foreach')
             if(x[0]==row && x[1]==prop){
               console.log(x)
@@ -69,7 +70,7 @@
         //console.log(hot.undoRedo.doneActions)
         if (Number(value) > 50) {
           //console.log('start inside condition 50')
-          this.setDataAtCell(row, prop,value-20,'my_source');
+          this.setDataAtCell(row, prop,value-20,'my_source2');
           commentsPlugin.removeCommentAtCell(row,prop);
           //console.log(hot.undoRedo.doneActions.pop().changes[0])
           //console.log('end inside condition 50')
@@ -94,10 +95,11 @@
         console.log('start afterChange')
         console.log(changes)
         console.log(src)
-        if(src=='my_source'){
+        if(src=='my_source2'){
           console.log('we are inside src==my_source')
           console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-2])
-          //hot.undoRedo.doneActions.splice(hot.undoRedo.doneActions.length-2,1)
+          hot.undoRedo.doneActions.splice(hot.undoRedo.doneActions.length-2,1)
+          
         }
         console.log('end afterChange')
       })
