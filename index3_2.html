@@ -842,7 +842,7 @@ if(col==1){
       hot.addHook('afterChange', function(changes, src) {
         console.log('start afterChange')
         if(src=='my_source'){
-          hot.undoRedo.doneActions.pop()
+          //hot.undoRedo.doneActions.pop()
         }
         console.log('end afterChange')
       })
