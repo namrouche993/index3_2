@@ -108,11 +108,11 @@
     ];
     const data22 = data.map(arr => [...arr]);
 
-
     const hot = new Handsontable(document.getElementById('example'), {
       data: data,
       comments: true,
       colWidths: [50, 100, 30, 30, 30, 30, 30],
+      //allowInsertRow: false,
       beforeKeyDown: function (event) {
         // console.log(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length-1))
         //    console.log(event)
@@ -139,6 +139,15 @@
         // console.log('we are inside afterChange , data22 : ')
         // console.log(data22)
       },
+      afterCreateRow: function(index, amount) {
+        // Your custom logic goes here
+        console.log('A new row has been added at index: ', index);
+        console.log(amount)
+        console.log(index)
+        data22.push(['','','','','','',''])
+        console.log(data22)
+      },
+
       afterSelection: (r1, c1, r2, c2) => {
         var comment = hot.getCellMeta(r1, c1).comment;
         if (comment !== undefined) {
@@ -165,6 +174,7 @@
           }
           console.log(`Change in row ${row} property ${prop}: ${oldValue} -> ${newValue}`);
         });
+        console.log('end before change')
       },
       columns: [
         { type: 'numeric' },
@@ -222,21 +232,25 @@
             //console.log('start renderer, value is :')
             //console.log(value)
             //console.log(decimalSeparator)
+            console.log('renderer :')
+           // console.log('row is '+ row + ' and col : ' + col + ' prop : ' + prop)
+            //console.log(oldvalue)
+           // console.log(oldvalue!==null)
+        //    console.log('****----****')
+            //console.log(col)
+            //console.log(prop)
             if (col == 1) {
 
               //const value = oldvalue.replace(regexcurrenciesht, '');
               if (oldvalue !== null) {
                 var value = oldvalue.toString().replace(currencyht, '');
-                console.log('new VALuE in afterValidator is : ' + value)
               } else {
                 var value = null
               }
 
               if (value == null || value == '') {
-                //console.log('value is null , we are inside rendere value == null')
                 td.innerHTML = ''
                 data22[row][col] = td.innerHTML;
-
               } else if (decimalSeparator == "." && /^\s*[-+]?(\s*\d+)\s*$/.test(value)) {
                 console.log('we are inside renderer . whole number')
                 console.log(value)
@@ -509,7 +523,6 @@
           })
         }
         */
-
         if (prop == 1) {
           console.log('value : aftervalidate')
           console.log(oldvalue)
@@ -935,10 +948,31 @@
                 }
                 })
       }
+      if(src == 'my_source_empty' && changes[0][2]!=''){
+        console.log('when src == my_source_empty and changes[0][2]!= "" ')
+        //hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes[0][3]=''
+        hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
+                  console.log('3-we are inside foreach in renderer')
+                   if (x[0] == changes[0][0] && x[1] == changes[0][1]) {
+                  console.log('3-we are inside condition renderer')
+                  x[3] = ''
+                  hot.undoRedo.doneActions.pop()
+                  //shouldBreak=true;
+                }
+                })
+
+      }
       console.log('end afterChange')
       console.log(changes)
       console.log(hot.undoRedo.doneActions)
       console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1])
+      console.log('data22 afterchage : ')
+      changes.forEach((x,y)=>{
+        if(x[1]!==1){
+          data22[x[0]][x[1]]=x[3]
+        }
+      })
+      console.log(data22)
       console.log(' ----------------------------- ---------------------------- ------')
     })
 
