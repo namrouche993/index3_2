@@ -869,6 +869,7 @@
           } else {
             console.log('WE ARE IN THE END OF AFTERVALIDATE , THE ELSE PART : ')
             hot.setDataAtCell(row, prop, '', 'my_source_empty')
+            //hot.setDataAtCell(row, prop, null, 'my_source_else_empty')
             console.log('condition out 11 ')
             console.log(isValid)
             console.log(value !== undefined)
@@ -935,6 +936,7 @@
                 })
       }
       console.log('end afterChange')
+      console.log(changes)
       console.log(hot.undoRedo.doneActions)
       console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1])
       console.log(' ----------------------------- ---------------------------- ------')
