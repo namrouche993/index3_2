@@ -34,6 +34,9 @@
       width: 320px;
       height: 60px;
     }
+    .text-right {
+        text-align: right;
+    }
   </style>
   <button onclick="undohandstonetable()">undo</button>
   <button onclick="redohandstonetable()">redo</button>
@@ -178,7 +181,8 @@
       },
       columns: [
         { type: 'numeric' },
-        {
+        {      
+          className: "htRight htMiddle" ,
           validator: function (oldvalue, callback) {
             const thisrow = this.row;
             const thiscol = this.col;
@@ -498,7 +502,8 @@
                 console.log('WE ARE INSIDE LAST ELSE RENDERER')
               }
             }
-          }
+            cellProperties.className = 'htRight'; 
+              }
         },
         { type: 'numeric' },
         { type: 'numeric' },
@@ -900,6 +905,7 @@
 
     hot.addHook('afterChange', function (changes, src) {
       console.log('start afterChange')
+      console.log('lastelement_supthan1 start : ' + lastelement_supthan1)
       console.log(changes)
       if(hot.undoRedo.isUndoAvailable()){
          hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].src=src;
@@ -907,7 +913,11 @@
       console.log('source : ' + src)
       //console.log(hot.undoRedo.doneActions)
       //console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.toString())
-   
+   if(src=='Autofill.fill' && changes.length>1){
+    lastelement_supthan1=hot.undoRedo.doneActions.length
+   } else if (src=='edit' && changes.length>1){
+    lastelement_supthan1=hot.undoRedo.doneActions.length
+   }
    if(src=='my_source' || src=='my_source_removewhitespacesign'){
     var shouldBreak = false;
     console.log('before entering loop , lastelement_supthan1 is : ' + lastelement_supthan1)
@@ -962,6 +972,7 @@
                 })
 
       }
+      console.log('lastelement_supthan1 end : ' + lastelement_supthan1)
       console.log('end afterChange')
       console.log(changes)
       console.log(hot.undoRedo.doneActions)
