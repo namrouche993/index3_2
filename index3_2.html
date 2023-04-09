@@ -114,7 +114,7 @@
     const hot = new Handsontable(document.getElementById('example'), {
       data: data,
       comments: true,
-      colWidths: [50, 150, 60, 30, 30, 30, 30],
+      colWidths: [50, 150, 60, 30, 60, 30, 30],
       //allowInsertRow: false,
       beforeKeyDown: function (event) {
         // console.log(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length-1))
@@ -923,6 +923,7 @@
       console.log('start afterChange')
       console.log('lastelement_supthan1 start : ' + lastelement_supthan1)
       console.log(changes)
+      console.log(src)
       if(hot.undoRedo.isUndoAvailable()){
          hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].src=src;
        }
@@ -931,7 +932,9 @@
       //console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.toString())
    if(src=='Autofill.fill' && changes.length>1){
     lastelement_supthan1=hot.undoRedo.doneActions.length
-   } else if (src=='edit' && changes.length>1){
+   } else if (src=='edit' && changes.length>1 && changes.every(row => row[3] === null) ){
+    console.log('we are incase afterchange where src==edit and changes.length>1')
+    //alert('edit and changes>1')
     lastelement_supthan1=hot.undoRedo.doneActions.length
    }
    if(src=='my_source' || src=='my_source_removewhitespacesign'){
@@ -969,6 +972,7 @@
                    if (x[0] == changes[0][0] && x[1] == changes[0][1]) {
                   console.log('we are inside condition renderer')
                   x[3] = changes[0][3]
+                  lastelement_supthan1=hot.undoRedo.doneActions.length-2
                   hot.undoRedo.doneActions.pop()
                   shouldBreak=true;
                 }
