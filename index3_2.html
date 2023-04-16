@@ -99,7 +99,12 @@
   }
 
   setValue(value) {
-    const percentValue = value.replace(/%/g, '') + '%'; // remove existing "%" signs and add a new one
+      try {
+        var percentValue = value.replace(/%/g, '') + '%' || ''; // remove existing "%" signs and add a new one
+       } catch (error) {
+        var percentValue = '';
+      }
+    //const percentValue = value.replace(/%/g, '') + '%'; // remove existing "%" signs and add a new one
     super.setValue(percentValue);
   }
   
@@ -260,6 +265,10 @@
             //const value = oldvalue.replace(regexcurrenciesht, '');
             console.log('validator')
             console.log(oldvalue)
+            console.log('validator is :' + oldvalue + 'and then')
+            console.log(oldvalue=='')
+            console.log(oldvalue==='')
+
             if (oldvalue != null) {//|| oldvalue.toString()!==null){
               var value = oldvalue.toString().replace(currencyht, '');
               console.log('new VALuE in afterValidator is : ' + value)
@@ -587,12 +596,12 @@
             console.log('validator in percentage')
             console.log(value)
 
-            if (value == null ||
+            if (value == null || // value == '' ||
               /^[-+]?(\s*\d+(\.\d+)?)\s*%$/.test(value.toString().trim()) || // for example 14.65%  "14.65 %"  
               /^[-+]?(\s*\d+(,\d+)?)\s*%$/.test(value.toString().trim()) || // for example 14,65%   "14,65 %"
               
-              /^[-+]?(\s*\d+(\.\d+)?)\s*$/.test(value.toString().trim()) || // for example 14.65%  "14.65 %"  
-              /^[-+]?(\s*\d+(,\d+)?)\s*$/.test(value.toString().trim()) // for example 14,65%   "14,65 %"
+              /^[-+]?(\s*\d+(\.\d+)?)\s*$/.test(value.toString().trim()) || // for example 14.65  "14.65 "  
+              /^[-+]?(\s*\d+(,\d+)?)\s*$/.test(value.toString().trim()) // for example 14,65   "14,65 "
             ) {
               console.log('it returns true in percentage validator')             
               callback(true)              
@@ -610,15 +619,35 @@
         { type: 'numeric' }
       ],
       afterValidate: function (isValid, oldvalue, row, prop, source) {
-        if(prop==2){
+        const commentsPlugin = hot.getPlugin('comments');
+
+        if(prop==2){ //editable column changeable
           console.log('we are inside aftervalidate prop==2')
-          if(isValid && oldvalue !== undefined && typeof oldvalue === 'string' && (/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) ) ){
-            console.log('we are inside aftervalidate prop==2 first condition ')
-            this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim(), 'my_source_percentage_removewhitespacesbetween');
+          if (isValid && oldvalue == null ) {
+            console.log('we are inside afterValidate percentage value==null')
+            console.log('COULD END HERE')
+            commentsPlugin.removeCommentAtCell(row, prop);
+          } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
+            if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){
+              console.log('we are inside aftervalidate prop==2 first condition ')
+              this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim(), 'my_source_percentage_removewhitespacesbetween');
+              commentsPlugin.removeCommentAtCell(row, prop);
+            } else {
+              console.log('do nothing could end here')
+              commentsPlugin.removeCommentAtCell(row, prop);
+            } 
+          } else if ( oldvalue =='') {
+            console.log('do nothing could end here')
           } else {
-            console.log('do nothing percentage validator')
+            commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+            this.setDataAtCell(row, prop,'','my_source_percentage')
+
+            console.log('do nothing could end here')
+            console.log('removes')
           }
-        } else if (prop == 1) {
+
+
+        } else if (prop == 1) {  //editable column changeable
           console.log('value : aftervalidate')
           console.log(oldvalue)
           console.log(typeof oldvalue)
@@ -642,7 +671,6 @@
           console.log(value)
           console.log(typeof value)
           console.log(/^\s*[-+]?(\s*\d+)\s*$/.test(value))
-          const commentsPlugin = hot.getPlugin('comments');
 
           if (isValid && value == null) {
             console.log('we are inside afterValidate value==null')
@@ -962,6 +990,9 @@
           } else if (value == '') {
             console.log('do nothing , we are in last invalid')
             console.log('COULD END HERE')
+            console.log(isValid)
+            console.log(source)
+
             //commentsPlugin.removeCommentAtCell(row,prop); //aa
 
           } else if (isValid == false) {
