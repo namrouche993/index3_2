@@ -57,10 +57,16 @@
 
     const currencyht = '$' //'DA'
     const currencyht_toshow = '' // ' $' // ' DA'
+    const afterdigit = 0;
+    const smallafterdigit = Number(`1e-${afterdigit}`)  // like 0.01 with afterdigit2
+    const afterdigitsmallnb = 17;
+    const bignb = 1e17;
+    const smallnb = 1e-17;
+
     //const currenciesht = ['$','USD','Euro',"£"];
     //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
-    const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+    const userLocale = 'fr'//Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
 
     // Create options for toLocaleString() based on the user's locale
     const options = { style: 'decimal' };
@@ -82,6 +88,53 @@
       ' et thousand est :' + thousandSeparator0 +
       'et le nombre devients :' + formattedNumber)
 
+
+      class PercentageEditor extends Handsontable.editors.TextEditor {
+  open() {
+    super.open();
+    const value = this.getValue();
+    if (!value.endsWith('%')) { // check if the value doesn't already end with a percent sign
+      this.TEXTAREA.value += '%'; // add a "%" sign to the initial value
+    }
+  }
+
+  setValue(value) {
+    const percentValue = value.replace(/%/g, '') + '%'; // remove existing "%" signs and add a new one
+    super.setValue(percentValue);
+  }
+  
+
+ /* onBeforeKeyDown(event) {
+    const value = this.getValue();
+    const key = event.keyCode || event.which;
+
+    if (key >= 48 && key <= 57) { // numeric keys
+      const percentValue = value.replace(/%/g, '') + String.fromCharCode(key) + '%';
+      this.setValue(percentValue);
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    } else if (key === 8) { // backspace key
+      const percentValue = value.replace(/%$/, '');
+      this.setValue(percentValue);
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
+  }
+*/
+  close() {
+    super.close();
+    const value = this.getValue();
+    if (value.endsWith('%')) { // check if the value ends with a percent sign
+      this.TEXTAREA.value = value.slice(0, -1); // remove the last character (the percent sign)
+    }
+  }
+
+  focus() {
+    super.focus();
+    const length = this.TEXTAREA.value.length;
+    this.TEXTAREA.setSelectionRange(0, length - 1); // set the cursor position at the end of the value
+  }
+}
     const data = [
       [1, '', '', 'aa', '', '', 'usaa'],
       [1, '', '', 'aa', '', '', 'usaa'],
@@ -127,9 +180,27 @@
         if (decimalSeparator == ',') {
           if (event.key === '.') {
             //console.log(event)
+            var selectedCell = this.getSelectedLast(); // Get selected cell object
+            //var selectedRow = selectedCell[0][0]; // Get selected row index
+            var selectedCol = selectedCell[1]; // Get selected column index
+            console.log(selectedCell)
+            //console.log(selectedCell[1])
+            //console.log(selectedCol)
+
+            console.log('selectedCol : '  + selectedCol)
+            if(selectedCol==2){
+              console.log('we are inside selectedCol == 2')
+              var cellpercent = this.getActiveEditor().TEXTAREA; // Get the DOM element representing the cell editor
+              this.getActiveEditor().setValue(this.getActiveEditor().getValue() + ',');
+              cellpercent.setSelectionRange(cellpercent.value.length-1, cellpercent.value.length-1); // Set the new cursor position
+              event.stopImmediatePropagation();
+              event.preventDefault();
+            } else {
             this.getActiveEditor().setValue(this.getActiveEditor().getValue() + ',');
             event.stopImmediatePropagation();
             event.preventDefault();
+          
+          }
           }
           if (event.key === '.' && event.keyCode == 190) {
             this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0, this.getActiveEditor().getValue().length - 1) + '.');
@@ -260,8 +331,8 @@
                 console.log(value)
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 const value_without_whitespace = value.replace(/^\s*([-+])?\s*(\d+)\s*$/, '$1$2');
                 const formattedNumber = formatter.format(Number(value_without_whitespace));
@@ -274,8 +345,8 @@
                 console.log(value)
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 const value_without_whitespace = value.replace(/^\s*([-+])?\s*(\d+)\s*$/, '$1$2');
                 const formattedNumber = formatter.format(Number(value_without_whitespace));
@@ -293,13 +364,13 @@
                 //const userLocale = Intl.NumberFormat().resolvedOptions().locale || 'fr' || 'en'
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 }); //('en')
-                if (Math.abs(Number(value_without_whitespace2)) < 0.01) {
+                if (Math.abs(Number(value_without_whitespace2)) < smallafterdigit) {
                   const formatter22 = new Intl.NumberFormat(userLocale, {
                     style: 'decimal',
-                    maximumFractionDigits: 20,
+                    maximumFractionDigits: afterdigitsmallnb,
                   });
                   const formattedNumber22 = formatter22.format(value_without_whitespace2);
                   Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -324,8 +395,8 @@
                 //const userLocale = Intl.NumberFormat().resolvedOptions().locale || 'fr' || 'en'
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 const value_without_whitespace3 = value.replace(/^\s*([-+])\s*(\d+)/, '$1$2');
 
@@ -336,12 +407,12 @@
                 //console.log(value2)
                 console.log(Number(value_without_whitespace32))
 
-                if (Math.abs(Number(value_without_whitespace32)) < 0.01) {
+                if (Math.abs(Number(value_without_whitespace32)) < smallafterdigit) {
                   console.log('ifnumbervalue2222<0.01 comma')
                   console.log(Number(value_without_whitespace32))
                   const formatter33 = new Intl.NumberFormat(userLocale, {
                     style: 'decimal',
-                    maximumFractionDigits: 20,
+                    maximumFractionDigits: afterdigitsmallnb,
                   });
                   const formattedNumber33 = formatter33.format(value_without_whitespace32);
                   Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -365,8 +436,8 @@
 
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 const value3 = value.replace(/\s/g, '').replace(',', '.');
                 const formattedNumber = formatter.format(Number(value3).toFixed(2));
@@ -381,8 +452,8 @@
                 console.log('// 1,234,567.89 AMERICAN NUMERIC FORMAT WITH THOUSAND SEPARATOR')
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 console.log('value in rendere 4 ')
                 console.log(value)
@@ -420,8 +491,8 @@
                 console.log('// 1.234.567,89 EUROPEAN NUMERIC FORMAT WITH THOUSAND SEPARATOR as dot')
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 const value_without_whitespace4 = value.replace(/^\s*([-+])\s*(\d+)/, '$1$2')
                 const value_without_whitespace45 = value_without_whitespace4.trim().replace(/\./g, '').replace(',', '.')
@@ -439,8 +510,8 @@
 
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 const value6 = value.replace(/\s/g, '');
                 const formattedNumber = formatter.format(Number(value6).toFixed(2));
@@ -454,8 +525,8 @@
                 console.log('// 1.6e6 1.60E+04  -13.65E4  - 12.3E+03  scientific notation with E sign');
                 const formatter = new Intl.NumberFormat(userLocale, {
                   style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: afterdigit,
+                  maximumFractionDigits: afterdigit,
                 });
                 const value7 = parseFloat(value.replace(/\s/g, ''));
                 const formattedNumber = formatter.format(Number(value7));
@@ -473,12 +544,12 @@
                 console.log('value8 : ')
                 console.log(value8)
 
-                if (Math.abs(Number(value8)) < 0.01) {
+                if (Math.abs(Number(value8)) < smallafterdigit) {
                   console.log('ifnumbervalue2222<0.01 comma sceintific number')
                   console.log(Number(value8))
                   const formatter88 = new Intl.NumberFormat(userLocale, {
                     style: 'decimal',
-                    maximumFractionDigits: 20,
+                    maximumFractionDigits: afterdigitsmallnb,
                   });
                   const formattedNumber88 = formatter88.format(value8);
                   Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -488,8 +559,8 @@
                 } else {
                   const formatter = new Intl.NumberFormat(userLocale, {
                     style: 'decimal',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    minimumFractionDigits: afterdigit,
+                    maximumFractionDigits: afterdigit,
                   });
                   const formattedNumber = formatter.format(Number(value8));
                   Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -508,6 +579,7 @@
         // percentage part : 
         { 
           className: "htRight htMiddle" ,
+          editor: PercentageEditor,
           validator: function (value, callback) {
             const thisrow = this.row;
             const thiscol = this.col;
@@ -539,7 +611,9 @@
       ],
       afterValidate: function (isValid, oldvalue, row, prop, source) {
         if(prop==2){
+          console.log('we are inside aftervalidate prop==2')
           if(isValid && oldvalue !== undefined && typeof oldvalue === 'string' && (/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) ) ){
+            console.log('we are inside aftervalidate prop==2 first condition ')
             this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim(), 'my_source_percentage_removewhitespacesbetween');
           } else {
             console.log('do nothing percentage validator')
@@ -581,7 +655,7 @@
               console.log('we will call my_source_removewhitespacesign')
               this.setDataAtCell(row, prop, value.replace(/^\s*([-+])?\s*(\d+)\s*$/, '$1$2'), 'my_source_removewhitespacesign');
             } else {
-              if (Math.abs(Number(value.trim())) < 1e17) {
+              if (Math.abs(Number(value.trim())) < bignb) {
                 if (decimalSeparator == '.') {
                   console.log('condition afterValidate whole number .')
                   console.log('do nothing')
@@ -612,7 +686,7 @@
                 console.log('condition 3 ta3 do nothing')
                 console.log('//1234567.89 (BY DEFAULT VALUE) AMERICAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR')
                 console.log('COULD END HERE')
-                if (Math.abs(Number(value.trim())) < 1e17) {
+                if (Math.abs(Number(value.trim())) < bignb) {
                   commentsPlugin.removeCommentAtCell(row, prop);
                 } else {
                   commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
@@ -677,7 +751,7 @@
                 //this.setDataAtCell(row, prop, value.trim());
                 console.log('COULD END HERE')
 
-                if (Math.abs(Number(value.trim().replace(',', '.'))) < 1e17) {
+                if (Math.abs(Number(value.trim().replace(',', '.'))) < bignb) {
                   commentsPlugin.removeCommentAtCell(row, prop);
                 } else {
                   commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
@@ -768,12 +842,12 @@
               commentsPlugin.removeCommentAtCell(row, prop);
 
             } else {
-              if (Math.abs(Number(value)) > Number(1e17) || Math.abs(Number(value)) < Number(1e-17)) {
+              if (Math.abs(Number(value)) > Number(bignb) || Math.abs(Number(value)) < Number(smallnb)) {
                 commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
                 this.setDataAtCell(row, prop, '', 'my_source_empty');
               } else {
-                if (Math.abs(Number(value)) < 0.01) {
-                  console.log('we are in the case when integer scientific notation less than 0.01')
+                if (Math.abs(Number(value)) < smallafterdigit) {
+                  console.log('we are in the case when integer scientific notation less than smallafterdigit')
                   if (decimalSeparator == '.') {
                     this.setDataAtCell(row, prop, Number(value).toFixed(Math.abs(BigNumber(value).e)).toString(), 'my_source');
                     commentsPlugin.removeCommentAtCell(row, prop);
@@ -805,11 +879,11 @@
             // 1.6e6 1.60E+04  -13.65E4  - 12.3E+03  scientific notation with E sign
             console.log('condition out 9')
             console.log(value)
-            if (Math.abs(Number(value)) > Number(1e17) || Math.abs(Number(value)) < Number(1e-17)) {
+            if (Math.abs(Number(value)) > Number(bignb) || Math.abs(Number(value)) < Number(smallnb)) {
               this.setDataAtCell(row, prop, '', 'my_source_empty');
               commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
             } else {
-              if (Math.abs(Number(value)) < 0.01) {
+              if (Math.abs(Number(value)) < smallafterdigit) {
                 if (decimalSeparator == '.') {
                   console.log('scientific format float mantissa and decimal separator is dot/dot and less than 0.01')
                   this.setDataAtCell(row, prop, Number(value).toFixed(Math.abs(BigNumber(value).e)).toString(), 'my_source');
@@ -849,11 +923,11 @@
             const value1010 = value.replace(',', '.').replace(/\s/g, '')
             console.log('value1010 : ')
             console.log(value1010)
-            if (Math.abs(Number(value1010)) > Number(1e17) || Math.abs(Number(value1010)) < Number(1e-17)) {
+            if (Math.abs(Number(value1010)) > Number(bignb) || Math.abs(Number(value1010)) < Number(smallnb)) {
               this.setDataAtCell(row, prop, '', 'my_source_empty');
               commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
             } else {
-              if (Math.abs(Number(value1010)) < 0.01) {
+              if (Math.abs(Number(value1010)) < smallafterdigit) {
                 if (decimalSeparator == '.') {
                   console.log('scientific format float mantissa and decimal separator is comma/dot and less than 0.01')
                   commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
