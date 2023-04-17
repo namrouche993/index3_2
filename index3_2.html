@@ -37,6 +37,11 @@
     .text-right {
         text-align: right;
     }
+
+    /* .htRight {
+        text-align: right;
+      } */
+
   </style>
   <button onclick="undohandstonetable()">undo</button>
   <button onclick="redohandstonetable()">redo</button>
@@ -323,7 +328,7 @@
         //    console.log('****----****')
             //console.log(col)
             //console.log(prop)
-            if (col == 1) {
+            if (col == 1) { //editable column changeable , and it can be removed because renderer is inside column
 
               //const value = oldvalue.replace(regexcurrenciesht, '');
               if (oldvalue !== null) {
@@ -610,8 +615,11 @@
               callback(false);
             }
           },
-         // renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) {
-         // }
+          renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) {
+            td.innerHTML=oldvalue;
+            cellProperties.className = 'htRight'; 
+            td.style.textAlign = 'right';
+          }
         },
         { type: 'numeric' },
         { type: 'numeric' },
@@ -622,25 +630,90 @@
         const commentsPlugin = hot.getPlugin('comments');
 
         if(prop==2){ //editable column changeable
+        console.log(isValid)
+        console.log(oldvalue)
+        console.log(source)
           console.log('we are inside aftervalidate prop==2')
           if (isValid && oldvalue == null ) {
+            console.log('condition percentage 1')
             console.log('we are inside afterValidate percentage value==null')
             console.log('COULD END HERE')
             commentsPlugin.removeCommentAtCell(row, prop);
           } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
-            if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){
-              console.log('we are inside aftervalidate prop==2 first condition ')
-              this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim(), 'my_source_percentage_removewhitespacesbetween');
-              commentsPlugin.removeCommentAtCell(row, prop);
-            } else {
-              console.log('do nothing could end here')
-              commentsPlugin.removeCommentAtCell(row, prop);
-            } 
-          } else if ( oldvalue =='') {
+            console.log('condition percentage 2')
+            if( /^[-+]?(\s*\d+(\.\d+)?)\s*$/.test(oldvalue.toString().trim())){
+              console.log('condition percentage 2.1')
+              if(decimalSeparator=='.'){    
+                console.log('condition percentage 2.1.1')            
+                  console.log(' "+ 15.63" or "12.36" or "19"  and without % , so we add it and we remove whitespaces')
+                  this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%')
+                  commentsPlugin.removeCommentAtCell(row, prop);
+
+              } else if (decimalSeparator==','){
+                console.log('condition percentage 2.1.2')            
+                  console.log('may cause problem')
+                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virguale à la place du point)");
+                  this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
+              }
+            } else if(/^[-+]?(\s*\d+(,\d+)?)\s*$/.test(oldvalue.toString().trim())){
+              console.log('condition percentage 2.2')
+              if(decimalSeparator=='.'){
+                console.log('condition percentage 2.2.1')
+                  console.log('may cause problem')
+                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
+              } else if (decimalSeparator==','){
+                console.log('condition percentage 2.2.2')
+                console.log(' "+ 15,63" or "12,36" or "19"  and without % , so we add it and we remove whitespaces')
+                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%')
+                commentsPlugin.removeCommentAtCell(row, prop);
+
+              }
+            } else if (/^[-+]?(\s*\d+(\.\d+)?)\s*%$/.test(oldvalue.toString().trim())){
+              console.log('condition percentage 2.3')
+              if(decimalSeparator=='.'){
+                console.log('condition percentage 2.3.1')
+                if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){ 
+                  console.log('condition percentage 2.3.1.1')
+                  this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim())
+                  commentsPlugin.removeCommentAtCell(row, prop);
+                } else {
+                  console.log('condition percentage 2.3.1.2')
+                  console.log('could end here')
+                  commentsPlugin.removeCommentAtCell(row, prop);
+                }
+                } else if(decimalSeparator==','){
+                  console.log('condition percentage 2.3.2')
+                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virgule à la place du point)");
+                  this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
+                }
+              } else if (/^[-+]?(\s*\d+(,\d+)?)\s*%$/.test(oldvalue.toString().trim())){
+                console.log('condition percentage 2.4')
+                console.log('aa')
+                if(decimalSeparator=='.'){
+                  console.log('condition percentage 2.4.1')
+                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
+                } else if (decimalSeparator==','){
+                  console.log('condition percentage 2.4.2')
+                    if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){ 
+                      console.log('condition percentage 2.4.2.1')
+                       this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim())
+                       commentsPlugin.removeCommentAtCell(row, prop);
+                     } else {
+                      console.log('condition percentage 2.4.2.2')
+                          console.log('could end here')
+                          commentsPlugin.removeCommentAtCell(row, prop);
+                   }  
+                }
+           }
+           } else if ( oldvalue =='') {
+            console.log('condition percentage 3')
             console.log('do nothing could end here')
-          } else {
+            } else {
+              console.log('condition percentage 4')
             commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
-            this.setDataAtCell(row, prop,'','my_source_percentage')
+            this.setDataAtCell(row, prop,'','my_source_empty_percentage')
 
             console.log('do nothing could end here')
             console.log('removes')
@@ -736,6 +809,7 @@
                   console.log('condition 4.2')
                   //alert('voulez vous dire que 3.16 egale a 3,14 ? si oui changer svp ')
                   commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value).toLocaleString(userLocale) + " est correct");
+                  commentsPlugin.showAtCell(row, prop);
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
 
