@@ -68,6 +68,9 @@
     const bignb = 1e17;
     const smallnb = 1e-17;
 
+    const bignbpercent = 1e9;
+    const smallnbpercent = 1e-9;
+
     //const currenciesht = ['$','USD','Euro',"£"];
     //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
@@ -640,8 +643,33 @@
             console.log('COULD END HERE')
             commentsPlugin.removeCommentAtCell(row, prop);
           } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
-            console.log('condition percentage 2')
-            if( /^[-+]?(\s*\d+(\.\d+)?)\s*$/.test(oldvalue.toString().trim())){
+            if(Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))>bignbpercent || Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))<smallnbpercent){
+              commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+              this.setDataAtCell(row, prop,'','my_source_empty_percentage')
+            } else if(/^[-+]?(\s*\d+)\s*%$/.test(oldvalue.toString().trim())){
+              console.log('condition percentage 1,5')
+              if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){ 
+                console.log('condition percentage 1,5.1')
+                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim())
+                commentsPlugin.removeCommentAtCell(row, prop);
+              } else {
+                console.log('condition percentage 1,5.2');
+                console.log('could end here');
+                commentsPlugin.removeCommentAtCell(row, prop);
+              }
+            } else if (/^[-+]?\s*\d+\s*$/.test(oldvalue.toString().trim())){
+              console.log('condition percentage 1,7')
+              if((/^[-+]\s/.test(oldvalue.trim()) )){ 
+                console.log('condition percentage 1,7.1')
+                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%')
+                commentsPlugin.removeCommentAtCell(row, prop);
+              } else {
+                console.log('condition percentage 1,7.2');
+                console.log('could end here');
+                commentsPlugin.removeCommentAtCell(row, prop);
+              }
+
+            } else if( /^[-+]?(\s*\d+(\.\d+)?)\s*$/.test(oldvalue.toString().trim())){
               console.log('condition percentage 2.1')
               if(decimalSeparator=='.'){    
                 console.log('condition percentage 2.1.1')            
@@ -718,7 +746,7 @@
             console.log('do nothing could end here')
             console.log('removes')
           }
-
+          // ###################################################################    #########################################################################
 
         } else if (prop == 1) {  //editable column changeable
           console.log('value : aftervalidate')
