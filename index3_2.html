@@ -62,14 +62,20 @@
 
     const currencyht = '$' //'DA'
     const currencyht_toshow = '' // ' $' // ' DA'
-    const afterdigit = 0;
+    const afterdigit = 2;
     const smallafterdigit = Number(`1e-${afterdigit}`)  // like 0.01 with afterdigit2
     const afterdigitsmallnb = 17;
     const bignb = 1e17;
     const smallnb = 1e-17;
 
+
+    const afterdigit_percentage = 2;
+    const smallafterdigit_percentage = Number(`1e-${afterdigit_percentage}`)  // like 0.01 with afterdigit2
+    const afterdigitsmallnb_percentage = 17;
     const bignbpercent = 1e9;
     const smallnbpercent = 1e-9;
+
+    const decimalnumbers_toshow_withoutrenderer_inpercentage=4;
 
     //const currenciesht = ['$','USD','Euro',"£"];
     //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
@@ -619,9 +625,59 @@
             }
           },
           renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) {
-            td.innerHTML=oldvalue;
+            //console.log('renderer percentage start')
+
+            if (oldvalue==null){
+            //console.log('renderer percentage 0 part')
+            td.innerHTML='';
+            data22[row][col] = td.innerHTML;      
             cellProperties.className = 'htRight'; 
             td.style.textAlign = 'right';
+              
+            } else if( //oldvalue == null || // value == '' ||
+              /^[-+]?(\s*\d+(\.\d+)?)\s*%$/.test(oldvalue.toString().trim()) || // for example 14.65%  "14.65 %"  
+              /^[-+]?(\s*\d+(,\d+)?)\s*%$/.test(oldvalue.toString().trim()) || // for example 14,65%   "14,65 %"
+              
+              /^[-+]?(\s*\d+(\.\d+)?)\s*$/.test(oldvalue.toString().trim()) || // for example 14.65  "14.65 "  
+              /^[-+]?(\s*\d+(,\d+)?)\s*$/.test(oldvalue.toString().trim()) // for example 14,65   "14,65 "
+            ) {
+              //console.log('renderer percentage 1part')
+                 const value_percentage_renderer = parseFloat(oldvalue.toString().replace(',', '.').replace('%','').replace(/\s/g, ''));
+                 
+                 if(value_percentage_renderer<smallafterdigit_percentage){
+                  const formatter88_percentage = new Intl.NumberFormat(userLocale, {
+                    style: 'decimal',
+                    maximumFractionDigits: afterdigitsmallnb_percentage,
+                  });
+                  const formattedNumber88_percentage = formatter88_percentage.format(value_percentage_renderer);
+                  Handsontable.renderers.TextRenderer.apply(this, arguments);
+                  td.innerHTML = formattedNumber88_percentage+'%';
+                  data22[row][col] = td.innerHTML+'%'
+
+                 } else {
+                 const formatter_percentage = new Intl.NumberFormat(userLocale, {
+                    style: 'decimal',
+                    minimumFractionDigits: afterdigit_percentage,
+                    maximumFractionDigits: afterdigit_percentage,
+                  });
+                  const formattedNumber_percentage = formatter_percentage.format(Number(value_percentage_renderer));
+                  Handsontable.renderers.TextRenderer.apply(this, arguments);
+                  td.innerHTML = formattedNumber_percentage+'%';
+                //  console.log(td.innerHTML)
+                  data22[row][col] = td.innerHTML+'%';      
+                 //td.innerHTML=oldvalue;
+                 cellProperties.className = 'htRight'; 
+                 td.style.textAlign = 'right';
+                 }
+          }else {
+            //console.log('renderer percentage 02 part')
+            td.innerHTML='';
+            data22[row][col] = td.innerHTML;      
+            cellProperties.className = 'htRight'; 
+            td.style.textAlign = 'right';
+          }
+          //console.log('renderer percentage end')
+
           }
         },
         { type: 'numeric' },
@@ -644,13 +700,15 @@
             commentsPlugin.removeCommentAtCell(row, prop);
           } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
             if(Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))>bignbpercent || Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))<smallnbpercent){
+              console.log('if the number is too big or small')
               commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
               this.setDataAtCell(row, prop,'','my_source_empty_percentage')
             } else if(/^[-+]?(\s*\d+)\s*%$/.test(oldvalue.toString().trim())){
+              console.log('if the value is integer and with %')
               console.log('condition percentage 1,5')
               if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){ 
                 console.log('condition percentage 1,5.1')
-                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim())
+                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim(),'my_source_removewhitespacesign_percentage')
                 commentsPlugin.removeCommentAtCell(row, prop);
               } else {
                 console.log('condition percentage 1,5.2');
@@ -658,10 +716,11 @@
                 commentsPlugin.removeCommentAtCell(row, prop);
               }
             } else if (/^[-+]?\s*\d+\s*$/.test(oldvalue.toString().trim())){
+              console.log('if the value is integer and without %')
               console.log('condition percentage 1,7')
               if((/^[-+]\s/.test(oldvalue.trim()) )){ 
                 console.log('condition percentage 1,7.1')
-                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%')
+                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%','my_source_removewhitespacesign_percentage')
                 commentsPlugin.removeCommentAtCell(row, prop);
               } else {
                 console.log('condition percentage 1,7.2');
@@ -674,7 +733,9 @@
               if(decimalSeparator=='.'){    
                 console.log('condition percentage 2.1.1')            
                   console.log(' "+ 15.63" or "12.36" or "19"  and without % , so we add it and we remove whitespaces')
-                  this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%')
+                  //this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%')
+                  this.setDataAtCell(row, prop, Number(oldvalue.replace(/\s+/g, '').trim()).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "")+'%','my_source_removewhitespacesign_percentage')
+
                   commentsPlugin.removeCommentAtCell(row, prop);
 
               } else if (decimalSeparator==','){
@@ -693,7 +754,7 @@
               } else if (decimalSeparator==','){
                 console.log('condition percentage 2.2.2')
                 console.log(' "+ 15,63" or "12,36" or "19"  and without % , so we add it and we remove whitespaces')
-                this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim()+'%')
+                this.setDataAtCell(row, prop, Number(oldvalue.replace(/\s+/g, '').trim().replace(',','.')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "").replace('.',',')+'%','my_source_removewhitespacesign_percentage')
                 commentsPlugin.removeCommentAtCell(row, prop);
 
               }
@@ -703,12 +764,18 @@
                 console.log('condition percentage 2.3.1')
                 if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){ 
                   console.log('condition percentage 2.3.1.1')
-                  this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim())
+                  this.setDataAtCell(row, prop, Number(oldvalue.replace(/\s+/g, '').trim().replace('%','')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "")+'%','my_source_removewhitespacesign_percentage' )
                   commentsPlugin.removeCommentAtCell(row, prop);
-                } else {
+                 } else {
+                  if( (oldvalue.toString().replace('%','').split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_inpercentage ){
+                    this.setDataAtCell(row, prop, Number(oldvalue.toString().replace('%','')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "")+'%','my_source_removegreaterdecimalnumbers_percentage' )
+                    commentsPlugin.removeCommentAtCell(row, prop);
+
+                  } else {
                   console.log('condition percentage 2.3.1.2')
                   console.log('could end here')
                   commentsPlugin.removeCommentAtCell(row, prop);
+                  }
                 }
                 } else if(decimalSeparator==','){
                   console.log('condition percentage 2.3.2')
@@ -726,21 +793,41 @@
                   console.log('condition percentage 2.4.2')
                     if((/\s+%$/.test(oldvalue.trim()) || /^[-+]\s/.test(oldvalue.trim()) )){ 
                       console.log('condition percentage 2.4.2.1')
-                       this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim())
+                       this.setDataAtCell(row, prop, Number(oldvalue.replace(/\s+/g, '').trim().replace('%','').replace(',','.')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "").replace('.',',')+'%','my_source_removewhitespacesign_percentage' )
                        commentsPlugin.removeCommentAtCell(row, prop);
                      } else {
-                      console.log('condition percentage 2.4.2.2')
-                          console.log('could end here')
-                          commentsPlugin.removeCommentAtCell(row, prop);
+                       if( (oldvalue.toString().replace('%','').replace(',','.').split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_inpercentage ){
+                            console.log('cons1')
+                            //console.log(oldvalue)
+                            //console.log(Number(oldvalue.toString().replace('%','').replace(',','.'))<0 )
+                            if( Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.'))) < smallafterdigit_percentage ){
+                              console.log('cons1.1')
+                              this.setDataAtCell(row, prop, Number(oldvalue.toString().trim().replace('%','').replace(',','.')).toFixed(afterdigitsmallnb_percentage).replace(/\.?0+$/, "").replace('.',',')+'%','my_source_removegreaterdecimalnumbers_percentage' )
+                              commentsPlugin.removeCommentAtCell(row, prop);
+                              } else {
+                                console.log('cons1.2')
+                                this.setDataAtCell(row, prop, Number(oldvalue.toString().trim().replace('%','').replace(',','.')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "").replace('.',',')+'%','my_source_removegreaterdecimalnumbers_percentage' )
+                                commentsPlugin.removeCommentAtCell(row, prop);
+                              }
+
+                       } else {
+                            console.log('condition percentage 2.4.2.2')
+                            console.log('could end here')
+                            commentsPlugin.removeCommentAtCell(row, prop);
+                       }
+
                    }  
                 }
            }
+           } else if (oldvalue=='%'){
+            //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            this.setDataAtCell(row, prop,'','my_source_empty_percentage')
            } else if ( oldvalue =='') {
             console.log('condition percentage 3')
             console.log('do nothing could end here')
             } else {
               console.log('condition percentage 4')
-            commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+            commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
             this.setDataAtCell(row, prop,'','my_source_empty_percentage')
 
             console.log('do nothing could end here')
