@@ -37,6 +37,10 @@
     .text-right {
         text-align: right;
     }
+    .handsontable{
+     font-size: 12px;
+     font-family: Roboto;
+   }
 
     /* .htRight {
         text-align: right;
@@ -62,6 +66,7 @@
 
     const currencyht = '$' //'DA'
     const currencyht_toshow = '' // ' $' // ' DA'
+
     const afterdigit = 2;
     const smallafterdigit = Number(`1e-${afterdigit}`)  // like 0.01 with afterdigit2
     const afterdigitsmallnb = 17;
@@ -69,13 +74,12 @@
     const smallnb = 1e-17;
 
 
-    const afterdigit_percentage = 2;
-    const smallafterdigit_percentage = Number(`1e-${afterdigit_percentage}`)  // like 0.01 with afterdigit2
-    const afterdigitsmallnb_percentage = 17;
-    const bignbpercent = 1e9;
-    const smallnbpercent = 1e-9;
-
-    const decimalnumbers_toshow_withoutrenderer_inpercentage=4;
+    const afterdigit_percentage = 2; //  how many decimal numbers will be displayed in renderer 
+    const smallafterdigit_percentage = Number(`1e-${afterdigit_percentage}`)  // like 0.01 with afterdigit2 ,  even though the value is small than this number , so displays it in renderer
+    const afterdigitsmallnb_percentage = 10; // even though the number is too small than the previous number (0.01) and it small than this number, so don't display it , and instead of it , display 0 because of maximumFractionDigits=this number
+    const bignbpercent = 1e10;
+    const smallnbpercent = 1e-10;
+    const decimalnumbers_toshow_withoutrenderer_inpercentage=10;
 
     //const currenciesht = ['$','USD','Euro',"£"];
     //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
@@ -186,7 +190,7 @@
     const hot = new Handsontable(document.getElementById('example'), {
       data: data,
       comments: true,
-      colWidths: [50, 150, 60, 30, 60, 30, 30],
+      colWidths: [50, 150, 120, 30, 60, 30, 30],
       //allowInsertRow: false,
       beforeKeyDown: function (event) {
         // console.log(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length-1))
@@ -641,10 +645,11 @@
               /^[-+]?(\s*\d+(\.\d+)?)\s*$/.test(oldvalue.toString().trim()) || // for example 14.65  "14.65 "  
               /^[-+]?(\s*\d+(,\d+)?)\s*$/.test(oldvalue.toString().trim()) // for example 14,65   "14,65 "
             ) {
-              //console.log('renderer percentage 1part')
+                 console.log('renderer percentage 1part')
                  const value_percentage_renderer = parseFloat(oldvalue.toString().replace(',', '.').replace('%','').replace(/\s/g, ''));
-                 
-                 if(value_percentage_renderer<smallafterdigit_percentage){
+                 console.log(oldvalue)
+                 console.log(value_percentage_renderer)
+                 if(Math.abs(value_percentage_renderer)<smallafterdigit_percentage){
                   const formatter88_percentage = new Intl.NumberFormat(userLocale, {
                     style: 'decimal',
                     maximumFractionDigits: afterdigitsmallnb_percentage,
@@ -660,7 +665,12 @@
                     minimumFractionDigits: afterdigit_percentage,
                     maximumFractionDigits: afterdigit_percentage,
                   });
+                  console.log('renderer 2condition : ')
+                  console.log(oldvalue)
+                  console.log(value_percentage_renderer)
                   const formattedNumber_percentage = formatter_percentage.format(Number(value_percentage_renderer));
+                  console.log(formattedNumber_percentage)
+
                   Handsontable.renderers.TextRenderer.apply(this, arguments);
                   td.innerHTML = formattedNumber_percentage+'%';
                 //  console.log(td.innerHTML)
@@ -699,10 +709,19 @@
             console.log('COULD END HERE')
             commentsPlugin.removeCommentAtCell(row, prop);
           } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
-            if(Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))>bignbpercent || Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))<smallnbpercent){
-              console.log('if the number is too big or small')
+            if(Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))>bignbpercent){
+              console.log('condition percentage 1,2')
+              console.log('if the number is too big')
               commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
               this.setDataAtCell(row, prop,'','my_source_empty_percentage')
+            } else if (Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim())  ) <smallnbpercent) {
+              console.log('condition percentage 1,35')
+              console.log('if the number is too small')
+              //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+              //this.setDataAtCell(row, prop,0,'my_source_empty_percentage')
+              this.setDataAtCell(row, prop,0,'my_source_convertitto_0')
+
+              // to view later  
             } else if(/^[-+]?(\s*\d+)\s*%$/.test(oldvalue.toString().trim())){
               console.log('if the value is integer and with %')
               console.log('condition percentage 1,5')
@@ -710,7 +729,7 @@
                 console.log('condition percentage 1,5.1')
                 this.setDataAtCell(row, prop, oldvalue.replace(/\s+/g, '').trim(),'my_source_removewhitespacesign_percentage')
                 commentsPlugin.removeCommentAtCell(row, prop);
-              } else {
+              } else {  
                 console.log('condition percentage 1,5.2');
                 console.log('could end here');
                 commentsPlugin.removeCommentAtCell(row, prop);
@@ -768,8 +787,14 @@
                   commentsPlugin.removeCommentAtCell(row, prop);
                  } else {
                   if( (oldvalue.toString().replace('%','').split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_inpercentage ){
+                    console.log('condition percentage 2.3.1.1.5')
+                    if( Math.abs(Number(oldvalue.toString().replace('%','')))<smallafterdigit_percentage ){ // smallafterdigit_percentage like 0.01 in case of 2
+                      this.setDataAtCell(row, prop,0,'my_source_convertitto_0');
+                      commentsPlugin.removeCommentAtCell(row, prop);
+                    } else {                  
                     this.setDataAtCell(row, prop, Number(oldvalue.toString().replace('%','')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "")+'%','my_source_removegreaterdecimalnumbers_percentage' )
-                    commentsPlugin.removeCommentAtCell(row, prop);
+                    commentsPlugin.removeCommentAtCell(row, prop); 
+                  }
 
                   } else {
                   console.log('condition percentage 2.3.1.2')
@@ -797,18 +822,23 @@
                        commentsPlugin.removeCommentAtCell(row, prop);
                      } else {
                        if( (oldvalue.toString().replace('%','').replace(',','.').split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_inpercentage ){
-                            console.log('cons1')
-                            //console.log(oldvalue)
+                          console.log('condition percentage 2.4.2.1.5')
+                             //console.log(oldvalue)
                             //console.log(Number(oldvalue.toString().replace('%','').replace(',','.'))<0 )
-                            if( Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.'))) < smallafterdigit_percentage ){
-                              console.log('cons1.1')
-                              this.setDataAtCell(row, prop, Number(oldvalue.toString().trim().replace('%','').replace(',','.')).toFixed(afterdigitsmallnb_percentage).replace(/\.?0+$/, "").replace('.',',')+'%','my_source_removegreaterdecimalnumbers_percentage' )
+                            //if( Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.'))) < smallafterdigit_percentage ){
+                            //  console.log('cons1.1')
+                            //  this.setDataAtCell(row, prop, Number(oldvalue.toString().trim().replace('%','').replace(',','.')).toFixed(afterdigitsmallnb_percentage).replace(/\.?0+$/, "").replace('.',',')+'%','my_source_removegreaterdecimalnumbers_percentage' )
+                            //  commentsPlugin.removeCommentAtCell(row, prop);
+                           //   } else {
+                            if( Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.') ))<smallafterdigit_percentage ){ // smallafterdigit_percentage like 0.01 in case of 2
+                              this.setDataAtCell(row, prop,0,'my_source_convertitto_0');
                               commentsPlugin.removeCommentAtCell(row, prop);
-                              } else {
+                            } else {
                                 console.log('cons1.2')
                                 this.setDataAtCell(row, prop, Number(oldvalue.toString().trim().replace('%','').replace(',','.')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "").replace('.',',')+'%','my_source_removegreaterdecimalnumbers_percentage' )
                                 commentsPlugin.removeCommentAtCell(row, prop);
-                              }
+                            }
+                                // }
 
                        } else {
                             console.log('condition percentage 2.4.2.2')
@@ -821,6 +851,7 @@
            }
            } else if (oldvalue=='%'){
             //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            console.log('condition percentage 2.%')
             this.setDataAtCell(row, prop,'','my_source_empty_percentage')
            } else if ( oldvalue =='') {
             console.log('condition percentage 3')
@@ -1231,7 +1262,13 @@
     //alert('edit and changes>1')
     lastelement_supthan1=hot.undoRedo.doneActions.length
    }
-   if(src=='my_source' || src=='my_source_removewhitespacesign'){
+
+  // my_source_empty_percentage,
+  // my_source_removewhitespacesign_percentage,
+   // my_source_convertitto_0,
+  // my_source_removegreaterdecimalnumbers_percentage
+
+   if(src=='my_source' || src=='my_source_removewhitespacesign' || src=='my_source_removewhitespacesign_percentage' || src=='my_source_removegreaterdecimalnumbers_percentage' || src=='my_source_convertitto_0' ){
     var shouldBreak = false;
     console.log('before entering loop , lastelement_supthan1 is : ' + lastelement_supthan1)
     for (let index = hot.undoRedo.doneActions.length-1; index >lastelement_supthan1 && !shouldBreak; index--) {
@@ -1259,7 +1296,7 @@
   console.log('shouldbreak is : ' + shouldBreak )
   console.log(shouldBreak==false)
   //console.log('index after the end of loop part : ' + typeof index==undefined ? 'a' : index)
-      if ( (src == 'my_source' || src=='my_source_removewhitespacesign') && !shouldBreak) {
+      if ( (src == 'my_source' || src=='my_source_removewhitespacesign' || src=='my_source_removewhitespacesign_percentage' || src=='my_source_removegreaterdecimalnumbers_percentage' || src=='my_source_convertitto_0') && !shouldBreak) {
         console.log('afterchange mysource62 and we will pop it')
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
                   console.log('we are inside foreach in renderer')
@@ -1272,7 +1309,7 @@
                 }
                 })
       }
-      if(src == 'my_source_empty' && changes[0][2]!=''){
+      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) ){
         console.log('when src == my_source_empty and changes[0][2]!= "" ')
         //hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes[0][3]=''
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
