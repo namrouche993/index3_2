@@ -84,7 +84,7 @@
     //const currenciesht = ['$','USD','Euro',"£"];
     //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
-    const userLocale = 'fr'//Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+    const userLocale = 'en'//Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
 
     // Create options for toLocaleString() based on the user's locale
     const options = { style: 'decimal' };
@@ -653,6 +653,7 @@
                   const formatter88_percentage = new Intl.NumberFormat(userLocale, {
                     style: 'decimal',
                     maximumFractionDigits: afterdigitsmallnb_percentage,
+                    useGrouping: false // removing thousand separator
                   });
                   const formattedNumber88_percentage = formatter88_percentage.format(value_percentage_renderer);
                   Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -664,6 +665,7 @@
                     style: 'decimal',
                     minimumFractionDigits: afterdigit_percentage,
                     maximumFractionDigits: afterdigit_percentage,
+                    useGrouping: false // removing thousand separator
                   });
                   console.log('renderer 2condition : ')
                   console.log(oldvalue)
