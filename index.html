@@ -11,52 +11,6 @@
 
   <script>
 
-class PercentageEditor extends Handsontable.editors.TextEditor {
-  open() {
-    super.open();
-    const value = this.getValue();
-    if (!value.endsWith('%')) { // check if the value doesn't already end with a percent sign
-      this.TEXTAREA.value += '%'; // add a "%" sign to the initial value
-    }
-  }
-
-  setValue(value) {
-    const percentValue = value.replace(/%/g, '') + '%'; // remove existing "%" signs and add a new one
-    super.setValue(percentValue);
-  }
-  
-
- /* onBeforeKeyDown(event) {
-    const value = this.getValue();
-    const key = event.keyCode || event.which;
-
-    if (key >= 48 && key <= 57) { // numeric keys
-      const percentValue = value.replace(/%/g, '') + String.fromCharCode(key) + '%';
-      this.setValue(percentValue);
-      event.stopImmediatePropagation();
-      event.preventDefault();
-    } else if (key === 8) { // backspace key
-      const percentValue = value.replace(/%$/, '');
-      this.setValue(percentValue);
-      event.stopImmediatePropagation();
-      event.preventDefault();
-    }
-  }
-*/
-  close() {
-    super.close();
-    const value = this.getValue();
-    if (value.endsWith('%')) { // check if the value ends with a percent sign
-      this.TEXTAREA.value = value.slice(0, -1); // remove the last character (the percent sign)
-    }
-  }
-
-  focus() {
-    super.focus();
-    const length = this.TEXTAREA.value.length;
-    this.TEXTAREA.setSelectionRange(0, length - 1); // set the cursor position at the end of the value
-  }
-}
 
   
   const hot = new Handsontable(document.getElementById('example'), {
@@ -71,24 +25,56 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
   ],
   columns: [
     { data: 'id', type: 'numeric' },
-    { data: 'name', editor: PercentageEditor },
+    { data: 'date'},
     { data: 'email', editor: 'text' },
     { data: 'phone', editor: 'text' },
   ],
-  beforeKeyDown(event) {
-    console.log('onBeforeKeyDown')
+  beforeKeyDown: function (event) {  
+    console.log('--------- start beforekeydown -----------')  
     console.log(event)
-    if (event.key === '.') {
-     var cell = this.getActiveEditor().TEXTAREA; // Get the DOM element representing the cell editor
-     console.log(cell)
-     console.log(cell.value)
-     console.log(cell.value.length)
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue() + ',');
-     cell.setSelectionRange(cell.value.length-1, cell.value.length-1); // Set the new cursor position
-
-     event.stopImmediatePropagation();
-     event.preventDefault();
+    var cellpercent = this.getActiveEditor().TEXTAREA; // Get the DOM element representing the cell editor
+    console.log('cellpercent : ')
+    console.log(cellpercent)
+    console.log('thisgetactiveeditor getvalue and ..length')
+    console.log(this.getActiveEditor().getValue().toString()==null)
+    console.log(this.getActiveEditor().getValue().toString()=='')
+    console.log(this.getActiveEditor().getValue().toString()==' ')
+    console.log('length of thisgetactiveditorgetvalue : '+this.getActiveEditor().getValue().length)
+    if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) ){
+      console.log('inside con')
+      console.log(event.key)
+      if( !isNaN(Number(event.key)) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '/');
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    } else if( ( (this.getActiveEditor().getValue().length==3 ) && event.key=='/' ) || ( (this.getActiveEditor().getValue().length==6 ) && event.key=='/' ) ){
+        console.log('second condition ')
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+        event.stopImmediatePropagation();
+        event.preventDefault();
     }
+      /*
+    if(this.getActiveEditor().getValue().length==2 || this.getActiveEditor().getValue().length==5 ){
+      console.log('now we put slash')
+          if( !isNaN(Number(event.key))){
+            this.getActiveEditor().setValue(this.getActiveEditor().getValue() + '/'+event.key);
+            //cellpercent.setSelectionRange(cellpercent.value.length-1, cellpercent.value.length-1); // Set the new cursor position
+            event.stopImmediatePropagation();
+            event.preventDefault();
+           } else if (event.key=='-'){
+            this.getActiveEditor().setValue(this.getActiveEditor().getValue() + '/');
+            event.stopImmediatePropagation();
+            event.preventDefault();
+           }
+          }
+          */
+    //this.getActiveEditor().setValue(this.getActiveEditor().getValue() + ',');
+    //cellpercent.setSelectionRange(cellpercent.value.length-1, cellpercent.value.length-1); // Set the new cursor position
+    //event.stopImmediatePropagation();
+    //event.preventDefault();
+    console.log('--------- end beforekeydown -----------')  
+
   }
 });
 
