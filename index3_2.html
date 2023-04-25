@@ -762,7 +762,7 @@
               } else if (decimalSeparator==','){
                 console.log('condition percentage 2.1.2')            
                   console.log('may cause problem')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virguale à la place du point)");
+                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct");
                   this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
               }
             } else if(/^[-+]?(\s*\d+(,\d+)?)\s*$/.test(oldvalue.toString().trim())){
@@ -770,7 +770,7 @@
               if(decimalSeparator=='.'){
                 console.log('condition percentage 2.2.1')
                   console.log('may cause problem')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct");
                   this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
               } else if (decimalSeparator==','){
                 console.log('condition percentage 2.2.2')
@@ -814,7 +814,7 @@
                 console.log('aa')
                 if(decimalSeparator=='.'){
                   console.log('condition percentage 2.4.1')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct" );
                   this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
                 } else if (decimalSeparator==','){
                   console.log('condition percentage 2.4.2')
