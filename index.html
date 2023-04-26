@@ -11,8 +11,56 @@
 
   <script>
 
+const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator_language || navigator.userLanguage;
+console.log('userLocale : ')
+console.log(userLocale)
+console.log(navigator.language)
+const navigator_language='de-DE'
+console.log(navigator_language)
 
-  
+
+/*
+    const dateStr = '31/12/1990';
+    const [day, month, year] = dateStr.split('/');
+    const locale = Intl.DateTimeFormat().resolvedOptions().locale;
+    const locale2 = 'en-CA'//navigator.language;
+    console.log(locale2);
+    const date = new Date(`${month}/${day}/${year}`);
+    console.log(date.toLocaleDateString(locale2));
+  */
+
+ if(navigator_language=='en-US'){
+      var dateformatlanguage = 'mm/dd/yyyy'; // 12/31/1990
+      var splitdate='/';
+      //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
+
+    } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
+      var dateformatlanguage = 'yyyy.mm.dd' // 1990.12.31
+      var splitdate='.';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+    } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
+      var dateformatlanguage = 'yyyy/mm/dd' // 1990/12/31
+      var splitdate='/';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+    } else if(navigator_language=='en-CA'){
+      var dateformatlanguage = 'yyyy-mm-dd' // 1990-12-31
+      var splitdate='-';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+    } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){
+      var dateformatlanguage = 'dd.mm.yyyy' // 12.31.1990
+      var splitdate='.';
+      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+
+    } else {
+      // european and other formats
+      var dateformatlanguage = 'dd/mm/yyyy' // 31/12/1990
+      var splitdate='/';
+      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+    }
+
   const hot = new Handsontable(document.getElementById('example'), {
     data: [
     ['','','',''],
@@ -32,15 +80,14 @@
   beforeKeyDown: function (event) {  
     console.log('--------- start beforekeydown -----------')  
     console.log(event)
-    var cellpercent = this.getActiveEditor().TEXTAREA; // Get the DOM element representing the cell editor
-    console.log('cellpercent : ')
-    console.log(cellpercent)
-    console.log('thisgetactiveeditor getvalue and ..length')
-    console.log(this.getActiveEditor().getValue().toString()==null)
-    console.log(this.getActiveEditor().getValue().toString()=='')
-    console.log(this.getActiveEditor().getValue().toString()==' ')
     console.log('length of thisgetactiveditorgetvalue : '+this.getActiveEditor().getValue().length)
-    if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) ){
+
+    if(navigator_language=='en-US'){
+      var dateformatlanguage = 'mm/dd/yyyy'; // 12/31/1990
+      var splitdate='/';
+      //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
+
+      if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) ){
       console.log('inside con')
       console.log(event.key)
       if( !isNaN(Number(event.key)) ){
@@ -54,25 +101,113 @@
         event.stopImmediatePropagation();
         event.preventDefault();
     }
-      /*
-    if(this.getActiveEditor().getValue().length==2 || this.getActiveEditor().getValue().length==5 ){
-      console.log('now we put slash')
-          if( !isNaN(Number(event.key))){
-            this.getActiveEditor().setValue(this.getActiveEditor().getValue() + '/'+event.key);
-            //cellpercent.setSelectionRange(cellpercent.value.length-1, cellpercent.value.length-1); // Set the new cursor position
-            event.stopImmediatePropagation();
-            event.preventDefault();
-           } else if (event.key=='-'){
-            this.getActiveEditor().setValue(this.getActiveEditor().getValue() + '/');
-            event.stopImmediatePropagation();
-            event.preventDefault();
-           }
-          }
-          */
-    //this.getActiveEditor().setValue(this.getActiveEditor().getValue() + ',');
-    //cellpercent.setSelectionRange(cellpercent.value.length-1, cellpercent.value.length-1); // Set the new cursor position
-    //event.stopImmediatePropagation();
-    //event.preventDefault();
+
+    } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){ // ######################################################################
+      console.log('we are in korean')
+      var dateformatlanguage = 'yyyy.mm.dd' // 1990.12.31
+      var splitdate='.';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+      if( ( (this.getActiveEditor().getValue().length==3) && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==6 && !isNaN(Number(event.key))) ){
+      console.log('inside con')
+      console.log(event.key)
+      if( !isNaN(Number(event.key)) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '.');
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    } else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='.' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='.' ) ){
+        console.log('second condition ')
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+        event.stopImmediatePropagation();
+        event.preventDefault();
+    }
+
+    } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){ //  ######################################################################
+      var dateformatlanguage = 'yyyy/mm/dd' // 1990/12/31
+      var splitdate='/';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+      
+      if( ( (this.getActiveEditor().getValue().length==3) && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==6 && !isNaN(Number(event.key))) ){
+      console.log('inside con')
+      console.log(event.key)
+      if( !isNaN(Number(event.key)) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '/');
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    } else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='/' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='/' ) ){
+        console.log('second condition ')
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+        event.stopImmediatePropagation();
+        event.preventDefault();
+    }
+
+    } else if(navigator_language=='en-CA'){  // ######################################################################
+      var dateformatlanguage = 'yyyy-mm-dd' // 1990-12-31
+      var splitdate='-';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+      if( ( (this.getActiveEditor().getValue().length==3) && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==6 && !isNaN(Number(event.key))) ){
+      console.log('inside con')
+      console.log(event.key)
+      if( !isNaN(Number(event.key)) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '-');
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    } else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='-' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='-' ) ){
+        console.log('second condition ')
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+        event.stopImmediatePropagation();
+        event.preventDefault();
+    }
+
+    } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){ // ######################################################################
+      var dateformatlanguage = 'dd.mm.yyyy' // 12.31.1990
+      var splitdate='.';
+      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+
+      
+      if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) ){
+      console.log('inside con')
+      console.log(event.key)
+      if( !isNaN(Number(event.key)) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '.');
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    } else if( ( (this.getActiveEditor().getValue().length==3 ) && event.key=='.' ) || ( (this.getActiveEditor().getValue().length==6 ) && event.key=='.' ) ){
+        console.log('second condition ')
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+        event.stopImmediatePropagation();
+        event.preventDefault();
+    }
+
+    } else {        // ############################################################################################################################################
+      // european and other formats
+      var dateformatlanguage = 'dd/mm/yyyy' // 31/12/1990
+      var splitdate='/';
+      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+
+      if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) ){
+      console.log('inside con')
+      console.log(event.key)
+      if( !isNaN(Number(event.key)) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '/');
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    } else if( ( (this.getActiveEditor().getValue().length==3 ) && event.key=='/' ) || ( (this.getActiveEditor().getValue().length==6 ) && event.key=='/' ) ){
+        console.log('second condition ')
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+        event.stopImmediatePropagation();
+        event.preventDefault();
+    }
+
+    }
+
     console.log('--------- end beforekeydown -----------')  
 
   }
