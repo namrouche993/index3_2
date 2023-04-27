@@ -15,7 +15,7 @@ const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator_l
 console.log('userLocale : ')
 console.log(userLocale)
 console.log(navigator.language)
-const navigator_language='de-DE'
+const navigator_language='navigator.language'
 console.log(navigator_language)
 
 
@@ -30,33 +30,33 @@ console.log(navigator_language)
   */
 
  if(navigator_language=='en-US'){
-      var dateformatlanguage = 'mm/dd/yyyy'; // 12/31/1990
+      var dateformatlanguage = 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
       var splitdate='/';
       //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
 
     } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
-      var dateformatlanguage = 'yyyy.mm.dd' // 1990.12.31
+      var dateformatlanguage = 'aaaa.mm.jj' // 'yyyy.mm.dd' // 1990.12.31
       var splitdate='.';
       //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
 
     } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
-      var dateformatlanguage = 'yyyy/mm/dd' // 1990/12/31
+      var dateformatlanguage = 'aaaa/mm/jj' //'yyyy/mm/dd' // 1990/12/31
       var splitdate='/';
       //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
 
     } else if(navigator_language=='en-CA'){
-      var dateformatlanguage = 'yyyy-mm-dd' // 1990-12-31
+      var dateformatlanguage = 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
       var splitdate='-';
       //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
 
     } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){
-      var dateformatlanguage = 'dd.mm.yyyy' // 12.31.1990
+      var dateformatlanguage = 'jj.mm.aaaa' //'dd.mm.yyyy' // 12.31.1990
       var splitdate='.';
       //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
 
     } else {
       // european and other formats
-      var dateformatlanguage = 'dd/mm/yyyy' // 31/12/1990
+      var dateformatlanguage = 'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
       var splitdate='/';
       //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
     }
@@ -71,12 +71,169 @@ console.log(navigator_language)
     ['','','',''],
     ['','','','']
   ],
+  comments:true,
   columns: [
     { data: 'id', type: 'numeric' },
-    { data: 'date'},
+    { data: 'date',
+       validator: function (value, callback) {
+         if( value==null || 
+             /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||  // "31/12 / 1995"
+             /^\d{1,2}\-\d{1,2}\-\d{4}$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // "31 - 12-1995"
+             /^\d{1,2}\.\d{1,2}\.\d{4}$/.test(value.trim().replace(/\s*\.\s*/g,".")) ||   // "31.12. 1995"
+
+             /^\d{4}\/\d{1,2}\/\d{1,2}$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||  // 1995/31/12
+             /^\d{4}\-\d{1,2}\-\d{1,2}$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // 1995-12-31
+             /^\d{4}\.\d{1,2}\.\d{1,2}$/.test(value.trim().replace(/\s*\.\s*/g,"."))   // 1995.12.31
+         ){
+           console.log('calback trueeeeeeeeeeeeee')
+           callback(true)
+         } else {
+          console.log('calback falseeeeeeeeeeeeeee')
+           callback(false)
+         }
+
+       }},
     { data: 'email', editor: 'text' },
     { data: 'phone', editor: 'text' },
   ],
+  afterValidate: function (isValid, oldvalue, row, prop, source) {
+    const commentsPlugin = hot.getPlugin('comments');
+    if (isValid && oldvalue == null ) {
+            console.log('condition date 1')
+            console.log('we are inside afterValidate date value==null')
+            console.log('COULD END HERE')
+            commentsPlugin.removeCommentAtCell(row, prop);
+          } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
+            console.log('condition date 2')
+               if(/\s+/.test(oldvalue)){
+                 console.log('condition date 2.1 removes whitespaces')
+                this.setDataAtCell(row, prop, value.trim().replace(/\s*\/\s*/g,"/").replace(/\s*-\s*/g,"-").replace(/\s*\.\s*/g,"."),'my_source_removewhitespacesign_date')
+                commentsPlugin.removeCommentAtCell(row, prop);
+               }else{
+                console.log('condition date 2.2')
+                if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(value.trim().replace(/\s*\/\s*/g,"/"))){
+                  console.log('condition date 2.2.1  31/12/1995')                  
+                  var splitdate01='/';
+                  var [daydate,monthdate, yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                 
+                  if(navigator_language=='en-US'){
+                   // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
+                      console.log('COULD END HERE')
+                  } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
+                    // 'aaaa.mm.jj'
+                    var splitdate1='.';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+                  } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
+                    var splitdate1='/';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+    } else if(navigator_language=='en-CA'){
+                    // 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
+                    var splitdate1='-';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+
+    } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){
+                    //'jj.mm.aaaa' //'dd.mm.yyyy' // 12.31.1990
+                    var splitdate1='.';
+                    this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
+
+    } else {
+      // european and other formats
+      //'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
+      console.log('COULD END HERE')
+    }
+                } else if (/^\d{1,2}\-\d{1,2}\-\d{4}$/.test(value.trim().replace(/\s*-\s*/g,"-"))){
+                  console.log('condition date 2.2.2  31-12-1995')                  
+                  var splitdate02='-';
+                  var [daydate,monthdate, yeardate] = oldvalue.split(splitdate02); // edit it modify it change it , when US date format occurs                  
+                  if(navigator_language=='en-US'){
+                   // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
+                   var splitdate1='/';
+                    this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
+                  } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
+                    // 'aaaa.mm.jj'
+                    var splitdate1='.';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+                  } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
+                    var splitdate1='/';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+    } else if(navigator_language=='en-CA'){
+                    // 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
+                    var splitdate1='-';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+
+    } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){
+                    //'jj.mm.aaaa' //'dd.mm.yyyy' // 12.31.1990
+                    var splitdate1='.';
+                    this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
+
+    } else {
+                    var splitdate1='/';
+                    this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
+    }
+  } else if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(value.trim().replace(/\s*\.\s*/g,".")) ){
+                  console.log('condition date 2.2.3  31.12.1995')                  
+                  var splitdate03='.';
+                  var [daydate,monthdate, yeardate] = oldvalue.split(splitdate03); // edit it modify it change it , when US date format occurs                  
+                  if(navigator_language=='en-US'){
+                   // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
+                    var splitdate1='/';
+                    this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    
+                  } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
+                    // 'aaaa.mm.jj'
+                    var splitdate1='.';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+                  } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
+                    var splitdate1='/';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+    } else if(navigator_language=='en-CA'){
+                    // 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
+                    var splitdate1='-';
+                    this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
+                    console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
+
+
+    } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){
+                    //'jj.mm.aaaa' //'dd.mm.yyyy' // 12.31.1990
+                    //var splitdate1='.';
+                    //this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    //console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    console.log('COULD END HERE')
+    } else {
+      // european and other formats
+      //'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
+                    var splitdate1='/';
+                    this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
+                     }
+                  }
+               }
+            
+
+
+          }
+  },
   beforeKeyDown: function (event) {  
     console.log('--------- start beforekeydown -----------')  
     console.log(event)
