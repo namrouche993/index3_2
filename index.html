@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Custom Editor in Handsontable</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
   <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-</head>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css"></head>
 <body>
   <div id="example"></div>
 
@@ -15,8 +15,46 @@ const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator_l
 console.log('userLocale : ')
 console.log(userLocale)
 console.log(navigator.language)
-const navigator_language='navigator.language'
+const navigator_language='fr-FR'
 console.log(navigator_language)
+
+var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+console.log(userTimeZone)
+var usTimeZones = [  'America/New_York',  'America/Chicago',  'America/Denver',  'America/Los_Angeles',  'America/Anchorage',  'America/Adak',  'Pacific/Honolulu',  'America/Phoenix',  'America/Indiana/Indianapolis',  'America/Indiana/Knox',  'America/Indiana/Marengo',  'America/Indiana/Petersburg',  'America/Indiana/Tell_City',  'America/Indiana/Vevay',  'America/Indiana/Vincennes',  'America/Indiana/Winamac',  'America/Kentucky/Louisville',  'America/Kentucky/Monticello',  'America/Detroit',  'America/Menominee',  'America/St_Johns',  'America/Puerto_Rico',  'America/Montserrat',  'America/New_York',  'America/North_Dakota/Beulah',  'America/North_Dakota/Center',  'America/North_Dakota/New_Salem'];
+
+function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
+  
+  const datestr2 = dateStr.split(splitsign);
+  const day = parseInt(datestr2[Number(ndays)-1]);
+  const month = parseInt(datestr2[Number(nmonths)-1]);
+  const year = parseInt(datestr2[Number(nyears)-1]);
+  const parsedMonth = parseInt(month);
+  const parsedDay = parseInt(day);
+  const parsedYear = parseInt(year);
+
+  if ( isNaN(day) || isNaN(month) || isNaN(year) ){
+      return false;
+  }
+  // Check if year is within the allowed range
+  if (parsedYear < 1000 || parsedYear>3000) {
+    return false;
+  }
+
+  // Check if month is valid
+  if (parsedMonth < 1 || parsedMonth > 12) {
+    return false;
+  }
+
+  // Check if day is valid for the given month and year
+  const daysInMonth = new Date(parsedYear, parsedMonth, 0).getDate();
+  if (parsedDay < 1 || parsedDay > daysInMonth) {
+    return false;
+  }
+
+  // If all checks pass, return true
+  return true;
+}
+
 
 
 /*
@@ -30,10 +68,14 @@ console.log(navigator_language)
   */
 
  if(navigator_language=='en-US'){
+    if(usTimeZones.includes(userTimeZone)){
+      var dateformatlanguage = 'mm/dd/aaaa'; 
+      var splitdate='/';
+    } else {
       var dateformatlanguage = 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
       var splitdate='/';
       //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
-
+    }
     } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
       var dateformatlanguage = 'aaaa.mm.jj' // 'yyyy.mm.dd' // 1990.12.31
       var splitdate='.';
@@ -74,7 +116,7 @@ console.log(navigator_language)
   comments:true,
   columns: [
     { data: 'id', type: 'numeric' },
-    { data: 'date',
+    { name: 'date',
        validator: function (value, callback) {
          if( value==null || 
              /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||  // "31/12 / 1995"
@@ -92,33 +134,73 @@ console.log(navigator_language)
            callback(false)
          }
 
-       }},
+       },
+       renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) {
+            td.innerHTML=oldvalue;
+            //data22[row][col] = td.innerHTML;      
+            cellProperties.className = 'htRight'; 
+            td.style.textAlign = 'right';
+       }
+      },
     { data: 'email', editor: 'text' },
     { data: 'phone', editor: 'text' },
   ],
   afterValidate: function (isValid, oldvalue, row, prop, source) {
+    console.log('afterValidate : date : ')
+    console.log(isValid)
+    console.log(oldvalue)
+    console.log(row)
+    console.log(prop)
+    console.log(source)
+    const thiscol = this.col
+    console.log(thiscol)
+    condition_split=true
+    console.log('condition_split in aftervalidate : ')
+    console.log(condition_split)
+    
     const commentsPlugin = hot.getPlugin('comments');
     if (isValid && oldvalue == null ) {
             console.log('condition date 1')
-            console.log('we are inside afterValidate date value==null')
+            console.log('we are inside afterValidate date oldvalue==null')
             console.log('COULD END HERE')
             commentsPlugin.removeCommentAtCell(row, prop);
           } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
             console.log('condition date 2')
                if(/\s+/.test(oldvalue)){
                  console.log('condition date 2.1 removes whitespaces')
-                this.setDataAtCell(row, prop, value.trim().replace(/\s*\/\s*/g,"/").replace(/\s*-\s*/g,"-").replace(/\s*\.\s*/g,"."),'my_source_removewhitespacesign_date')
+                this.setDataAtCell(row, prop, oldvalue.trim().replace(/\s*\/\s*/g,"/").replace(/\s*-\s*/g,"-").replace(/\s*\.\s*/g,"."),'my_source_removewhitespacesign_date')
                 commentsPlugin.removeCommentAtCell(row, prop);
                }else{
                 console.log('condition date 2.2')
-                if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(value.trim().replace(/\s*\/\s*/g,"/"))){
+                if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/"))){
                   console.log('condition date 2.2.1  31/12/1995')                  
                   var splitdate01='/';
-                  var [daydate,monthdate, yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
-                 
-                  if(navigator_language=='en-US'){
+                  if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone)){
+                    var [monthdate,daydate, yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                    // isValidDate('35/02/2002','/',1,2,3)
+                    var is_validate_date=isValidDate(oldvalue,'/',2,1,3)
+                  } else {
+                    var [daydate,monthdate, yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                    isValidDate(oldvalue,'/',1,2,3);
+                    var is_validate_date=isValidDate(oldvalue,'/',1,2,3)
+                    console.log(is_validate_date)
+
+                  }
+                  if(is_validate_date){
+                   if(navigator_language=='en-US'){
                    // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                      console.log('COULD END HERE')
+                    if(usTimeZones.includes(userTimeZone)){
+                         // var dateformatlanguage = 'mm/dd/aaaa';
+                        //  var splitdate='/';
+                        console.log('COULD END HERE')
+                        commentsPlugin.removeCommentAtCell(row, prop);
+
+                         } else {
+                          console.log('COULD END HERE')
+                          commentsPlugin.removeCommentAtCell(row, prop);
+
+                         }
+
                   } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
                     // 'aaaa.mm.jj'
                     var splitdate1='.';
@@ -147,16 +229,53 @@ console.log(navigator_language)
       // european and other formats
       //'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
       console.log('COULD END HERE')
+      commentsPlugin.removeCommentAtCell(row, prop);
+
     }
-                } else if (/^\d{1,2}\-\d{1,2}\-\d{4}$/.test(value.trim().replace(/\s*-\s*/g,"-"))){
+  } else {
+    console.log('is_validate_date is false')
+    console.log(row)
+    console.log(prop)
+    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+    this.setDataAtCell(row, prop,'','my_source_invaliddate')
+  }
+                }
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+
+                
+                else if (/^\d{1,2}\-\d{1,2}\-\d{4}$/.test(oldvalue.trim().replace(/\s*-\s*/g,"-"))){
                   console.log('condition date 2.2.2  31-12-1995')                  
                   var splitdate02='-';
-                  var [daydate,monthdate, yeardate] = oldvalue.split(splitdate02); // edit it modify it change it , when US date format occurs                  
-                  if(navigator_language=='en-US'){
+                  //var [daydate,monthdate, yeardate] = oldvalue.split(splitdate02); // edit it modify it change it , when US date format occurs                  
+                  if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone)){
+                    var [monthdate,daydate, yeardate] = oldvalue.split(splitdate02); // edit it modify it change it , when US date format occurs                  
+                    // isValidDate('35/02/2002','/',1,2,3)
+                    var is_validate_date=isValidDate(oldvalue,'-',2,1,3)
+                  } else {
+                    var [daydate,monthdate, yeardate] = oldvalue.split(splitdate02); // edit it modify it change it , when US date format occurs                  
+                    isValidDate(oldvalue,'/',1,2,3);
+                    var is_validate_date=isValidDate(oldvalue,'-',1,2,3)
+                    console.log(is_validate_date)
+
+                  }
+                  if(is_validate_date){
+                  
+                   if(navigator_language=='en-US'){
                    // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                   var splitdate1='/';
+                   if(usTimeZones.includes(userTimeZone)){
+                    var splitdate1='/';
+                    this.setDataAtCell(row, prop, monthdate+splitdate1+daydate+splitdate1+yeardate)
+                    console.log('new date format : ' + monthdate+splitdate1+daydate+splitdate1+yeardate)   
+                  
+                   } else {
+                    var splitdate1='/';
                     this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
+                  }
                   } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
                     // 'aaaa.mm.jj'
                     var splitdate1='.';
@@ -185,16 +304,43 @@ console.log(navigator_language)
                     var splitdate1='/';
                     this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
-    }
-  } else if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(value.trim().replace(/\s*\.\s*/g,".")) ){
+    } 
+  } else {
+    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+    this.setDataAtCell(row, prop,'','my_source_invaliddate')
+  }
+
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date 2 finished *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+
+  } else if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(oldvalue.trim().replace(/\s*\.\s*/g,".")) ){
                   console.log('condition date 2.2.3  31.12.1995')                  
                   var splitdate03='.';
-                  var [daydate,monthdate, yeardate] = oldvalue.split(splitdate03); // edit it modify it change it , when US date format occurs                  
+                  if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone)){
+                    var [monthdate,daydate, yeardate] = oldvalue.split(splitdate03); // edit it modify it change it , when US date format occurs                  
+                    var is_validate_date=isValidDate(oldvalue,'.',2,1,3)
+                  } else {
+                    var [daydate,monthdate, yeardate] = oldvalue.split(splitdate03); // edit it modify it change it , when US date format occurs                  
+                    var is_validate_date=isValidDate(oldvalue,'.',1,2,3)
+                    //console.log(is_validate_date)
+
+                  }
+                  if(is_validate_date){
+                                    
                   if(navigator_language=='en-US'){
                    // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                    var splitdate1='/';
-                    this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
-                    console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    if(usTimeZones.includes(userTimeZone)){
+                      var splitdate1='/';
+                      this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                      console.log('new date format : ' + monthdate+splitdate1+daydate+splitdate1+yeardate)
+                    } else {
+                      var splitdate1='/';
+                      this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
+                      console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
+                    }
                     
                   } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
                     // 'aaaa.mm.jj'
@@ -220,6 +366,8 @@ console.log(navigator_language)
                     //this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
                     //console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
                     console.log('COULD END HERE')
+                    commentsPlugin.removeCommentAtCell(row, prop);
+
     } else {
       // european and other formats
       //'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
@@ -227,17 +375,36 @@ console.log(navigator_language)
                     this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
                      }
-                  }
+                  } else {                
+                    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    this.setDataAtCell(row, prop,'','my_source_invaliddate')
+                 }   
+                
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date 2.2.3  31.12.1995 finished *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+             }
                }
             
 
-
+          }  else if ( oldvalue =='') {
+            console.log('condition date 3')
+            console.log('do nothing could end here')
+            } else {
+              console.log('condition date 4')
+            commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            this.setDataAtCell(row, prop,'','my_source_empty_date')
+            console.log('do nothing could end here')
+            console.log('removes')
           }
+
   },
   beforeKeyDown: function (event) {  
     console.log('--------- start beforekeydown -----------')  
-    console.log(event)
-    console.log('length of thisgetactiveditorgetvalue : '+this.getActiveEditor().getValue().length)
+    //console.log(event)
+    //console.log('length of thisgetactiveditorgetvalue : '+this.getActiveEditor().getValue().length)
 
     if(navigator_language=='en-US'){
       var dateformatlanguage = 'mm/dd/yyyy'; // 12/31/1990
@@ -273,12 +440,12 @@ console.log(navigator_language)
         event.stopImmediatePropagation();
         event.preventDefault();
       }
-    } else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='.' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='.' ) ){
+    } /*else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='.' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='.' ) ){
         console.log('second condition ')
         this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
         event.stopImmediatePropagation();
         event.preventDefault();
-    }
+    }*/
 
     } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){ //  ######################################################################
       var dateformatlanguage = 'yyyy/mm/dd' // 1990/12/31
@@ -294,12 +461,12 @@ console.log(navigator_language)
         event.stopImmediatePropagation();
         event.preventDefault();
       }
-    } else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='/' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='/' ) ){
+    } /*else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='/' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='/' ) ){
         console.log('second condition ')
         this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
         event.stopImmediatePropagation();
         event.preventDefault();
-    }
+    }*/
 
     } else if(navigator_language=='en-CA'){  // ######################################################################
       var dateformatlanguage = 'yyyy-mm-dd' // 1990-12-31
@@ -314,54 +481,86 @@ console.log(navigator_language)
         event.stopImmediatePropagation();
         event.preventDefault();
       }
-    } else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='-' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='-' ) ){
+    } /*else if( ( (this.getActiveEditor().getValue().length==5 ) && event.key=='-' ) || ( (this.getActiveEditor().getValue().length==8 ) && event.key=='-' ) ){
         console.log('second condition ')
         this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
         event.stopImmediatePropagation();
         event.preventDefault();
-    }
+    }*/
 
     } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){ // ######################################################################
       var dateformatlanguage = 'dd.mm.yyyy' // 12.31.1990
       var splitdate='.';
-      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
 
-      
-      if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) ){
-      console.log('inside con')
-      console.log(event.key)
-      if( !isNaN(Number(event.key)) ){
-        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '.');
+        var betweensplit_dot = this.getActiveEditor().getValue().split(".")
+        var betweensplit_slash = this.getActiveEditor().getValue().split("/")
+        var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
+
+        console.log(event.key)
+        if( !isNaN(Number(event.key))){
+          var betweensplit_dot = this.getActiveEditor().getValue().split(".");
+          betweensplit_dot[1]=betweensplit_dot[1]+event.key;
+
+          var betweensplit_slash = this.getActiveEditor().getValue().split("/");
+          betweensplit_slash[1]=betweensplit_slash[1]+event.key;
+
+          var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
+          betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
+
+        
+      if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
+      if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
         event.stopImmediatePropagation();
         event.preventDefault();
       }
-    } else if( ( (this.getActiveEditor().getValue().length==3 ) && event.key=='.' ) || ( (this.getActiveEditor().getValue().length==6 ) && event.key=='.' ) ){
-        console.log('second condition ')
-        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+    }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
+       if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
         event.stopImmediatePropagation();
         event.preventDefault();
+      }
     }
-
+    
     } else {        // ############################################################################################################################################
       // european and other formats
       var dateformatlanguage = 'dd/mm/yyyy' // 31/12/1990
       var splitdate='/';
-      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+      console.log('condition_split in beforekey start : ')
+      // console.log(condition_split)
 
-      if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) ){
-      console.log('inside con')
-      console.log(event.key)
-      if( !isNaN(Number(event.key)) ){
-        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + '/');
+      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+        var betweensplit_dot = this.getActiveEditor().getValue().split(".")
+        var betweensplit_slash = this.getActiveEditor().getValue().split("/")
+        var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
+
+        console.log(event.key)
+        if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
+          var betweensplit_dot = this.getActiveEditor().getValue().split(".");
+          betweensplit_dot[1]=betweensplit_dot[1]+event.key;
+
+          var betweensplit_slash = this.getActiveEditor().getValue().split("/");
+          betweensplit_slash[1]=betweensplit_slash[1]+event.key;
+
+          var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
+          betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
+
+        
+      if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
+      if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
         event.stopImmediatePropagation();
         event.preventDefault();
       }
-    } else if( ( (this.getActiveEditor().getValue().length==3 ) && event.key=='/' ) || ( (this.getActiveEditor().getValue().length==6 ) && event.key=='/' ) ){
-        console.log('second condition ')
-        this.getActiveEditor().setValue(this.getActiveEditor().getValue() );
+    }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
+       condition_split=false;
+       if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
+        this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
         event.stopImmediatePropagation();
         event.preventDefault();
+      }
     }
+       //console.log(condition_split)
 
     }
 
