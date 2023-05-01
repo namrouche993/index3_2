@@ -15,7 +15,7 @@ const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator_l
 console.log('userLocale : ')
 console.log(userLocale)
 console.log(navigator.language)
-const navigator_language='fr-FR'
+const navigator_language='ko-KR'
 console.log(navigator_language)
 
 var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -125,7 +125,12 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
 
              /^\d{4}\/\d{1,2}\/\d{1,2}$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||  // 1995/31/12
              /^\d{4}\-\d{1,2}\-\d{1,2}$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // 1995-12-31
-             /^\d{4}\.\d{1,2}\.\d{1,2}$/.test(value.trim().replace(/\s*\.\s*/g,"."))   // 1995.12.31
+             /^\d{4}\.\d{1,2}\.\d{1,2}$/.test(value.trim().replace(/\s*\.\s*/g,".")) ||   // 1995.12.31
+
+             /^\d{1,2}\/\d{1,2}\/\d{2}$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||   // 11/12/23
+             /^\d{1,2}\-\d{1,2}\-\d{2}$/.test(value.trim().replace(/\s*-\s*/g,"-"))  ||   // 11-12-23
+             /^\d{1,2}\.\d{1,2}\.\d{2}$/.test(value.trim().replace(/\s*\.\s*/g,"."))      // 11.12.23
+             
          ){
            console.log('calback trueeeeeeeeeeeeee')
            callback(true)
@@ -194,20 +199,42 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
 
                    if(navigator_language=='en-US'){
                    // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                    if(usTimeZones.includes(userTimeZone)){
+                   var splitdate001='/';
+                   if(usTimeZones.includes(userTimeZone)){
                          // var dateformatlanguage = 'mm/dd/aaaa';
-                        //  var splitdate='/';
-                        console.log('COULD END HERE')
-                        commentsPlugin.removeCommentAtCell(row, prop);
+                    
+              if(daydate.toString().length==1 && monthdate.toString().length==1){
+                           daydate='0'+daydate;
+                           monthdate='0'+monthdate;
+              this.setDataAtCell(row, prop, monthdate+splitdate001+daydate+splitdate001+yeardate)
 
-                        // if(daydate<10 && daydate.toString().padStart(2,'0').length==1){
-                        //    daydate='0'+daydate
-                        //   }
+              } else if(daydate.toString().length==1 && monthdate.toString().length==2){
+                           daydate='0'+daydate;
+              this.setDataAtCell(row, prop, monthdate+splitdate001+daydate+splitdate001+yeardate)
+              } else if(daydate.toString().length==2 && monthdate.toString().length==1){
+                           monthdate='0'+monthdate;  
+              this.setDataAtCell(row, prop, monthdate+splitdate001+daydate+splitdate001+yeardate)
+              } else {
+                           console.log('COULD END HERE')
+                           commentsPlugin.removeCommentAtCell(row, prop);
+                       }
 
                          } else {
-                          console.log('COULD END HERE')
-                          commentsPlugin.removeCommentAtCell(row, prop);
+                          if(daydate.toString().length==1 && monthdate.toString().length==1){
+                           daydate='0'+daydate;
+                           monthdate='0'+monthdate;
+              this.setDataAtCell(row, prop, daydate+splitdate001+monthdate+splitdate001+yeardate)
 
+              } else if(daydate.toString().length==1 && monthdate.toString().length==2){
+                           daydate='0'+daydate;
+                           this.setDataAtCell(row, prop, daydate+splitdate001+monthdate+splitdate001+yeardate)
+              } else if(daydate.toString().length==2 && monthdate.toString().length==1){
+                           monthdate='0'+monthdate;  
+                           this.setDataAtCell(row, prop, daydate+splitdate001+monthdate+splitdate001+yeardate)
+              } else {
+                           console.log('COULD END HERE')
+                           commentsPlugin.removeCommentAtCell(row, prop);
+                       }
                          }
 
                   } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
@@ -237,9 +264,23 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
     } else {
       // european and other formats
       //'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
-      console.log('COULD END HERE')
-      commentsPlugin.removeCommentAtCell(row, prop);
+      var splitdate001 = '/';
+      if(daydate.toString().length==1 && monthdate.toString().length==1){
+                           daydate='0'+daydate;
+                           monthdate='0'+monthdate;
+                           console.log(daydate+splitdate001+monthdate+splitdate001+yeardate)
+              this.setDataAtCell(row, prop, daydate+splitdate001+monthdate+splitdate001+yeardate)
 
+              } else if(daydate.toString().length==1 && monthdate.toString().length==2){
+                           daydate='0'+daydate;
+                           this.setDataAtCell(row, prop, daydate+splitdate001+monthdate+splitdate001+yeardate)
+              } else if(daydate.toString().length==2 && monthdate.toString().length==1){
+                           monthdate='0'+monthdate;  
+                           this.setDataAtCell(row, prop, daydate+splitdate001+monthdate+splitdate001+yeardate)
+              } else {
+                           console.log('COULD END HERE')
+                           commentsPlugin.removeCommentAtCell(row, prop);
+                       }
     }
   } else {
     console.log('is_validate_date is false')
@@ -373,8 +414,25 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                     //var splitdate1='.';
                     //this.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate)
                     //console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)
-                    console.log('COULD END HERE')
-                    commentsPlugin.removeCommentAtCell(row, prop);
+                    
+                    
+                    var splitdate003 = '.';
+      if(daydate.toString().length==1 && monthdate.toString().length==1){
+                           daydate='0'+daydate;
+                           monthdate='0'+monthdate;
+                           console.log(daydate+splitdate003+monthdate+splitdate003+yeardate)
+              this.setDataAtCell(row, prop, daydate+splitdate003+monthdate+splitdate003+yeardate)
+
+              } else if(daydate.toString().length==1 && monthdate.toString().length==2){
+                           daydate='0'+daydate;
+                           this.setDataAtCell(row, prop, daydate+splitdate003+monthdate+splitdate003+yeardate)
+              } else if(daydate.toString().length==2 && monthdate.toString().length==1){
+                           monthdate='0'+monthdate;  
+                           this.setDataAtCell(row, prop, daydate+splitdate003+monthdate+splitdate003+yeardate)
+              } else {
+                           console.log('COULD END HERE')
+                           commentsPlugin.removeCommentAtCell(row, prop);
+                       }
 
     } else {
       // european and other formats
@@ -434,8 +492,22 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                     //this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
                     //console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
 
-                    console.log('COULD END HERE')
-                    commentsPlugin.removeCommentAtCell(row, prop);
+                    var splitdate004 = '/';
+      if(daydate.toString().length==1 && monthdate.toString().length==1){
+                           daydate='0'+daydate;
+                           monthdate='0'+monthdate;
+              this.setDataAtCell(row, prop, yeardate+splitdate004+monthdate+splitdate004+daydate)
+
+              } else if(daydate.toString().length==1 && monthdate.toString().length==2){
+                           daydate='0'+daydate;
+                           this.setDataAtCell(row, prop, yeardate+splitdate004+monthdate+splitdate004+daydate)
+              } else if(daydate.toString().length==2 && monthdate.toString().length==1){
+                           monthdate='0'+monthdate;  
+                           this.setDataAtCell(row, prop, yeardate+splitdate004+monthdate+splitdate004+daydate)
+              } else {
+                           console.log('COULD END HERE')
+                           commentsPlugin.removeCommentAtCell(row, prop);
+                       }
 
 
     } else if(navigator_language=='en-CA'){
@@ -517,9 +589,23 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
     } else if(navigator_language=='en-CA'){
                     // 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
 
-                    console.log('COULD END HERE')
-                    commentsPlugin.removeCommentAtCell(row, prop);
 
+                    var splitdate005 = '-';
+      if(daydate.toString().length==1 && monthdate.toString().length==1){
+                           daydate='0'+daydate;
+                           monthdate='0'+monthdate;
+              this.setDataAtCell(row, prop, yeardate+splitdate005+monthdate+splitdate005+daydate)
+
+              } else if(daydate.toString().length==1 && monthdate.toString().length==2){
+                           daydate='0'+daydate;
+                           this.setDataAtCell(row, prop, yeardate+splitdate005+monthdate+splitdate005+daydate)
+              } else if(daydate.toString().length==2 && monthdate.toString().length==1){
+                           monthdate='0'+monthdate;  
+                           this.setDataAtCell(row, prop, yeardate+splitdate005+monthdate+splitdate005+daydate)
+              } else {
+                           console.log('COULD END HERE')
+                           commentsPlugin.removeCommentAtCell(row, prop);
+                       }
                     //var splitdate1='-';
                     //this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
                     //console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
@@ -583,9 +669,23 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                     //this.setDataAtCell(row, prop, yeardate+splitdate1+monthdate+splitdate1+daydate)
                     //console.log('new date format : ' + yeardate+splitdate1+monthdate+splitdate1+daydate)
 
-                    console.log('COULD END HERE')
-                    commentsPlugin.removeCommentAtCell(row, prop);
 
+                    var splitdate006 = '.';
+      if(daydate.toString().length==1 && monthdate.toString().length==1){
+                           daydate='0'+daydate;
+                           monthdate='0'+monthdate;
+              this.setDataAtCell(row, prop, yeardate+splitdate006+monthdate+splitdate006+daydate)
+
+              } else if(daydate.toString().length==1 && monthdate.toString().length==2){
+                           daydate='0'+daydate;
+                           this.setDataAtCell(row, prop, yeardate+splitdate006+monthdate+splitdate006+daydate)
+              } else if(daydate.toString().length==2 && monthdate.toString().length==1){
+                           monthdate='0'+monthdate;  
+                           this.setDataAtCell(row, prop, yeardate+splitdate006+monthdate+splitdate006+daydate)
+              } else {
+                           console.log('COULD END HERE')
+                           commentsPlugin.removeCommentAtCell(row, prop);
+                       }
                   } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
                         // 1990/12/31
                     var splitdate1='/';
@@ -622,8 +722,100 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                     commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
                     this.setDataAtCell(row, prop,'','my_source_invaliddate')
                  }
+// **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date 2.2.6  1995.12.31 finished *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+                } else if(/^\d{1,2}\/\d{1,2}\/\d{2}$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/")) ){
+                  console.log('condition date 2.2.7  31/12/95 like fr-FR and european an (en-US but with switching month and days) ')                  
+                  var splitdate01='/';
+                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || avigator_language=='ja-JP' || navigator_language=='ZH-CN' ){
+                    var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                    if(Number(yeardate)>30){
+                      yeardate='19'+yeardate;
+                    } else {
+                      yeardate='20'+yeardate
+                    }
+                    this.setDataAtCell(row, prop,yeardate+splitdate01+monthdate+splitdate01+daydate)
+                  } else {
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                    var [daydate,monthdate,yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
 
-}
+                    if(Number(yeardate)>30){
+                      yeardate='19'+yeardate;
+                    } else {
+                      yeardate='20'+yeardate
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+                  
+                  
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.7 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+} else if(/^\d{1,2}\-\d{1,2}\-\d{2}$/.test(oldvalue.trim().replace(/\s*-\s*/g,"-")) ){
+                  console.log('condition date 2.2.8  31-12-95  ')                  
+                  var splitdate01='-';
+                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || avigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                    var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                    if(Number(yeardate)>30){
+                      yeardate='19'+yeardate;
+                    } else {
+                      yeardate='20'+yeardate
+                    }
+                    this.setDataAtCell(row, prop,yeardate+splitdate01+monthdate+splitdate01+daydate)
+                  } else {
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                    var [daydate,monthdate,yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+
+                    if(Number(yeardate)>30){
+                      yeardate='19'+yeardate;
+                    } else {
+                      yeardate='20'+yeardate
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+                  
+                  
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.8 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+} else if(/^\d{1,2}\.\d{1,2}\.\d{2}$/.test(oldvalue.trim().replace(/\s*\.\s*/g,".")) ){
+                  console.log('condition date 2.2.9  31.12.95  ')                  
+                  var splitdate01='.';
+                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || avigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                    var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                    if(Number(yeardate)>30){
+                      yeardate='19'+yeardate;
+                    } else {
+                      yeardate='20'+yeardate;
+                    }
+                    this.setDataAtCell(row, prop,yeardate+splitdate01+monthdate+splitdate01+daydate)
+                  } else {
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                    var [daydate,monthdate,yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+
+                    if(Number(yeardate)>30){
+                      yeardate='19'+yeardate;
+                    } else {
+                      yeardate='20'+yeardate
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+                  
+                  }
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.9 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+   
+
 
                 }
             
