@@ -15,7 +15,7 @@ const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator_l
 console.log('userLocale : ')
 console.log(userLocale)
 console.log(navigator.language)
-const navigator_language='ko-KR'
+const navigator_language='fr-FR'
 console.log(navigator_language)
 
 var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -730,7 +730,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                 } else if(/^\d{1,2}\/\d{1,2}\/\d{2}$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/")) ){
                   console.log('condition date 2.2.7  31/12/95 like fr-FR and european an (en-US but with switching month and days) ')                  
                   var splitdate01='/';
-                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || avigator_language=='ja-JP' || navigator_language=='ZH-CN' ){
+                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){
                     var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
                     if(Number(yeardate)>30){
                       yeardate='19'+yeardate;
@@ -759,7 +759,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
 } else if(/^\d{1,2}\-\d{1,2}\-\d{2}$/.test(oldvalue.trim().replace(/\s*-\s*/g,"-")) ){
                   console.log('condition date 2.2.8  31-12-95  ')                  
                   var splitdate01='-';
-                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || avigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
                     var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
                     if(Number(yeardate)>30){
                       yeardate='19'+yeardate;
@@ -788,7 +788,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
 } else if(/^\d{1,2}\.\d{1,2}\.\d{2}$/.test(oldvalue.trim().replace(/\s*\.\s*/g,".")) ){
                   console.log('condition date 2.2.9  31.12.95  ')                  
                   var splitdate01='.';
-                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || avigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                  if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
                     var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
                     if(Number(yeardate)>30){
                       yeardate='19'+yeardate;
