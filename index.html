@@ -132,8 +132,16 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
              /^\d{1,2}\.\d{1,2}\.\d{2}$/.test(value.trim().replace(/\s*\.\s*/g,".")) ||   // 11.12.23
 
 
-             /^\d{1,2}\/\d{1,2}$/.test(value.trim().replace(/\s*\/\s*/g,"/"))   // 01/12 25/12 99/11
+             ///^\d{1,2}\/\d{1,2}$/.test(value.trim().replace(/\s*\/\s*/g,"/"))   // 01/12 25/12 99/11
+             /^\d{1,2}\/\d{1,2}(\/)?$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||   // 01/12 25/12/ 99/11/
+             /^\d{1,2}\-\d{1,2}(\-)?$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // 01-12 25-12- 99-11-
+             /^\d{1,2}\.\d{1,2}(\.)?$/.test(value.trim().replace(/\s*\.\s*/g,".")) ||  // 01.12 25.12. 99.11.
              
+             /^\d{4}\/\d{1,2}(\/)?$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||   // 2023/12 2022/1/
+             /^\d{4}\-\d{1,2}(\-)?$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // 2001-12 2025-1-
+             /^\d{4}\.\d{1,2}(\.)?$/.test(value.trim().replace(/\s*\.\s*/g,"."))   // 2001.2 2025.12.
+
+            
          ){
            console.log('calback trueeeeeeeeeeeeee')
            callback(true)
@@ -810,13 +818,13 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                     }
                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
                   }
-                  // **********************************************************************************
+  // **********************************************************************************
   // **********************************************************************************
   // ************************ condition date finished 2.2.9 *********************************
   // **********************************************************************************
   // **********************************************************************************
-                  } else if (/^\d{1,2}\/\d{1,2}$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/"))){
-                    console.log('condition date 2.2.10   like  31.12 12/06  13/23 1/3 ')     
+                  } else if (/^\d{1,2}\/\d{1,2}(\/)?$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/"))){
+                    console.log('condition date 2.2.10   like  31/12 12/06/  13/23 1/3 ')     
                     console.log(oldvalue)             
                     var splitdate01='/';
                     var [datepart1,datepart2] =  oldvalue.split(splitdate01)
@@ -854,6 +862,146 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                   console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
                   }
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.10 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+              } else if (/^\d{1,2}\-\d{1,2}(\-)?$/.test(oldvalue.trim().replace(/\s*-\s*/g,"-"))){
+                console.log('condition date 2.2.11   like  31-12 12-06  13-23 1-3 ')     
+                    console.log(oldvalue)             
+                    var splitdate01='-';
+                    var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                    //var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                    var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+
+                    if(Number(datepart2)>12){
+                      var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                      //yeardate='19'+yeardate;
+                    } else {
+                      const currentDate = new Date();
+                      const currentYear = currentDate.getFullYear();
+                      var [daydate,monthdate,yeardate]=[datepart1,datepart2,currentYear.toString()]
+                      //yeardate='20'+yeardate;
+                    }
+                    this.setDataAtCell(row, prop,yeardate+splitdate01+monthdate+splitdate01+daydate)
+                  } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                      var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                  } else {
+                     const currentDate = new Date();
+                     const currentYear = currentDate.getFullYear();
+                     var [daydate,monthdate,yeardate]=[datepart1,datepart2,currentYear.toString()]
+                   //yeardate='20'+yeardate;
+                  }
+                  console.log('before setdata')
+                  console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+
+
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.11 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+                  } else if (/^\d{1,2}\.\d{1,2}(\.)?$/.test(oldvalue.trim().replace(/\s*\.\s*/g,"."))){
+                    console.log('condition date 2.2.12   like  31.12. 12.06.  13.23 1.3 ')     
+                    console.log(oldvalue)             
+                    var splitdate01='.';
+                    var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                    //var [yeardate,monthdate,daydate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
+                    var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+
+                    if(Number(datepart2)>12){
+                      var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                      //yeardate='19'+yeardate;
+                    } else {
+                      const currentDate = new Date();
+                      const currentYear = currentDate.getFullYear();
+                      var [daydate,monthdate,yeardate]=[datepart1,datepart2,currentYear.toString()]
+                      //yeardate='20'+yeardate;
+                    }
+                    this.setDataAtCell(row, prop,yeardate+splitdate01+monthdate+splitdate01+daydate)
+                  } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                      var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                  } else {
+                     const currentDate = new Date();
+                     const currentYear = currentDate.getFullYear();
+                     var [daydate,monthdate,yeardate]=[datepart1,datepart2,currentYear.toString()]
+                   //yeardate='20'+yeardate;
+                  }
+                  console.log('before setdata')
+                  console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.12 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+                  } else if (/^\d{4}\/\d{1,2}(\/)?$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/"))){
+                    console.log('condition date 2.2.13   like  2031/12. 2012/06/  2013/2 ')     
+                    console.log(oldvalue)             
+                    var splitdate01='/';
+                    var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                      var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                      if(Number(datepart2)>12){
+                          //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          this.setDataAtCell(row, prop,'','my_source_empty_date')
+                        } else {
+                            if(datepart2.toString().length==1){
+                                var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                                } else {
+                                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                                     }
+                                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                                      //yeardate='20'+yeardate;
+                          }
+                      } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                  var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    this.setDataAtCell(row, prop,'','my_source_empty_date')
+                  } else {
+                    if(datepart2.toString().length==1){
+                      var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                    } else {
+                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+
+                   //yeardate='20'+yeardate;
+                  }
+                  //console.log('before setdata')
+                  //console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
                   }           
                 }            
 
@@ -864,13 +1012,13 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
               console.log('condition date 4')
             commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
             this.setDataAtCell(row, prop,'','my_source_empty_date')
-            console.log('do nothing could end here')
+            //console.log('do nothing could end here')
             console.log('removes')
           }
 
   },
   beforeKeyDown: function (event) {  
-    console.log('--------- start beforekeydown -----------')  
+    //console.log('--------- start beforekeydown -----------')  
     //console.log(event)
     //console.log('length of thisgetactiveditorgetvalue : '+this.getActiveEditor().getValue().length)
 
@@ -883,7 +1031,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
         var betweensplit_slash = this.getActiveEditor().getValue().split("/")
         var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
 
-        console.log(event.key)
+       // console.log(event.key)
         if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
           var betweensplit_dot = this.getActiveEditor().getValue().split(".");
           betweensplit_dot[1]=betweensplit_dot[1]+event.key;
@@ -910,17 +1058,17 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
       }
     }
     } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){ // ######################################################################
-      console.log('we are in korean')
+      //console.log('we are in korean')
       var dateformatlanguage = 'yyyy.mm.dd' // 1990.12.31
       var splitdate='.';
       //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
 
 
-      var betweensplit_dot = this.getActiveEditor().getValue().split(".")
+        var betweensplit_dot = this.getActiveEditor().getValue().split(".")
         var betweensplit_slash = this.getActiveEditor().getValue().split("/")
         var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
 
-        console.log(event.key)
+        //console.log(event.key)
         if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
           var betweensplit_dot = this.getActiveEditor().getValue().split(".");
           betweensplit_dot[1]=betweensplit_dot[1]+event.key;
@@ -957,7 +1105,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
         var betweensplit_slash = this.getActiveEditor().getValue().split("/")
         var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
 
-        console.log(event.key)
+        //console.log(event.key)
         if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
           var betweensplit_dot = this.getActiveEditor().getValue().split(".");
           betweensplit_dot[1]=betweensplit_dot[1]+event.key;
@@ -993,7 +1141,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
         var betweensplit_slash = this.getActiveEditor().getValue().split("/")
         var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
 
-        console.log(event.key)
+        //console.log(event.key)
         if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
           var betweensplit_dot = this.getActiveEditor().getValue().split(".");
           betweensplit_dot[1]=betweensplit_dot[1]+event.key;
@@ -1030,7 +1178,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
         var betweensplit_slash = this.getActiveEditor().getValue().split("/")
         var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
 
-        console.log(event.key)
+      //  console.log(event.key)
         if( !isNaN(Number(event.key))){
           var betweensplit_dot = this.getActiveEditor().getValue().split(".");
           betweensplit_dot[1]=betweensplit_dot[1]+event.key;
@@ -1060,7 +1208,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
       // european and other formats
       var dateformatlanguage = 'dd/mm/yyyy' // 31/12/1990
       var splitdate='/';
-      console.log('condition_split in beforekey start : ')
+      //console.log('condition_split in beforekey start : ')
       // console.log(condition_split)
 
       //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
@@ -1068,7 +1216,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
         var betweensplit_slash = this.getActiveEditor().getValue().split("/")
         var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
 
-        console.log(event.key)
+        //console.log(event.key)
         if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
           var betweensplit_dot = this.getActiveEditor().getValue().split(".");
           betweensplit_dot[1]=betweensplit_dot[1]+event.key;
@@ -1098,7 +1246,7 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
 
     }
 
-    console.log('--------- end beforekeydown -----------')  
+    //console.log('--------- end beforekeydown -----------')  
 
   }
 });
