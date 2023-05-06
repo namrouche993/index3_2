@@ -139,7 +139,11 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
              
              /^\d{4}\/\d{1,2}(\/)?$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||   // 2023/12 2022/1/
              /^\d{4}\-\d{1,2}(\-)?$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // 2001-12 2025-1-
-             /^\d{4}\.\d{1,2}(\.)?$/.test(value.trim().replace(/\s*\.\s*/g,"."))   // 2001.2 2025.12.
+             /^\d{4}\.\d{1,2}(\.)?$/.test(value.trim().replace(/\s*\.\s*/g,".")) ||   // 2001.2 2025.12.
+
+             /^\d{1,2}\/\d{4}(\/)?$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||   // 12/2023 1/2022/
+             /^\d{1,2}\-\d{4}(\-)?$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // 12-2001 1-2025-
+             /^\d{1,2}\.\d{4}(\.)?$/.test(value.trim().replace(/\s*\.\s*/g,"."))    // 3.2001 12.2025.
 
             
          ){
@@ -1002,7 +1006,272 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
                   //console.log('before setdata')
                   //console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
                   }
-                  }           
+                  
+                    // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.13 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+} else if (/^\d{4}\-\d{1,2}(\-)?$/.test(oldvalue.trim().replace(/\s*-\s*/g,"-"))){
+                    console.log('condition date 2.2.14   like  2031-12. 2012-06-  2013-2 ')     
+                    console.log(oldvalue)             
+                    var splitdate01='-';
+                    var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                      var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                      if(Number(datepart2)>12){
+                          //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          this.setDataAtCell(row, prop,'','my_source_empty_date')
+                        } else {
+                            if(datepart2.toString().length==1){
+                                var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                                } else {
+                                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                                     }
+                                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                                      //yeardate='20'+yeardate;
+                          }
+                      } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                  var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    this.setDataAtCell(row, prop,'','my_source_empty_date')
+                  } else {
+                    if(datepart2.toString().length==1){
+                      var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                    } else {
+                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+
+                   //yeardate='20'+yeardate;
+                  }
+                  //console.log('before setdata')
+                  //console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+                  
+                    // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.14 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+} else if (/^\d{4}\.\d{1,2}(\.)?$/.test(oldvalue.trim().replace(/\s*\.\s*/g,"."))){
+                    console.log('condition date 2.2.15   like  2031.12. 2012.06.  2013.2 ')     
+                    console.log(oldvalue)             
+                    var splitdate01='.';
+                    var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                      var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+                      if(Number(datepart2)>12){
+                          //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          this.setDataAtCell(row, prop,'','my_source_empty_date')
+                        } else {
+                            if(datepart2.toString().length==1){
+                                var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                                } else {
+                                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                                     }
+                                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                                      //yeardate='20'+yeardate;
+                          }
+                      } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                  var [datepart1,datepart2] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    this.setDataAtCell(row, prop,'','my_source_empty_date')
+                  } else {
+                    if(datepart2.toString().length==1){
+                      var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                    } else {
+                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+
+                   //yeardate='20'+yeardate;
+                  }
+                  //console.log('before setdata')
+                  //console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+  // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.15 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+
+                  } else if (/^\d{1,2}\/\d{4}(\/)?$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/"))){
+                    console.log('condition date 2.2.16   like  12/2023 06/2012/  2/2013/ ')     
+                    console.log(oldvalue)             
+                    var splitdate01='/';
+                    var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                      var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+                      if(Number(datepart2)>12){
+                          //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          this.setDataAtCell(row, prop,'','my_source_empty_date')
+                        } else {
+                            if(datepart2.toString().length==1){
+                                var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                                } else {
+                                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                                     }
+                                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                                      //yeardate='20'+yeardate;
+                          }
+                      } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                  var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    this.setDataAtCell(row, prop,'','my_source_empty_date')
+                  } else {
+                    if(datepart2.toString().length==1){
+                      var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                    } else {
+                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+
+                   //yeardate='20'+yeardate;
+                  }
+                  //console.log('before setdata')
+                  //console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  }
+                    // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.16 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+
+                  } else if (/^\d{1,2}\-\d{4}(\-)?$/.test(oldvalue.trim().replace(/\s*-\s*/g,"-"))){
+                    console.log('condition date 2.2.17   like  12-2023 06-2012-  2-2013- ')     
+                    console.log(oldvalue)             
+                    var splitdate01='-';
+                    var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                      var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+                      if(Number(datepart2)>12){
+                          //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          this.setDataAtCell(row, prop,'','my_source_empty_date')
+                        } else {
+                            if(datepart2.toString().length==1){
+                                var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                                } else {
+                                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                                     }
+                                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                                      //yeardate='20'+yeardate;
+                          }
+                      } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                  var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    this.setDataAtCell(row, prop,'','my_source_empty_date')
+                  } else {
+                    if(datepart2.toString().length==1){
+                      var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                    } else {
+                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+
+                   //yeardate='20'+yeardate;
+                  }
+                  //console.log('before setdata')
+                  //console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  } 
+                    // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.17 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+
+                  } else if (/^\d{1,2}\.\d{4}(\.)?$/.test(oldvalue.trim().replace(/\s*\.\s*/g,"."))){
+                    console.log('condition date 2.2.18   like  12.2023 06.2012.  2.2013. ')     
+                    console.log(oldvalue)             
+                    var splitdate01='.';
+                    var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+                    console.log(datepart1)
+                    console.log(datepart2)
+                    if(navigator_language=='en-CA' || navigator_language=='ko-KR' || navigator_language=='hu-HU' || navigator_language=='ja-JP' || navigator_language=='ZH-CN' ){   // maybe edit later change it later modify it later
+                      var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+                      if(Number(datepart2)>12){
+                          //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          this.setDataAtCell(row, prop,'','my_source_empty_date')
+                        } else {
+                            if(datepart2.toString().length==1){
+                                var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                                } else {
+                                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                                     }
+                                     this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+                                      //yeardate='20'+yeardate;
+                          }
+                      } else {
+                    console.log('else navigator language')
+
+                    //if(navigator_language=='en-US' || navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR' ){
+                  var [datepart2,datepart1] =  oldvalue.split(splitdate01)
+
+                  if(Number(datepart2)>12){
+                    //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
+                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    this.setDataAtCell(row, prop,'','my_source_empty_date')
+                  } else {
+                    if(datepart2.toString().length==1){
+                      var [yeardate,monthdate,daydate]=[datepart1,"0"+datepart2,"01"]
+                    } else {
+                      var [yeardate,monthdate,daydate]=[datepart1,datepart2,"01"]
+                    }
+                    this.setDataAtCell(row, prop,daydate+splitdate01+monthdate+splitdate01+yeardate)
+
+                   //yeardate='20'+yeardate;
+                  }
+                  //console.log('before setdata')
+                  //console.log(daydate+splitdate01+monthdate+splitdate01+yeardate)
+                  } 
+
+
+                      // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.18 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+
+                  }
+          
+           
                 }            
 
           }  else if ( oldvalue =='') {
