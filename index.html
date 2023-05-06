@@ -15,7 +15,7 @@ const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator_l
 console.log('userLocale : ')
 console.log(userLocale)
 console.log(navigator.language)
-const navigator_language='fr-FR'
+const navigator_language='en-CA'
 console.log(navigator_language)
 
 var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -143,9 +143,12 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
 
              /^\d{1,2}\/\d{4}(\/)?$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||   // 12/2023 1/2022/
              /^\d{1,2}\-\d{4}(\-)?$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // 12-2001 1-2025-
-             /^\d{1,2}\.\d{4}(\.)?$/.test(value.trim().replace(/\s*\.\s*/g,"."))    // 3.2001 12.2025.
+             /^\d{1,2}\.\d{4}(\.)?$/.test(value.trim().replace(/\s*\.\s*/g,".")) ||   // 3.2001 12.2025.
 
-            
+             /^\d{4}\/?$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||              // 2023  2022/
+             /^\d{4}[-]?\s*$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||              // 2023  2022-
+             /^\d{4}[.]?\s*$/.test(value.trim().replace(/\s*\.\s*/g,"."))                 // 2023  2022.
+
          ){
            console.log('calback trueeeeeeeeeeeeee')
            callback(true)
@@ -1269,8 +1272,44 @@ function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
   // **********************************************************************************
   // **********************************************************************************
 
-                  }
+                  } else if (/^\d{4}\/?$/.test(oldvalue.trim().replace(/\s*\/\s*/g,"/"))){
+                    console.log('condition date 2.2.19   like  2023 2022/ ')     
+                    console.log(oldvalue)             
+                    var splitdate01='/';
+                    var [yearpart0,yearpart00] =  oldvalue.split(splitdate01)
+                    this.setDataAtCell(row, prop,"01"+splitdate01+"01"+splitdate01+yearpart0)
+                    
+                      // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.19 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+                  } else if (/^\d{4}[-]?\s*$/.test(oldvalue.trim().replace(/\s*-\s*/g,"-")) ){
+                    console.log('condition date 2.2.20   like  2023 2022- ')     
+                    console.log(oldvalue)             
+                    var splitdate01='-';
+                    var [yearpart0,yearpart00] =  oldvalue.split(splitdate01)
+                    this.setDataAtCell(row, prop,"01"+splitdate01+"01"+splitdate01+yearpart0)
+                    
+                      // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.20 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
           
+                } else if (/^\d{4}[.]?\s*$/.test(oldvalue.trim().replace(/\s*\.\s*/g,"."))){
+                    console.log('condition date 2.2.21   like  2023 2022. ')     
+                    console.log(oldvalue)             
+                    var splitdate01='.';
+                    var [yearpart0,yearpart00] =  oldvalue.split(splitdate01)
+                    this.setDataAtCell(row, prop,"01"+splitdate01+"01"+splitdate01+yearpart0)
+                    
+                      // **********************************************************************************
+  // **********************************************************************************
+  // ************************ condition date finished 2.2.21 *********************************
+  // **********************************************************************************
+  // **********************************************************************************
+                  }
            
                 }            
 
