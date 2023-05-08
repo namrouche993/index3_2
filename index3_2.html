@@ -81,15 +81,16 @@
     const smallnbpercent = 1e-10;
     const decimalnumbers_toshow_withoutrenderer_inpercentage=10;
 
-    //const currenciesht = ['$','USD','Euro',"£"];
-    //const regexcurrenciesht = new RegExp(currenciesht.join('|'), 'g');
 
+    //#region date time zone (navigator.language)
     const userLocale = 'en'//Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
     const navigator_language=navigator.language // 'fr-FR' 'en-CA'
     var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     var usTimeZones = [  'America/New_York',  'America/Chicago',  'America/Denver',  'America/Los_Angeles',  'America/Anchorage',  'America/Adak',  'Pacific/Honolulu',  'America/Phoenix',  'America/Indiana/Indianapolis',  'America/Indiana/Knox',  'America/Indiana/Marengo',  'America/Indiana/Petersburg',  'America/Indiana/Tell_City',  'America/Indiana/Vevay',  'America/Indiana/Vincennes',  'America/Indiana/Winamac',  'America/Kentucky/Louisville',  'America/Kentucky/Monticello',  'America/Detroit',  'America/Menominee',  'America/St_Johns',  'America/Puerto_Rico',  'America/Montserrat',  'America/New_York',  'America/North_Dakota/Beulah',  'America/North_Dakota/Center',  'America/North_Dakota/New_Salem'];
+    //#endregion date time zone
+
+
     function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
-  
   const datestr2 = dateStr.split(splitsign);
   const day = parseInt(datestr2[Number(ndays)-1]);
   const month = parseInt(datestr2[Number(nmonths)-1]);
@@ -121,28 +122,25 @@
   return true;
 }
 
-
-
-
-    // Create options for toLocaleString() based on the user's locale
+  //#region decimalseparator and thousand separator 
     const options = { style: 'decimal' };
     const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
-
-    
-
     const DecimalSeparator0 = formattedNumber.substring(9, 10)
     decimalSeparator = DecimalSeparator0
-
     const thousandSeparator00 = formattedNumber.substring(1, 2);
     thousandSeparator0 = thousandSeparator00
-
-    let lastelement_supthan1=0;
-
     console.log('decimal separateur est :' + decimalSeparator +
       ' et thousand est :' + thousandSeparator0 +
       'et le nombre devients :' + formattedNumber)
+   //#endregion decimalseparator and thousand separator 
 
 
+    let lastelement_supthan1=0;
+
+   
+
+
+//#region date format starting
       if(navigator_language=='en-US'){
     if(usTimeZones.includes(userTimeZone)){
       var dateformatlanguage = 'mm/dd/aaaa'; 
@@ -178,7 +176,7 @@
       var splitdate='/';
       //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
     }
-
+    //#endregion date format starting
 
 
       class PercentageEditor extends Handsontable.editors.TextEditor {
@@ -232,7 +230,8 @@
     this.TEXTAREA.setSelectionRange(0, length - 1); // set the cursor position at the end of the value
   }
 }
-    const data = [
+ 
+const data = [
       [1, '', '', 'aa', '', '', 'usaa'],
       [1, '', '', 'aa', '', '', 'usaa'],
       [1, '', '', 'aa', '', '', 'usaa'],
@@ -259,22 +258,15 @@
       [1, '', '', 'aa', '', '', 'usaa'],
 
     ];
-    const data22 = data.map(arr => [...arr]);
+const data22 = data.map(arr => [...arr]);
 
     const hot = new Handsontable(document.getElementById('example'), {
       data: data,
       comments: true,
       colWidths: [50, 150, 120, 30, 90, 30, 30],
-      //allowInsertRow: false,
-      beforeKeyDown: function (event) {
-        // console.log(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length-1))
-        //    console.log(event)
-        //    console.log(event.key)
-        //    console.log(event.code)
-        //    console.log(event.keyCode)
-        //console.log(this.getActiveEditor().getValue())
-        //console.log(event)
 
+      beforeKeyDown: function (event) {  // editable the index later inside 
+     
         var selected = hot.getSelected();
         var currentColIndex = selected ? selected[0][1] : null;
         //console.log(selected)
@@ -537,10 +529,7 @@
           }
         }
       },
-      afterChange: (changes, source) => {
-        // console.log('we are inside afterChange , data22 : ')
-        // console.log(data22)
-      },
+     
       afterCreateRow: function(index, amount) {
         // Your custom logic goes here
         console.log('A new row has been added at index: ', index);
@@ -561,6 +550,7 @@
           commentsPlugin.hide();
         }
       },
+     
       beforeChange: (changes, source) => {
         console.log('we are inside beforeChange x y z :')
         console.log(changes)
@@ -578,12 +568,13 @@
         });
         console.log('end before change')
       },
+
       columns: [
         { type: 'numeric' },
-   // //  start validator_and_renderrs numbers amounts  start_validator_and_renderrs_numbers_amounts    start numbers amounts validator_and_renderrs //
+
         {      
-          className: "htRight htMiddle" ,
-          validator: function (oldvalue, callback) {
+        className: "htRight htMiddle" ,
+        validator: function (oldvalue, callback) { // validator of numbers or amounts
             const thisrow = this.row;
             const thiscol = this.col;
             //const value = oldvalue.replace(regexcurrenciesht, '');
@@ -632,23 +623,10 @@
               callback(false);
             }
           },
-          renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) {
-            //console.log('value in renderer renderes')
-            //console.log(value==null || value =='')
-            // console.log(/^\s*[-+]?(\s*\d{1,3}( \d{3})*(,\d*)?|,\d+)\s*$/.test(value) )
-            // console.log(decimalSeparator)
-            //console.log('start renderer, value is :')
-            //console.log(value)
-            //console.log(decimalSeparator)
-            console.log('renderer :')
-           // console.log('row is '+ row + ' and col : ' + col + ' prop : ' + prop)
-            //console.log(oldvalue)
-           // console.log(oldvalue!==null)
-        //    console.log('****----****')
-            //console.log(col)
-            //console.log(prop)
-            if (col == 1) { //editable column changeable , and it can be removed because renderer is inside column
-
+        renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) { // renderer of numbers or amounts
+          
+            console.log('renderer :')       
+            //if (col == 1) { //editable column changeable , and it can be removed because renderer is inside column
               //const value = oldvalue.replace(regexcurrenciesht, '');
               if (oldvalue !== null) {
                 var value = oldvalue.toString().replace(currencyht, '');
@@ -905,17 +883,17 @@
               } else {
                 console.log('WE ARE INSIDE LAST ELSE RENDERER')
               }
-            }
+            
             cellProperties.className = 'htRight'; 
               }
         },
-       // //  end validator_and_renderrs numbers amounts end_validator_and_renderrs_numbers_amounts end percentage numbers amounts //
 
-       // //  start validator_and_renderrs percentage  start_validator_percentage start percentage validator //
+
+       
         { 
           className: "htRight htMiddle" ,
           editor: PercentageEditor,
-          validator: function (value, callback) {
+          validator: function (value, callback) { // validator of percentage
             const thisrow = this.row;
             const thiscol = this.col;
             //const value = oldvalue.replace(regexcurrenciesht, '');
@@ -936,7 +914,7 @@
               callback(false);
             }
           },
-          renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) {
+          renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) { // renderer of numbers or amounts
             //console.log('renderer percentage start')
 
             if (oldvalue==null){
@@ -1000,12 +978,13 @@
 
           }
         },
-    // //  end validator percentage  end_validator_percentage end percentage validator //
 
-    { type: 'numeric' },
-     // //  start validator_and_renderrs date  start_validator_date start date validator //
-        { name: 'date',
-       validator: function (value, callback) {
+
+       { name:'rien' },
+
+
+      { name: 'date',
+       validator: function (value, callback) {  // validator of dates
          if( value==null || 
              /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(value.trim().replace(/\s*\/\s*/g,"/")) ||  // "31/12 / 1995"
              /^\d{1,2}\-\d{1,2}\-\d{4}$/.test(value.trim().replace(/\s*-\s*/g,"-")) ||   // "31 - 12-1995"
@@ -1046,35 +1025,23 @@
          }
 
        },
-       renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) {
+       renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) { // renderer of dates
             td.innerHTML=oldvalue;
             //data22[row][col] = td.innerHTML;      
             cellProperties.className = 'htRight'; 
             td.style.textAlign = 'right';
        }
       },
-      // //  end validator date  end_validator_date end date validator //
+
+
         { type: 'numeric' },
         { type: 'numeric' }
       ],
       afterValidate: function (isValid, oldvalue, row, prop, source) {
         const commentsPlugin = hot.getPlugin('comments');
         condition_split=true
-
-        if(prop==4){  //editable column changeable edit modify change after edit later change it later modify it later
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ********* ***************** ************* start afterValidate date *******************
-          // ********* ***************** ************* start afterValidate date *******************
-          // ********* ***************** ************* start afterValidate date *******************
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-
-
+        if(prop==4){  // afterValidate of dates,  editable the index later
+        
           if (isValid && oldvalue == null ) {
             console.log('condition date 1')
             console.log('we are inside afterValidate date oldvalue==null')
@@ -2217,19 +2184,9 @@
             console.log('removes')
           }
 
-        } else if(prop==2){ //editable column changeable edit modify change after edit later change it later modify it later
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ********* ***************** ************* start afterValidate percentage  *******************
-          // ********* ***************** ************* start afterValidate percentage  *******************
-          // ********* ***************** ************* start afterValidate percentage  *******************
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-
+        } 
+        else if(prop==2){ // afterValidate of percentage,  editable the index later 
+        
 
         console.log(isValid)
         console.log(oldvalue)
@@ -2398,19 +2355,9 @@
             console.log('do nothing could end here')
             console.log('removes')
           }
-        } else if (prop==1) {  //editable column changeable edit modify change after edit later change it later modify it later
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ********* ***************** ************* start afterValidate numbers amounts *******************
-          // ********* ***************** ************* start afterValidate numbers amounts *******************
-          // ********* ***************** ************* start afterValidate numbers amounts *******************
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-          // ###################################################################    #########################################################################
-
+        }
+        else if (prop==1) {  //
+          
 
           console.log('value : aftervalidate')
           console.log(oldvalue)
@@ -2794,6 +2741,7 @@
       console.log('lastelement_supthan1 start : ' + lastelement_supthan1)
       console.log(changes)
       console.log(src)
+
       if(hot.undoRedo.isUndoAvailable()){
          hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].src=src;
        }
@@ -2808,12 +2756,8 @@
     lastelement_supthan1=hot.undoRedo.doneActions.length
    }
 
-  // my_source_empty_percentage,
-  // my_source_removewhitespacesign_percentage,
-   // my_source_convertitto_0,
-  // my_source_removegreaterdecimalnumbers_percentage
 
-   if(src=='my_source' || src=='my_source_removewhitespacesign' || src=='my_source_removewhitespacesign_percentage' || src=='my_source_removegreaterdecimalnumbers_percentage' || src=='my_source_convertitto_0' ){
+   if(src=='my_source' || src=='my_source_removewhitespacesign' || src=='my_source_removewhitespacesign_percentage' || src=='my_source_removegreaterdecimalnumbers_percentage' || src=='my_source_convertitto_0' || src=='my_source_removewhitespacesign_date' || src=='my_source_date'){
     var shouldBreak = false;
     console.log('before entering loop , lastelement_supthan1 is : ' + lastelement_supthan1)
     for (let index = hot.undoRedo.doneActions.length-1; index >lastelement_supthan1 && !shouldBreak; index--) {
@@ -2841,7 +2785,7 @@
   console.log('shouldbreak is : ' + shouldBreak )
   console.log(shouldBreak==false)
   //console.log('index after the end of loop part : ' + typeof index==undefined ? 'a' : index)
-      if ( (src == 'my_source' || src=='my_source_removewhitespacesign' || src=='my_source_removewhitespacesign_percentage' || src=='my_source_removegreaterdecimalnumbers_percentage' || src=='my_source_convertitto_0') && !shouldBreak) {
+      if ( (src == 'my_source' || src=='my_source_removewhitespacesign' || src=='my_source_removewhitespacesign_percentage' || src=='my_source_removegreaterdecimalnumbers_percentage' || src=='my_source_convertitto_0' || src=='my_source_removewhitespacesign_date' || src=='my_source_date') && !shouldBreak) {
         console.log('afterchange mysource62 and we will pop it')
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
                   console.log('we are inside foreach in renderer')
@@ -2854,7 +2798,7 @@
                 }
                 })
       }
-      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) ){
+      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) ){
         console.log('when src == my_source_empty and changes[0][2]!= "" ')
         //hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes[0][3]=''
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
@@ -2883,10 +2827,8 @@
       console.log(' ----------------------------- ---------------------------- ------')
     })
 
+
     const decimalSwitcher = document.getElementById('decimal-switcher');
-
-    //let decimalSeparator = '.';
-
     decimalSwitcher.addEventListener('click', function () {
       if (decimalSeparator === '.') {
         decimalSeparator = ',';
