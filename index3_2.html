@@ -11,7 +11,7 @@
 
   <!-- https://handsontable.com/docs/javascript-data-grid/software-license/ -->
   <!-- https://github.com/handsontable/handsontable/tree/6.2.2 is the latest MIT LICENCE version -->
-  <!-- <link rel="stylesheet" href="handsontable.full.min.css"> -->
+  <!-- <link rel="stylesheet" href="handsontable.full.min.css">  --> 
 
 </head>
 
@@ -74,7 +74,7 @@
     }
 
     const currencyht = '$' //'DA'
-    const currencyht_toshow = '' // ' $' // ' DA'
+    const currencyht_toshow = '' // ' $' // ' DA'  //
 
     const afterdigit = 2;
     const smallafterdigit = Number(`1e-${afterdigit}`)  // like 0.01 with afterdigit2
@@ -145,6 +145,166 @@
 
 
     let lastelement_supthan1=0;
+
+    const comments_messages = function(value,msg,language){
+    if(msg=='error'){
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide ";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid.";
+        return mm;
+      }
+    }
+    else if (msg=='val_try_to_fix'){
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres";
+        return mm;
+      } else if (language=='en-US'){
+
+      }
+      // ---------------- # date_correct msg # ----------------
+      // ---------------- # date_correct msg # ----------------
+      // ---------------- # date_correct msg # ----------------
+
+    }
+    else if (msg=='val_try_to_fix_comma_instead_dot'){
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virguale à la place du point).";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.replace(/\s+/g, '').trim().replace('.', ',') + " is correct (comma instead of a dot).";
+        return mm;
+
+      }
+    } 
+    else if (msg=='val_try_to_fix_dot_instead_comma'){
+      if(language=='fr-FR'){
+      var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)";
+      return mm;
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.replace(/\s+/g, '').trim().replace(',', '.') + " is correct (dot instead of a comma).";
+        return mm;
+      }
+    }
+    else if (msg=='val_try_to_fix_4'){
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value).toLocaleString(userLocale) + " est correct";
+        return mm;
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + Number(value).toLocaleString(userLocale) + " is correct.";
+        return mm;
+      }
+    }
+    else if (msg=='val_try_to_fix_5'){
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(',', '.') + " est correct";
+        return mm;
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.trim().replace(',', '.') + " is correct.";
+        return mm;
+      }
+    }
+    else if (msg=='val_try_to_fix_6'){
+      if(language=='fr-FR'){
+        var mm =  "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value.replace(/,/g, '')).toLocaleString(userLocale) + " est correct";
+        return mm;
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + Number(value.replace(/,/g, '')).toLocaleString(userLocale) + " is correct.";
+        return mm;
+      }
+    }
+    else if (msg=='val_try_to_fix_fill_only_numbers'){
+      if(language=='fr-FR'){
+        var mm =  "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques";
+        return mm;
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid for this cell. Please enter only numeric values.";
+        return mm;
+      }
+    }
+    else if (msg=='val_try_to_fix_8'){
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(/\./g, '').replace(',', '.') + " est correct";
+        return mm;
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.trim().replace(/./g, '').replace(',', '.') + " is correct.";
+        return mm;
+      }
+    }
+    else if (msg=='date_try_to_fix') {
+      if(language=='fr-FR'){
+        var mm = "la date '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The date '" + value + "' is not valid. Try correcting the formatting according to your parameters.";
+        return mm;
+      }
+      // ---------------- # date_no_valid msg # ----------------
+      // ---------------- # date_no_valid msg # ----------------
+      // ---------------- # date_no_valid msg # ----------------
+    }
+    else if (msg=='date_no_valid') {
+      if(language=='fr-FR'){
+        var mm = "la date '" + value + "' n'est pas valide ";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The date '" + value + "' is not valid.";
+        return mm;
+      }
+    }
+    else if (msg=='val_no_valid') {
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide ";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid.";
+        return mm;
+      }
+
+    }
+    else if (msg=='limit_autor') {
+          // ---------------- # limite_autorise msg # ----------------
+      // ---------------- # limite_autorise msg # ----------------
+      // ---------------- # limite_autorise msg # ----------------
+      if(language=='fr-FR'){
+        var mm = "La valeur que vous avez saisie dépasse la limite autorisée !!";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The value you entered exceeds the allowed limit!";
+        return mm;
+      }
+
+    }
+    else if (msg=='dropdown_included') {
+      if(language=='fr-FR'){
+        var mm = "Veuillez choisir une valeur incluse dans la liste";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "Please choose a value included in the list.";
+        return mm;
+      }
+    }
+    else if (msg=='percentage_no_valid_isvalidfalse_end') {
+      if(language=='fr-FR'){
+        var mm = "la valeur '" + value + "' n'est pas valide, Veuillez entrer uniquement des pourcentages. ";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The value '" + value + "' is not valid, Please enter only percentages";
+        return mm;
+      }
+    }
+   }
+
+   
 
    
 
@@ -1056,7 +1216,8 @@ const data22 = data.map(arr => [...arr]);
                callback(false)
              }
              }
-                       },
+             
+            },
 
         { type: 'numeric' }
       ],
@@ -1187,7 +1348,8 @@ const data22 = data.map(arr => [...arr]);
     console.log('is_validate_date is false')
     console.log(row)
     console.log(prop)
-    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_try_to_fix','fr-FR'))
     this.setDataAtCell(row, prop,'','my_source_empty_date')
   }
                 }
@@ -1256,7 +1418,8 @@ const data22 = data.map(arr => [...arr]);
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
     } 
   } else {
-    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_try_to_fix','fr-FR'))
     this.setDataAtCell(row, prop,'','my_source_empty_date')
   }
 
@@ -1343,7 +1506,9 @@ const data22 = data.map(arr => [...arr]);
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
                      }
                   } else {                
-                    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_try_to_fix','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                  }   
                 
@@ -1437,7 +1602,9 @@ const data22 = data.map(arr => [...arr]);
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
                      }
                   } else {                
-                    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_try_to_fix','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                  }
   // **********************************************************************************
@@ -1528,7 +1695,8 @@ const data22 = data.map(arr => [...arr]);
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
                      }
                   } else {                
-                    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_try_to_fix','fr-FR'))
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                  }
   // **********************************************************************************
@@ -1620,7 +1788,9 @@ const data22 = data.map(arr => [...arr]);
                     console.log('new date format : ' + daydate+splitdate1+monthdate+splitdate1+yeardate)   
                      }
                   } else {                
-                    commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_try_to_fix','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                  }
 // **********************************************************************************
@@ -1858,7 +2028,9 @@ const data22 = data.map(arr => [...arr]);
                       var [datepart1,datepart2] =  oldvalue.split(splitdate01)
                       if(Number(datepart2)>12){
                           //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                          commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                           this.setDataAtCell(row, prop,'','my_source_empty_date')
                         } else {
                             if(datepart2.toString().length==1){
@@ -1877,7 +2049,9 @@ const data22 = data.map(arr => [...arr]);
 
                   if(Number(datepart2)>12){
                     //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                   } else {
                     if(datepart2.toString().length==1){
@@ -1909,7 +2083,9 @@ const data22 = data.map(arr => [...arr]);
                       var [datepart1,datepart2] =  oldvalue.split(splitdate01)
                       if(Number(datepart2)>12){
                           //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                          commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                           this.setDataAtCell(row, prop,'','my_source_empty_date')
                         } else {
                             if(datepart2.toString().length==1){
@@ -1928,7 +2104,9 @@ const data22 = data.map(arr => [...arr]);
 
                   if(Number(datepart2)>12){
                     //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                   // commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                   commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                   } else {
                     if(datepart2.toString().length==1){
@@ -1960,7 +2138,9 @@ const data22 = data.map(arr => [...arr]);
                       var [datepart1,datepart2] =  oldvalue.split(splitdate01)
                       if(Number(datepart2)>12){
                           //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                          commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                           this.setDataAtCell(row, prop,'','my_source_empty_date')
                         } else {
                             if(datepart2.toString().length==1){
@@ -1979,7 +2159,9 @@ const data22 = data.map(arr => [...arr]);
 
                   if(Number(datepart2)>12){
                     //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                   } else {
                     if(datepart2.toString().length==1){
@@ -2011,7 +2193,9 @@ const data22 = data.map(arr => [...arr]);
                       var [datepart2,datepart1] =  oldvalue.split(splitdate01)
                       if(Number(datepart2)>12){
                           //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                          commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                           this.setDataAtCell(row, prop,'','my_source_empty_date')
                         } else {
                             if(datepart2.toString().length==1){
@@ -2030,7 +2214,9 @@ const data22 = data.map(arr => [...arr]);
 
                   if(Number(datepart2)>12){
                     //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                   } else {
                     if(datepart2.toString().length==1){
@@ -2062,7 +2248,9 @@ const data22 = data.map(arr => [...arr]);
                       var [datepart2,datepart1] =  oldvalue.split(splitdate01)
                       if(Number(datepart2)>12){
                           //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                          commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                           this.setDataAtCell(row, prop,'','my_source_empty_date')
                         } else {
                             if(datepart2.toString().length==1){
@@ -2081,7 +2269,9 @@ const data22 = data.map(arr => [...arr]);
 
                   if(Number(datepart2)>12){
                     //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
+
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                   } else {
                     if(datepart2.toString().length==1){
@@ -2113,7 +2303,8 @@ const data22 = data.map(arr => [...arr]);
                       var [datepart2,datepart1] =  oldvalue.split(splitdate01)
                       if(Number(datepart2)>12){
                           //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                          commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                          //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                          commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
                           this.setDataAtCell(row, prop,'','my_source_empty_date')
                         } else {
                             if(datepart2.toString().length==1){
@@ -2132,7 +2323,8 @@ const data22 = data.map(arr => [...arr]);
 
                   if(Number(datepart2)>12){
                     //var [daydate,monthdate,yeardate]=["01",datepart1,datepart2]
-                    commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+                    //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
                     this.setDataAtCell(row, prop,'','my_source_empty_date')
                   } else {
                     if(datepart2.toString().length==1){
@@ -2201,7 +2393,8 @@ const data22 = data.map(arr => [...arr]);
             console.log('do nothing could end here')
             } else {
               console.log('condition date 4')
-            commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            //commentsPlugin.setCommentAtCell(row, prop, "la date '" + oldvalue + "' n'est pas valide ");
+            commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'date_no_valid','fr-FR'))
             this.setDataAtCell(row, prop,'','my_source_empty_date')
             //console.log('do nothing could end here')
             console.log('removes')
@@ -2224,7 +2417,8 @@ const data22 = data.map(arr => [...arr]);
             if(Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim()))>bignbpercent){
               console.log('condition percentage 1,2')
               console.log('if the number is too big')
-              commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+              //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'limit_autor','fr-FR'))
               this.setDataAtCell(row, prop,'','my_source_empty_percentage')
             } else if (Math.abs(Number(oldvalue.toString().replace('%','').replace(',','.').replace(/\s+/g, '').trim())  ) <smallnbpercent) {
               console.log('condition percentage 1,35')
@@ -2274,7 +2468,10 @@ const data22 = data.map(arr => [...arr]);
               } else if (decimalSeparator==','){
                 console.log('condition percentage 2.1.2')            
                   console.log('may cause problem')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virguale à la place du point)");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virguale à la place du point)");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virguale à la place du point)");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'val_try_to_fix_comma_instead_dot','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
               }
             } else if(/^[-+]?(\s*\d+(,\d+)?)\s*$/.test(oldvalue.toString().trim())){
@@ -2282,7 +2479,9 @@ const data22 = data.map(arr => [...arr]);
               if(decimalSeparator=='.'){
                 console.log('condition percentage 2.2.1')
                   console.log('may cause problem')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'val_try_to_fix_dot_instead_comma','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
               } else if (decimalSeparator==','){
                 console.log('condition percentage 2.2.2')
@@ -2318,7 +2517,9 @@ const data22 = data.map(arr => [...arr]);
                 }
                 } else if(decimalSeparator==','){
                   console.log('condition percentage 2.3.2')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virgule à la place du point)");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virgule à la place du point)");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'val_try_to_fix_comma_instead_dot','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
                 }
               } else if (/^[-+]?(\s*\d+(,\d+)?)\s*%$/.test(oldvalue.toString().trim())){
@@ -2326,7 +2527,9 @@ const data22 = data.map(arr => [...arr]);
                 console.log('aa')
                 if(decimalSeparator=='.'){
                   console.log('condition percentage 2.4.1')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + oldvalue.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'val_try_to_fix_dot_instead_comma','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty_percentage');
                 } else if (decimalSeparator==','){
                   console.log('condition percentage 2.4.2')
@@ -2372,7 +2575,9 @@ const data22 = data.map(arr => [...arr]);
             console.log('do nothing could end here')
             } else {
               console.log('condition percentage 4')
-            commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'percentage_no_valid_isvalidfalse_end','fr-FR'))
+
             this.setDataAtCell(row, prop,'','my_source_empty_percentage')
 
             console.log('do nothing could end here')
@@ -2431,7 +2636,9 @@ const data22 = data.map(arr => [...arr]);
                   commentsPlugin.removeCommentAtCell(row, prop);
                 }
               } else {
-                commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
+
                 this.setDataAtCell(row, prop, '', 'my_source_empty');
               }
             }
@@ -2451,7 +2658,9 @@ const data22 = data.map(arr => [...arr]);
                 if (Math.abs(Number(value.trim())) < bignb) {
                   commentsPlugin.removeCommentAtCell(row, prop);
                 } else {
-                  commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                  //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
 
@@ -2469,7 +2678,8 @@ const data22 = data.map(arr => [...arr]);
                 } else {
                   console.log('condition 4.2')
                   //alert('voulez vous dire que 3.16 egale a 3,14 ? si oui changer svp ')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value).toLocaleString(userLocale) + " est correct");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value).toLocaleString(userLocale) + " est correct");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix_4','fr-FR'))
                   commentsPlugin.showAtCell(row, prop);
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
@@ -2502,7 +2712,8 @@ const data22 = data.map(arr => [...arr]);
                   console.log('may cause problem')
                   //alert('do you want to mean that ' + value + ' = ' + value.trim().replace(',', '.') + ' ?' )
                   //this.setDataAtCell(row, prop, value.trim().replace(',', '.'));
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(',', '.') + " est correct");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(',', '.') + " est correct");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix_5','fr-FR'))
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
 
@@ -2517,7 +2728,9 @@ const data22 = data.map(arr => [...arr]);
                 if (Math.abs(Number(value.trim().replace(',', '.'))) < bignb) {
                   commentsPlugin.removeCommentAtCell(row, prop);
                 } else {
-                  commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                  //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
 
@@ -2544,7 +2757,8 @@ const data22 = data.map(arr => [...arr]);
               // may cause problem
               console.log('condition out 6.1')
               //alert('veuillez corriger l'ecriture selon la format de vos parametres)
-              commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value.replace(/,/g, '')).toLocaleString(userLocale) + " est correct");
+              //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value.replace(/,/g, '')).toLocaleString(userLocale) + " est correct");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix_6','fr-FR'))
               this.setDataAtCell(row, prop, '', 'my_source_empty');
 
             } else {
@@ -2568,7 +2782,8 @@ const data22 = data.map(arr => [...arr]);
               if (/^\s*[-+]?(?=\d)(?:(?:\d{1,3}(?:[.,\s]\d{3}){0,2})|(?:\d+))(?:,\d+)?(?<=,[\d,]*),(?!\d*,)\d+(?:\.\d+)?\s*$/.test(value)) {
                 console.log('condition out 7.1')
                 console.log('like 1,234,56 or 1.234.567,8956,78')
-                commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
+                //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
+                commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix_fill_only_numbers','fr-FR'))
                 this.setDataAtCell(row, prop, '', 'my_source_empty');
               } else {
                 console.log('condition out 7')
@@ -2582,7 +2797,8 @@ const data22 = data.map(arr => [...arr]);
                   console.log('condition out 7.3')
                   console.log('1.234.567 whole number')
                   //this.setDataAtCell(row, prop, value.trim().replace(/\./g, '') );
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(/\./g, '').replace(',', '.') + " est correct");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(/\./g, '').replace(',', '.') + " est correct");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix_8','fr-FR'))
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
               }
@@ -2606,7 +2822,8 @@ const data22 = data.map(arr => [...arr]);
 
             } else {
               if (Math.abs(Number(value)) > Number(bignb) || Math.abs(Number(value)) < Number(smallnb)) {
-                commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+                commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
                 this.setDataAtCell(row, prop, '', 'my_source_empty');
               } else {
                 if (Math.abs(Number(value)) < smallafterdigit) {
@@ -2643,8 +2860,10 @@ const data22 = data.map(arr => [...arr]);
             console.log('condition out 9')
             console.log(value)
             if (Math.abs(Number(value)) > Number(bignb) || Math.abs(Number(value)) < Number(smallnb)) {
+              //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
               this.setDataAtCell(row, prop, '', 'my_source_empty');
-              commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+
             } else {
               if (Math.abs(Number(value)) < smallafterdigit) {
                 if (decimalSeparator == '.') {
@@ -2654,7 +2873,9 @@ const data22 = data.map(arr => [...arr]);
 
                 } else if (decimalSeparator == ',') {
                   console.log('scientific format float mantissa and decimal separator is dot/comma and less than 0.01')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+                 // commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix','fr-FR'))
+ 
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
               } else {
@@ -2668,7 +2889,9 @@ const data22 = data.map(arr => [...arr]);
                 } else if (decimalSeparator == ',') {
                   console.log('scientific format float mantissa and decimal separator is dot/comma and greater than 0.01')
                   console.log('scinetific notation and european comma')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+                 // commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                   // this.setDataAtCell(row, prop, parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') );
                   // console.log(parseFloat(value.replace(/\s/g, '')).toString().replace('.',',') )
@@ -2687,13 +2910,17 @@ const data22 = data.map(arr => [...arr]);
             console.log('value1010 : ')
             console.log(value1010)
             if (Math.abs(Number(value1010)) > Number(bignb) || Math.abs(Number(value1010)) < Number(smallnb)) {
+              //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
               this.setDataAtCell(row, prop, '', 'my_source_empty');
-              commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
+
             } else {
               if (Math.abs(Number(value1010)) < smallafterdigit) {
                 if (decimalSeparator == '.') {
                   console.log('scientific format float mantissa and decimal separator is comma/dot and less than 0.01')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres ");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix','fr-FR'))
+
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 } else if (decimalSeparator == ',') {
                   //bg=BigNumber(val)
@@ -2709,7 +2936,9 @@ const data22 = data.map(arr => [...arr]);
                 if (decimalSeparator == '.') {
                   //maybe it will be a problem here : to fix after
                   console.log('scientific format float mantissa and decimal separator is comma/dot and greather than 0.01')
-                  commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
+                  //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
+                  commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix_fill_only_numbers','fr-FR'))
+
                   hot.setDataAtCell(row, prop, '', 'my_source_empty')
                 } else if (decimalSeparator == ',') {
                   //console.log(' ////////////////////////////// we are inside condition out 10 decimal separator , /////////////////////////////////////////////')
@@ -2733,7 +2962,9 @@ const data22 = data.map(arr => [...arr]);
           } else if (isValid == false) {
             console.log('we are before COMMENT CONTENTS !!!!!!!!!!!!!!!!!!!!!!!!!!')
             console.log(value)
-            commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
+            //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques");
+            commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'val_try_to_fix_fill_only_numbers','fr-FR'))
+
             //commentsPlugin.setCommentAtCell(row, prop, 'Please enter only numbers.<br><br><p style="color:red;">Veuillez entrer uniquement des nombres.</p>');
 
             commentsPlugin.showAtCell(row, prop);
@@ -2754,19 +2985,23 @@ const data22 = data.map(arr => [...arr]);
           }
         }
         else if (prop==5){ // afterValidate of dropdown
-          if(value==null){
+         console.log('prop==5')
+          if(oldvalue==null){
               console.log('we are inside null');
               commentsPlugin.removeCommentAtCell(row,prop);
 
             }else if(!isValid){
               console.log('first cond')
-              this.setDataAtCell(row, prop,' ');
-              commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'dropdown_included','fr-FR'))
+              this.setDataAtCell(row, prop,' ','my_source_empty_dropdown');
               //this.setDataAtCell(row, prop,'');
-            } else if (value===' ') {
+            } else if (oldvalue===' ') {
               console.log('2 cond')
               //commentsPlugin.removeCommentAtCell(row,prop);
-              commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'dropdown_included','fr-FR'))
+              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              
               //this.setDataAtCell(row, prop,'');
             } else {
               console.log('3 cond')
@@ -2841,7 +3076,7 @@ const data22 = data.map(arr => [...arr]);
                 }
                 })
       }
-      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) ){
+      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) || (src=='my_source_empty_dropdown' && changes[0][2]!='' )  ){
         console.log('when src == my_source_empty and changes[0][2]!= "" ')
         //hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes[0][3]=''
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
