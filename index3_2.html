@@ -74,13 +74,14 @@
     }
 
     const currencyht = '$' //'DA'
-    const currencyht_toshow = '' // ' $' // ' DA'  //
+    const currencyht_toshow = '' // ' $' // ' DA'  ///
 
     const afterdigit = 2;
     const smallafterdigit = Number(`1e-${afterdigit}`)  // like 0.01 with afterdigit2
     const afterdigitsmallnb = 17;
     const bignb = 1e17;
     const smallnb = 1e-17;
+    const decimalnumbers_toshow_withoutrenderer_innumbers = 10;
 
 
     const afterdigit_percentage = 2; //  how many decimal numbers will be displayed in renderer !
@@ -2499,7 +2500,7 @@ const data22 = data.map(arr => [...arr]);
                   this.setDataAtCell(row, prop, Number(oldvalue.replace(/\s+/g, '').trim().replace('%','')).toFixed(decimalnumbers_toshow_withoutrenderer_inpercentage).replace(/\.?0+$/, "")+'%','my_source_removewhitespacesign_percentage' )
                   commentsPlugin.removeCommentAtCell(row, prop);
                  } else {
-                  if( (oldvalue.toString().replace('%','').split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_inpercentage ){
+                  if( (oldvalue.toString().replace('%','').split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_inpercentage ) {
                     console.log('condition percentage 2.3.1.1.5')
                     if( Math.abs(Number(oldvalue.toString().replace('%','')))<smallafterdigit_percentage ){ // smallafterdigit_percentage like 0.01 in case of 2
                       this.setDataAtCell(row, prop,0,'my_source_convertitto_0');
@@ -2626,7 +2627,6 @@ const data22 = data.map(arr => [...arr]);
                 if (decimalSeparator == '.') {
                   console.log('condition afterValidate whole number .')
                   console.log('do nothing')
-
                   console.log('COULD END HERE')
                   commentsPlugin.removeCommentAtCell(row, prop);
 
@@ -2654,13 +2654,22 @@ const data22 = data.map(arr => [...arr]);
               if (decimalSeparator == '.') {
                 console.log('condition 3 ta3 do nothing')
                 console.log('//1234567.89 (BY DEFAULT VALUE) AMERICAN NUMERIC FORMAT WITHOUT THOUSAND SEPARATOR')
-                console.log('COULD END HERE')
                 if (Math.abs(Number(value.trim())) < bignb) {
-                  commentsPlugin.removeCommentAtCell(row, prop);
+                  //commentsPlugin.removeCommentAtCell(row, prop);
+                  //console.log('COULD END HERE')
+
+                  if((value.trim().toString().split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_innumbers) {
+                    this.setDataAtCell(row, prop,Number(value.trim()).toFixed(decimalnumbers_toshow_withoutrenderer_innumbers).replace(/\.?0+$/, "") , 'my_source');
+                    commentsPlugin.removeCommentAtCell(row, prop);
+                  } else {
+                    console.log('COULD END HERE')
+                    commentsPlugin.removeCommentAtCell(row, prop);
+                  }
+
+
                 } else {
                   //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
                   commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
-
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
 
@@ -2723,14 +2732,26 @@ const data22 = data.map(arr => [...arr]);
                 // do nothing
                 console.log('condition 2 ta3 do nothing')
                 //this.setDataAtCell(row, prop, value.trim());
-                console.log('COULD END HERE')
+                //console.log('COULD END HERE')
 
                 if (Math.abs(Number(value.trim().replace(',', '.'))) < bignb) {
-                  commentsPlugin.removeCommentAtCell(row, prop);
+                  console.log('less than bignb')
+                  console.log(value)
+                  console.log((Number(value.toString().trim().replace(',', '.')).toString().split('.')[1] || '').length)
+                  //commentsPlugin.removeCommentAtCell(row, prop);
+                  if((value.toString().trim().replace(',', '.').toString().split('.')[1] || '').length>decimalnumbers_toshow_withoutrenderer_innumbers) {
+                    console.log('inside first condition')
+                    console.log(Number(value.toString().trim().replace(',', '.')).toFixed(decimalnumbers_toshow_withoutrenderer_innumbers).replace(/\.?0+$/, "").replace('.', ','))
+                    this.setDataAtCell(row, prop,Number(value.trim().replace(',', '.')).toFixed(decimalnumbers_toshow_withoutrenderer_innumbers).replace(/\.?0+$/, "").replace('.', ',') , 'my_source');
+                    commentsPlugin.removeCommentAtCell(row, prop);
+                  } else {
+                    console.log('COULD END HERE')
+                    commentsPlugin.removeCommentAtCell(row, prop);
+                  }
+
                 } else {
                   //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
                   commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'limit_autor','fr-FR'))
-
                   this.setDataAtCell(row, prop, '', 'my_source_empty');
                 }
 
@@ -2743,9 +2764,8 @@ const data22 = data.map(arr => [...arr]);
             console.log('// 1 234 567,89 FRENCH NUMERIC FORMAT WITH THOUSAND SEPARATOR')
             //this.setDataAtCell(row, prop, value.replace(/\s/g, '').replace(',', '.') );
             //console.log(value.replace(/\s/g, '').replace(',', '.'))
-
-            this.setDataAtCell(row, prop, value.replace(/\s/g, ''), 'my_source');
             console.log(value.replace(/\s/g, ''))
+            this.setDataAtCell(row, prop, value.replace(/\s/g, ''), 'my_source');
 
 
 
@@ -3076,7 +3096,7 @@ const data22 = data.map(arr => [...arr]);
                 }
                 })
       }
-      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) || (src=='my_source_empty_dropdown' && changes[0][2]!='' )  ){
+      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) || (src=='my_source_empty_dropdown' && changes[0][2]!=' ' )  ){
         console.log('when src == my_source_empty and changes[0][2]!= "" ')
         //hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes[0][3]=''
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
