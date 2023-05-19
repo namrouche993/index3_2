@@ -75,7 +75,6 @@
 
     const currencyht_nbnb = '$' //'DA'
     const currencyht_toshow_nbnb = '' // ' $' // ' DA'  ///
-
     const afterdigit_nbnb = 2;
     const smallafterdigit_nbnb = Number(`1e-${afterdigit_nbnb}`)  // like 0.01 with afterdigit2
     const afterdigitsmallnb_nbnb = 17;
@@ -84,6 +83,7 @@
     const decimalnumbers_toshow_withoutrenderer_innumbers_nbnb = 10;
     const usegrouping_nbnb_if_true = true;
     const is_negativenb_accepted_nbnb=true;
+    // const is_float_accepted_nbnb = true;  // bayna beli true
 
 
     const currencyht_intint = '' //'DA'
@@ -93,9 +93,10 @@
     const afterdigitsmallnb_intint = 17;
     const bignb_intint = 1e17;
     const smallnb_intint = 1e-17;
-    const decimalnumbers_toshow_withoutrenderer_innumbers_intint = 0;
+    const decimalnumbers_toshow_withoutrenderer_innumbers_intint = 2;
     const usegrouping_intint_if_true = false;
     const is_negativenb_accepted_intint = false;
+    const is_float_accepted_intint = false;
 
 
 
@@ -105,7 +106,8 @@
     const bignbpercent_percperc = 1e10;
     const smallnbpercent_percperc = 1e-10;
     const decimalnumbers_toshow_withoutrenderer_inpercentage_percperc=10;
-    const is_negativenb_accepted_percperc = false;
+    const is_negativenb_accepted_percperc = true;
+    const is_float_accepted_percperc = true;
 
 
     //#region date time zone (navigator.language)
@@ -329,8 +331,29 @@
         return mm;
       }
     }
-   }
+    else if (msg=='refuse_float'){
+      if(language=='fr-FR'){
+        var mm = "Veuillez saisir un nombre entier et non un nombre décimal. (pas de virgule) ";
+        return mm;
 
+      } else if (language=='en-US'){
+        var mm = "Please enter an integer value, not a decimal number.";
+        return mm;
+      }
+    }
+      else if (msg=='email_invalid'){
+      if(language=='fr-FR'){
+        var mm = "Veuillez entrer une adresse email valide.";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "Please enter a valid email address.";
+        return mm;
+      }
+    }
+   
+  }
+  
    
 
    
@@ -460,7 +483,7 @@ const data22 = data.map(arr => [...arr]);
     const hot = new Handsontable(document.getElementById('example'), {
       data: data,
       comments: true,
-      colWidths: [150, 150, 120, 30, 90, 90, 30],
+      colWidths: [150, 150, 120, 30, 90, 90, 100],
 
       beforeKeyDown: function (event) {  // editable the index later inside 
      
@@ -1595,7 +1618,26 @@ const data22 = data.map(arr => [...arr]);
              
             },
 
-        { type: 'numeric' }
+        {className: "htRight htMiddle" ,   // emails
+           validator: function(value, callback) { 
+          console.log(value)
+            if(value==null){
+                 callback(true)
+               }else if(/^[^\s@]+@[^\s@]+([.,][^\s@]+)*\.[a-zA-Z]{2,}$/.test(value.trim().toString().toLowerCase())){
+               callback(true)
+             } else if (value===' ') {
+               callback(true)
+             } else {
+               callback(false)
+             }
+        },          
+        renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) { // renderer of dates
+            td.innerHTML=oldvalue;
+            //data22[row][col] = td.innerHTML;      
+            cellProperties.className = 'htRight'; 
+            td.style.textAlign = 'right';
+       } 
+      }
       ],
       afterValidate: function (isValid, oldvalue, row, prop, source) {
         const commentsPlugin = hot.getPlugin('comments');
@@ -2817,11 +2859,16 @@ const data22 = data.map(arr => [...arr]);
                 if(Number(oldvalue.replace('%','').trim())<0 && is_negativenb_accepted_percperc==false){
                     commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
                     this.setDataAtCell(row, prop, '', 'my_source_empty');
-                } else {  
+                } else {
+                  if(Number.isInteger(Number(oldvalue.replace('%','').trim()))==false && is_float_accepted_percperc==false ){
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                    this.setDataAtCell(row, prop, '', 'my_source_empty');
+                  } else {
                 console.log('condition percentage 1,5.2');
                 console.log('could end here');
                 commentsPlugin.removeCommentAtCell(row, prop);
-                  }
+              }    
+              }
               }
             } else if (/^[-+]?\s*\d+\s*$/.test(oldvalue.toString().trim())){
               console.log('if the value is integer and without %')
@@ -2835,9 +2882,14 @@ const data22 = data.map(arr => [...arr]);
                     commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
                     this.setDataAtCell(row, prop, '', 'my_source_empty');
                 } else {
+                  if(Number.isInteger(Number(oldvalue.replace('%','').trim()))==false && is_float_accepted_percperc==false ){
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                    this.setDataAtCell(row, prop, '', 'my_source_empty');
+                  } else {
                 console.log('condition percentage 1,7.2');
                 console.log('could end here');
                 commentsPlugin.removeCommentAtCell(row, prop);
+                  }
                 }
               }
 
@@ -2896,10 +2948,20 @@ const data22 = data.map(arr => [...arr]);
                   }
 
                   } else {
+                  if(Number(oldvalue.replace('%','').trim())<0 && is_negativenb_accepted_percperc==false){
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
+                    this.setDataAtCell(row, prop, '', 'my_source_empty');
+                } else {
+                  if(Number.isInteger(Number(oldvalue.replace('%','').trim()))==false && is_float_accepted_percperc==false ){
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                    this.setDataAtCell(row, prop, '', 'my_source_empty');
+                  } else {
                   console.log('condition percentage 2.3.1.2')
                   console.log('could end here')
                   commentsPlugin.removeCommentAtCell(row, prop);
                   }
+                }
+                }
                 }
                 } else if(decimalSeparator==','){
                   console.log('condition percentage 2.3.2')
@@ -2944,10 +3006,20 @@ const data22 = data.map(arr => [...arr]);
                                 // }
 
                        } else {
+                        if(Number(oldvalue.replace('%','').replace(',','.').trim())<0 && is_negativenb_accepted_percperc==false){
+                          commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
+                          this.setDataAtCell(row, prop, '', 'my_source_empty');
+                            } else {
+                              if(Number.isInteger(Number(oldvalue.replace('%','').replace(',','.').trim()))==false && is_float_accepted_percperc==false ){
+                    commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                    this.setDataAtCell(row, prop, '', 'my_source_empty');
+                  } else {
                             console.log('condition percentage 2.4.2.2')
                             console.log('could end here')
                             commentsPlugin.removeCommentAtCell(row, prop);
                        }
+                      }
+                      }
 
                    }  
                 }
@@ -3435,6 +3507,33 @@ const data22 = data.map(arr => [...arr]);
               commentsPlugin.removeCommentAtCell(row,prop);
             }
         }
+       
+         else if (prop==6){ // afterValidate of emails
+         console.log('prop==6')
+         console.log(isValid)
+          if(oldvalue==null){
+              console.log('we are inside null email');
+              commentsPlugin.removeCommentAtCell(row,prop);
+
+            }else if(!isValid){
+              console.log('first cond email')
+              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
+              this.setDataAtCell(row, prop,' ','my_source_empty_email');
+              //this.setDataAtCell(row, prop,''); my_source_empty_dropdown
+            } else if (oldvalue===' ') {
+              console.log('2 cond email ')
+              //commentsPlugin.removeCommentAtCell(row,prop);
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
+              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              
+              //this.setDataAtCell(row, prop,'');
+            } else {
+              console.log('3 cond email')
+              commentsPlugin.removeCommentAtCell(row,prop);
+            }
+        }
+       
         else if (prop==0) {  // afterValidate of integers
           
 
@@ -3483,19 +3582,28 @@ const data22 = data.map(arr => [...arr]);
                     commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
                     this.setDataAtCell(row, prop, '', 'my_source_empty');
                   } else {
+                    if(Number.isInteger(Number(value.trim()))==false && is_float_accepted_intint==false ){
+                         commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                         this.setDataAtCell(row, prop, '', 'my_source_empty');
+                    }else {
                      console.log('do nothing')
                      console.log('COULD END HERE')
                      commentsPlugin.removeCommentAtCell(row, prop);
+                    }
                 }
                 } else if (decimalSeparator == ",") {
                   if(Number(value.trim())<0 && is_negativenb_accepted_intint==false){
                     commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
                     this.setDataAtCell(row, prop, '', 'my_source_empty');
                   } else {
+                    if(Number.isInteger(Number(value.trim()))==false && is_float_accepted_intint==false ){
+                         commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                         this.setDataAtCell(row, prop, '', 'my_source_empty');
+                    } else {
                   console.log('do nothing')
                   console.log('COULD END HERE')
                   commentsPlugin.removeCommentAtCell(row, prop);
-                  }
+                  }}
                 }
               } else {
                 //commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie dépasse la limite autorisée !!");
@@ -3527,9 +3635,14 @@ const data22 = data.map(arr => [...arr]);
                     commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
                     this.setDataAtCell(row, prop, '', 'my_source_empty');
                   } else {
+                    if(Number.isInteger(Number(value.trim()))==false && is_float_accepted_intint==false ){
+                         commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                         this.setDataAtCell(row, prop, '', 'my_source_empty');
+                    }else {
                     console.log('COULD END HERE')
                     commentsPlugin.removeCommentAtCell(row, prop);
                   }
+                }
                   }
 
 
@@ -3615,9 +3728,14 @@ const data22 = data.map(arr => [...arr]);
                     commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_negative','fr-FR'))
                     this.setDataAtCell(row, prop, '', 'my_source_empty');
                   } else {
+                    if(Number.isInteger(Number(value.trim().replace(',','.')))==false && is_float_accepted_intint==false ){
+                         commentsPlugin.setCommentAtCell(row, prop,comments_messages(value,'refuse_float','fr-FR'))
+                         this.setDataAtCell(row, prop, '', 'my_source_empty');
+                    }else {
                     console.log('COULD END HERE')
                     commentsPlugin.removeCommentAtCell(row, prop);
                   }
+                }
                   }
 
                 } else {
@@ -3945,7 +4063,7 @@ const data22 = data.map(arr => [...arr]);
                 }
                 })
       }
-      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) || (src=='my_source_empty_dropdown' && changes[0][2]!=' ' )  ){
+      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) || (src=='my_source_empty_dropdown' && changes[0][2]!=' ' ) || (src=='my_source_empty_email' && changes[0][2]!=' ' )  ){
         console.log('when src == my_source_empty and changes[0][2]!= "" ')
         //hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes[0][3]=''
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
