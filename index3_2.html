@@ -3521,7 +3521,18 @@ const data22 = data.map(arr => [...arr]);
               console.log('we are inside null email');
               commentsPlugin.removeCommentAtCell(row,prop);
 
-            }else if(!isValid){
+            }else if (isValid) {
+              if(/^\s+|\s+$/g.test(oldvalue)){
+                console.log('if there is a trainling whitespace between ')
+                console.log('we will call my_source_removewhitespacesign_email')
+                this.setDataAtCell(row, prop, oldvalue.trim(), 'my_source_removewhitespacesign');
+                commentsPlugin.removeCommentAtCell(row,prop);
+
+              } else {
+                console.log('COULD END HERE')
+                console.log('do nothing')
+              }
+            } else if(!isValid){
               console.log('first cond email')
               //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
               commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
