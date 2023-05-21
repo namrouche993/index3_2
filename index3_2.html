@@ -109,6 +109,9 @@
     const is_negativenb_accepted_percperc = true;
     const is_float_accepted_percperc = true;
 
+    const emails_length_em=30;
+    const phonenumbers_length_pn=20;
+
 
     //#region date time zone (navigator.language)
     const userLocale = 'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
@@ -351,7 +354,17 @@
         return mm;
       }
     }
-   
+    else if (msg=='phonenumbers_invalid'){
+      if(language=='fr-FR'){
+        var mm = "Veuillez entrer un numéro de téléphone valide.";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "Please enter a valid phone number.";
+        return mm;
+      }
+    }
+    
   }
   
    
@@ -451,31 +464,25 @@
 }
  
 const data = [    // editable
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
-      ['', '', '', 'aa', '', '', 'usaa'],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+      ['', '', '', 'aa', '', '', '','',''],
+
+
 
     ];
 const data22 = data.map(arr => [...arr]);
@@ -483,9 +490,9 @@ const data22 = data.map(arr => [...arr]);
     const hot = new Handsontable(document.getElementById('example'), {
       data: data,
       comments: true,
-      colWidths: [150, 150, 120, 30, 90, 90, 200],  // editable
+      colWidths: [150, 150, 120, 30, 90, 90, 150,80,80],  // editable
 
-      beforeKeyDown: function (event) {  // editable the index later inside 
+      beforeKeyDown: function (event) {  // editable the 2 indexx later inside 
      
         var selected = hot.getSelected();
         var currentColIndex = selected ? selected[0][1] : null;
@@ -1627,12 +1634,8 @@ const data22 = data.map(arr => [...arr]);
         {className: "htRight htMiddle" ,   // emails
            validator: function(value, callback) { 
           console.log(value)
-            if(value==null){
+            if(value==null || /^[\w.-]+@[a-zA-Z0-9.,-]+\.[a-zA-Z]{2,}$/.test(value.trim()) ) {
                  callback(true)
-               }else if(/^[\w.-]+@[a-zA-Z0-9.,-]+\.[a-zA-Z]{2,}$/.test(value.trim())){
-               callback(true)
-             } else if (value===' ') {
-               callback(true)
              } else {
                callback(false)
              }
@@ -1643,7 +1646,27 @@ const data22 = data.map(arr => [...arr]);
             cellProperties.className = 'htRight'; 
             td.style.textAlign = 'right';
        } 
-      }
+      },
+      { className: "htRight htMiddle" ,   // phone numbers,
+         validator: function(value,callback){
+          console.log(value)
+            if(value==null || /^[\d+\(\)\/\s-]+$/.test(value.trim()) ) {
+                 callback(true)
+             } else {
+               callback(false)
+             }
+         },
+         renderer: function (instance, td, row, col, prop, oldvalue, cellProperties) { // renderer of dates
+            td.innerHTML=oldvalue;
+            //data22[row][col] = td.innerHTML;      
+            cellProperties.className = 'htRight'; 
+            td.style.textAlign = 'right';
+            td.style.whiteSpace = 'normal' // wrap text
+       } 
+
+      },
+      { type:'text' },
+
       ],
       afterValidate: function (isValid, oldvalue, row, prop, source) {
         const commentsPlugin = hot.getPlugin('comments');
@@ -3517,39 +3540,77 @@ const data22 = data.map(arr => [...arr]);
          else if (prop==6){ // afterValidate of emails
          console.log('prop==6')
          console.log(isValid)
-          if(oldvalue==null){
-              console.log('we are inside null email');
-              commentsPlugin.removeCommentAtCell(row,prop);
 
-            }else if (isValid) {
+         if (isValid && oldvalue == null ) {
+            console.log('condition email  1')
+            console.log('we are inside afterValidate email value==null')
+            console.log('COULD END HERE')
+            commentsPlugin.removeCommentAtCell(row, prop);
+          } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
               if(/^\s+|\s+$/g.test(oldvalue)){
                 console.log('if there is a trainling whitespace between ')
                 console.log('we will call my_source_removewhitespacesign_email')
                 this.setDataAtCell(row, prop, oldvalue.trim(), 'my_source_removewhitespacesign');
                 commentsPlugin.removeCommentAtCell(row,prop);
-
+              } else if(oldvalue.length>emails_length_em){
+                commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
+                this.setDataAtCell(row, prop,'','my_source_empty_email');
               } else {
                 console.log('COULD END HERE')
                 console.log('do nothing')
+                commentsPlugin.removeCommentAtCell(row,prop);
               }
-            } else if(!isValid){
-              console.log('first cond email')
-              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
-              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
-              this.setDataAtCell(row, prop,' ','my_source_empty_email');
-              //this.setDataAtCell(row, prop,''); my_source_empty_dropdown
-            } else if (oldvalue===' ') {
-              console.log('2 cond email ')
-              //commentsPlugin.removeCommentAtCell(row,prop);
-              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
-              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
-              
-              //this.setDataAtCell(row, prop,'');
-            } else {
-              if(oldvalue.length>20)
-              console.log('3 cond email')
-              commentsPlugin.removeCommentAtCell(row,prop);
             }
+            else if ( oldvalue =='') {
+            console.log('condition email 3')
+            console.log('do nothing could end here')
+            } else {
+              console.log('condition email 4')
+            //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
+            this.setDataAtCell(row, prop,'','my_source_empty_email')
+
+            console.log('do nothing could end here')
+            console.log('removes')
+          }
+        }
+         else if (prop==7){ // afterValidate of phone numbers
+         console.log('prop==7')
+         console.log(isValid)
+
+         if (isValid && oldvalue == null ) {
+            console.log('condition phonenumbers  1')
+            console.log('we are inside afterValidate phonenumbers value==null')
+            console.log('COULD END HERE')
+            commentsPlugin.removeCommentAtCell(row, prop);
+          } else if (isValid && oldvalue !== undefined && typeof oldvalue === 'string'){
+              if(/^\s+|\s+$/g.test(oldvalue)){
+                console.log('if there is a trainling whitespace between ')
+                console.log('we will call my_source_removewhitespacesign')
+                this.setDataAtCell(row, prop, oldvalue.trim(), 'my_source_removewhitespacesign');
+                commentsPlugin.removeCommentAtCell(row,prop);
+              } else if(oldvalue.length>phonenumbers_length_pn){
+                commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'phonenumbers_invalid','fr-FR'))
+                this.setDataAtCell(row, prop,'','my_source_empty_phonenumbers');
+              } else {
+                console.log('COULD END HERE')
+                console.log('do nothing')
+                commentsPlugin.removeCommentAtCell(row,prop);
+              }
+            }
+            else if ( oldvalue =='') {
+            console.log('condition phonenumbers 3')
+            console.log('do nothing could end here')
+            } else {
+              console.log('condition phonenumbers 4')
+            //commentsPlugin.setCommentAtCell(row, prop, "la valeur '" + oldvalue + "' n'est pas valide ");
+            commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'phonenumbers_invalid','fr-FR'))
+
+            this.setDataAtCell(row, prop,'','my_source_empty_phonenumbers')
+
+            console.log('do nothing could end here')
+            console.log('removes')
+          }
         }
        
         else if (prop==0) {  // afterValidate of integers
@@ -4081,7 +4142,7 @@ const data22 = data.map(arr => [...arr]);
                 }
                 })
       }
-      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) || (src=='my_source_empty_dropdown' && changes[0][2]!=' ' ) || (src=='my_source_empty_email' && changes[0][2]!=' ' )  ){
+      if( (src == 'my_source_empty' && changes[0][2]!='')  || (src=='my_source_empty_percentage' && changes[0][2]!='' ) || (src=='my_source_empty_date' && changes[0][2]!='' ) || (src=='my_source_empty_dropdown' && changes[0][2]!=' ' ) || (src=='my_source_empty_email' && changes[0][2]!='' ) || (src=='my_source_empty_phonenumbers' && changes[0][2]!='' ) ){
         console.log('when src == my_source_empty and changes[0][2]!= "" ')
         //hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes[0][3]=''
         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length - 2].changes.forEach((x, y) => {
