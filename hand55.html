@@ -1,47 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Handsontable Comment Example</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/plugins/comments/comments.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
 </head>
 <body>
   <div id="example"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@9.1.1/dist/handsontable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@9.1.1/dist/plugins/autoColumnSize.min.js"></script>
   <script>
-    var container = document.getElementById('example');
-    var hot = new Handsontable(container, {
-      data: [
-        ['Name', 'Age', 'Gender'],
-        ['John', 25, 'Male'],
-        ['Jane', 30, 'Female']
-      ],
-      colHeaders: true,
-      rowHeaders: true,
-      comments: {
-        displayDelay: 100
-      }
+    document.addEventListener("DOMContentLoaded", function() {
+      var container = document.getElementById("example");
+
+      var data = [
+        ["Name", "Age", "Country"],
+        ["John Doe", 25, "USA"],
+        ["Jane Smith", 30, "Canada"],
+        ["Robert Johnson", 35, "Australia"]
+      ];
+
+      var hot = new Handsontable(container, {
+        data: data,
+        colHeaders: true,
+        colWidths: [90,70,60],
+        //wordWrap:false,
+        afterChange: function(changes, source) {
+  // Check if the change was made by the user
+  if (source === 'edit') {
+    var row = changes[0][0];
+    var col = changes[0][1];
+    var newValue = changes[0][3];
+    
+    // Calculate the necessary width based on the length of the new value
+    var newWidth = Math.min(newValue.length * 7, 140); // Adjust the multiplication factor as per your preference
+    var currentWidths = hot.getSettings().colWidths;
+    currentWidths[col] = newWidth;
+
+    console.log('newWidth : ')
+    console.log(newWidth)
+    console.log(newValue.length)
+    // Set the new column width dynamically
+    hot.updateSettings({
+      // modifyColWidth: function(width, col) {
+      //   return newWidth;
+      // }
+
+      colWidths: function(index) {
+                if (index === col) {
+                  return newWidth;
+                }
+                return currentWidths
+              }
     });
+  }
+},
 
-    var commentsPlugin = hot.getPlugin('comments');
-    commentsPlugin.setCommentAtCell(1, 1, 'This is John\'s age.');
-    commentsPlugin.setCommentAtCell(2, 2, 'This is Jane\'s gender.');
 
-    hot.addHook('beforeCommentSave', function (comment, context) {
-      // make comments read-only
-      context.readOnly = true;
+      });
     });
-
-    // make existing comments read-only
-    var comments = commentsPlugin.getComments();
-    for (var i = 0; i < comments.length; i++) {
-      var comment = comments[i];
-      var commentOptions = commentsPlugin.getComment(comment.row, comment.col).options;
-      commentOptions.readOnly = true;
-      commentsPlugin.setComment(comment.row, comment.col, comment.comment, commentOptions);
-    }
   </script>
 </body>
 </html>
