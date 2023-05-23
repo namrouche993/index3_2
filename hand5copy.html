@@ -20,6 +20,8 @@
 <script src="jspdf.plugin.autotable.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+<script src="https://cdn.jsdelivr.net/npm/accounting/accounting.min.js"></script>
+
 
 
     <title>Document</title>
@@ -103,6 +105,21 @@ div#example1 {
 </style>
 <script>
 
+function isAccountingFormatted(value) {
+  const regex = /^\D*\d{1,3}([\s,]\d{3})*\,\d{2}$/; // Matches strings like "€ 1 234,56"
+  return typeof value === 'string' && regex.test(value);
+}
+
+var skiformat = [];
+
+const formatter = new Intl.NumberFormat('fr-FR', {
+            style: 'decimal',
+            useGrouping: true,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+
+
     const warningpopup = ()=>{
         toastr.options = {
           "timeOut": 2000,
@@ -123,7 +140,7 @@ div#example1 {
       numOferrorPopups--;
       console.log(`Number of popups: ${numOferrorPopups}`);
     },
-    "timeOut": 2000,
+    "timeOut": 2500,
     "positionClass": "toast-bottom-right",
   };
   toastr.error('Veuillez entrer un nombre', 'Erreur');
@@ -176,8 +193,8 @@ function handleFct(){
             ['','Etat444','','','','','','','','','','','','','','','','',   ''],
             //['','','','','','','','','','','','','','','','','',''],
             //[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
-            ['','Projet','Consistance de Projet',"Taux d'avancement des travaux logement","Taux d'avancement des travaux VRD",'Raccordement en énergie Electrique','','','','','','Raccordement en énergie Gaziere','','','','','',   ''],
-            ['','','','','',"Taux d'avancement des travaux",'Montant des travaux (devis SADEG)','Montant payé (DA)','Créances détenues travaux','Contraintes','Catégoris de Contraintes',"Taux d'avancement des travaux",'Montant des travaux (devis SADEG)','Montant payé (DA)','Créances détenues travaux','Contraintes','Catégoris de Contraintes',   ''],
+            ['','Projet','Consistance de Projet',"Taux d'avancement des travaux logement","Taux d'avancement des travaux VRD",'Raccordement en énergie Electrique','','','','','Raccordement en énergie Gaziere','','','','',   ''],
+            ['','','','','',"Taux d'avancement des travaux",'Montant des travaux (devis SADEG)','Montant payé (DA)','Créances détenues travaux','Contraintes',"Taux d'avancement des travaux",'Montant des travaux (devis SADEG)','Montant payé (DA)','Créances détenues travaux','Contraintes',   ''],
             /*
             ['','Projet 500 logts LPAA BLIDA ET ORAN pour construction urbaine promotionelle',
             '200','16%','15%',
@@ -188,8 +205,8 @@ function handleFct(){
             '99 999 999 000,00 DA','Projet en train de paiement','En entrain de paiement',
              '']      
              */
-             ['','','','','','','','','','','','','','','','','','',   ''],
-             ['','','','','','','','','','','','','','','','','','',   '']       
+             ['','','','','','','','','','','','','','','','','',   ''],
+             ['','','','','','','','','','','','','','','','','',   '']       
             //['','','','','','','','','','','','','','','','','','',   '']            
 
             
@@ -197,7 +214,7 @@ function handleFct(){
             ) 
         
         for(i=0 ; i<=last_row_after_header ; i++) {
-          zzrow=['','','','','','','','','','','','','','','','','','',   '']
+          zzrow=['','','','','','','','','','','','','','','','','',   '']
           ddata.push(zzrow);
         }
 
@@ -225,7 +242,7 @@ var normalcellloop = (imin,imax)=>{
     { row: 4, col: 4, className: 'htCenter htMiddle custom-titlecell' },
     { row: 4, col: 5, className: 'htCenter htMiddle custom-titlecell' },
 
-    { row: 4, col: 11, className: 'htCenter htMiddle custom-titlecell' },
+    { row: 4, col: 10, className: 'htCenter htMiddle custom-titlecell' },
 
     { row: 5, col: 1, className: 'htCenter htMiddle custom-titlecell2' },
     { row: 5, col: 2, className: 'htCenter htMiddle custom-titlecell2' },
@@ -237,19 +254,19 @@ var normalcellloop = (imin,imax)=>{
     { row: 5, col: 7, className: 'htCenter htMiddle custom-titlecell2' },
     { row: 5, col: 8, className: 'htCenter htMiddle custom-titlecell2' },
     { row: 5, col: 9, className: 'htCenter htMiddle custom-titlecell2' },
-    { row: 5, col: 10, className: 'htCenter htMiddle custom-titlecell2' },
+    //{ row: 5, col: 10, className: 'htCenter htMiddle custom-titlecell2' },
 
     
+    { row: 5, col: 10, className: 'htCenter htMiddle custom-titlecell2' },
     { row: 5, col: 11, className: 'htCenter htMiddle custom-titlecell2' },
     { row: 5, col: 12, className: 'htCenter htMiddle custom-titlecell2' },
     { row: 5, col: 13, className: 'htCenter htMiddle custom-titlecell2' },
     { row: 5, col: 14, className: 'htCenter htMiddle custom-titlecell2' },
-    { row: 5, col: 15, className: 'htCenter htMiddle custom-titlecell2' },
-    { row: 5, col: 16, className: 'htCenter htMiddle custom-titlecell2' },
+    //{ row: 5, col: 16, className: 'htCenter htMiddle custom-titlecell2' },
   ];
 
   for(i=imin ; i<=imax ; i++) {
-    for(j=1 ; j<=16 ; j++){
+    for(j=1 ; j<=14 ; j++){
       if(j==2){
         zz={ row: i, col: j, className: 'htCenter htMiddle custom-normalcell' };
         aus.push(zz);
@@ -266,8 +283,10 @@ var columnsdata = (imin,imax) => {
   fa=[]
   fa.push({data:0,readOnly:true})
     //,type:'numeric'})
-  const rr = this.row;
-  for(i=imin+1;i<imax-1;i++){
+    const rr = this.row;
+        const cc = this.col;
+
+    for(i=imin+1;i<imax-1;i++){
     
   if(i == 3){
       dd={data:i,type:'numeric',
@@ -284,29 +303,17 @@ var columnsdata = (imin,imax) => {
            );
          } else {
            callback(true);
+
          }
         }
        }
 
     ,allowInvalid: false}
-  } else if (i==4) {
-      dd={data:i,type:'numeric',
-      validator: function(value, callback) {
-        const rr = this.row;
-        if(rr>5){
-        if(isNaN(Number(value)) && Number(value)>=0 && Number(value)<=100 || value==''){
-          callback(true)
-        } else {
-          callback(false, errorpopup())
-        }
-      }   
-    }
-    }
-    } else if(i == 2){
+  }
+  else if(i == 4){
       dd={data:i,type:'numeric',
        validator: function(value, callback) {
         const rr = this.row;
-
         if(rr>5){
         console.log(value)
          if (isNaN(Number(value))) {
@@ -317,20 +324,74 @@ var columnsdata = (imin,imax) => {
            );
          } else {
            callback(true);
-           //hot.setCellMeta(0, 0, 'format', '0.00%');
-
          }
         }
        }
 
     ,allowInvalid: false}
-  } else {
+  }
+  else if(i == 2){
+      dd={data:i,type:'numeric',
+       validator: function(value, callback) {
+        const rr = this.row;
+        const cc = this.col;
+
+        if(rr>5){
+        console.log(value)
+         if (isNaN(Number(value))) {
+           callback(false, 
+           errorpopup(),
+           console.log('ERRRROR PUP IS DONNEEEE') 
+           
+           );
+         } else {
+           callback(true)
+           valueskiformat=[rr,cc]
+           skiformat.push(valueskiformat)
+           console.log('skiformat is : ')
+           console.log(skiformat)
+         }
+        }
+       }
+
+    ,allowInvalid: false}    
+  }
+  else if(i == 7){
+      dd={data:i,type:'numeric',
+       validator: function(value, callback) {
+        const rr = this.row;
+        const cc = this.col;
+
+        if(rr>5){
+        console.log('value col 7 is ')
+        console.log(value)
+        if(isAccountingFormatted(value)){
+          return;
+        } else if (isNaN(Number(value))==false  ){
+          var formattedNumber = accounting.formatMoney(Number(value), '€', 2, ' ', ',');
+          console.log('formattedNumber is ' + formattedNumber)
+           callback(true,
+           hot.setDataAtCell(rr,cc,formattedNumber)
+          )
+// OR: OR : || 
+        } else {
+          callback(false, 
+           //errorpopup(),
+          console.log('ERRRROR PUP col 7 IS DONNEEEE') 
+          )
+        }
+        }
+       }
+
+    ,allowInvalid: false}    
+  }
+  else {
       dd={data:i}
     }
     
     fa.push(dd)
 }
-fa.push({data:17,readOnly:true})
+fa.push({data:15,readOnly:true})
 return fa
 }
 
@@ -343,9 +404,9 @@ hot = new Handsontable(container, {
           colHeaders: true,
           manualColumnResize: true,
           manualRowResize: true,
-          colWidths: [20,200,100,120,120, 120,120,120,120,100,100,  120,120,120,120,100,100,    20 ],
+          colWidths: [20,200,100,120,120, 120,120,120,120,100,  120,120,120,120,100,    20 ],
           undo: true,
-          columns: columnsdata(0,18),
+          columns: columnsdata(0,16),
           contextMenu: {
             items:{
               "copy":{name:"Copier"},
@@ -361,20 +422,14 @@ hot = new Handsontable(container, {
           cells:(row,column)=>{
             var cellProperties = {};
             if(row<6){
-              cellProperties.readOnly = true;             
+              cellProperties.readOnly = true;
             }
-              // } else {
-            // if(column==2){
-            //         cellProperties.type = 'numeric';
-            //         cellProperties.format = '0,0.00 $';
-            // }
-            // }
             return cellProperties;
           },
           mergeCells: [
-    { row: 0, col: 1, rowspan: 1, colspan: 16 },
-    { row: 1, col: 1, rowspan: 1, colspan: 16 },
-    { row: 2, col: 1, rowspan: 1, colspan: 16 },
+    { row: 0, col: 1, rowspan: 1, colspan: 15 },
+    { row: 1, col: 1, rowspan: 1, colspan: 15 },
+    { row: 2, col: 1, rowspan: 1, colspan: 15 },
 
 
     { row: 4, col: 1, rowspan: 2, colspan: 1 },
@@ -382,19 +437,21 @@ hot = new Handsontable(container, {
     { row: 4, col: 3, rowspan: 2, colspan: 1 },
     { row: 4, col: 4, rowspan: 2, colspan: 1 },
 
-    { row: 4, col: 5, rowspan: 1, colspan: 6 },
-    { row: 4, col: 11, rowspan: 1, colspan: 6 },
+    { row: 4, col: 5, rowspan: 1, colspan: 5 },
+    { row: 4, col: 10, rowspan: 1, colspan: 5 },
 
 
 
 
     ],
           cell: normalcellloop(6,6+last_row_after_header),
-          hiddenColumns: {columns:[17]},
+          hiddenColumns: {columns:[15]},
           DragToScroll: true,
           copyPaste: true,
           afterValidate: function(isValid, value, row, prop, source) {
             if (!isValid) {
+              if(prop!=7){
+                
               console.log('value inside aftervalidate is :')
               console.log(value)
               console.log('this getdata : ')
@@ -406,6 +463,12 @@ hot = new Handsontable(container, {
                             
               //console.log(this.loadData(this.getData()));
 
+            }
+              } else {
+              if ( prop==2) {
+                //hot.setDataAtCell(row,prop,formatter.format(value))               
+
+              }
             }
           },
           beforeChange:(changes,sources)=>{
@@ -421,19 +484,7 @@ hot = new Handsontable(container, {
                  from: { row: coords[0].startRow, col: coords[0].startCol }, 
                  to:   { row: coords[0].endRow, col: coords[0].endCol }
              }
-            
-            /*hot.updateSettings({ 
-    customBorders: [ 
-        { range: rangecopied, 
-        top:    { width: 3, color: '#226496' },
-        left:   { width: 3, color: '#518cb8' },
-        bottom: { width: 3, color: '#1a4e74' }, 
-        right:  { width: 3, color: '#2670a7' }
-        }, 
-    ] 
-});*/
-
-//hot.init();
+       
 
           },
           
@@ -456,11 +507,11 @@ hot = new Handsontable(container, {
           
 
         },
-          afterChange:(changes,source)=>{
+        afterChange:(changes,source)=>{
             console.log("we are inside afterChange : ")
             console.log(source)
             console.log(changes)
-            if(source != 'loadData'){
+            // if(source != 'loadData'){
 
             //   if(changes[0][1]==2 && changes[0][0]>5){
             //    if(isNaN(Number(changes[0][3]))) {
@@ -468,26 +519,8 @@ hot = new Handsontable(container, {
             //     hot.setDataAtCell(changes[0][0],changes[0][1],changes[0][2])
             //    }
             //  }
-             //const dd = true;
-             
-             /*if (changes[0][1]==3 && changes[0][0]>5){
-              if(!isNaN(Number(changes[0][3]))) {
-                const valuedviedby100 = Number(changes[0][3])/100;
-                const valuedviedby100percent = valuedviedby100 + '%'
-                console.log(valuedviedby100percent)
-                console.log('we are inside col 3 and if kda kda : ')
-
-                //hot.setDataAtCell(changes[0][0],changes[0][1],valuedviedby100)
-                hot.setCellMetaObject(changes[0][0],changes[0][1], { type: 'numeric',
-                      numericFormat: {
-                                pattern: {output:'percent',mantissa:1}
-                                }}
-                                );
-                hot.render();
-               
-              }
-             }*/
-            } 
+         
+            // } 
           }    
 });
 
@@ -502,14 +535,14 @@ function isBlank(str) {
 const downloadfile=()=>{
     
   var doc = new jsPDF({orientation:'landscape'});
-doc.setFontSize(6)
+//doc.setFontSize(16)
 var hotInstance = hot;
 var table = [];
 var skipped = []
 var cells = hotInstance.getData()
 for (var i = 4; i < cells.length; i++) {
   var row = [];
-  for (var j = 1; j < 17; j++) {
+  for (var j = 1; j < 15; j++) {
       if(existsInArray(skipped,[i,j])){
           continue;
       }
@@ -532,7 +565,11 @@ for (var i = 4; i < cells.length; i++) {
     var style = window.getComputedStyle(element) || '';
     var bgcolor = style.getPropertyValue('background-color') || '';
     var txtalign = style.getPropertyValue('text-align') || '';
-    var styles = {fillColor: bgcolor,halign:txtalign}
+    if(i==4 || i==5){
+      var styles = {fillColor: bgcolor,halign:txtalign,fontSize:6}
+    } else {
+      var styles = {fillColor: bgcolor,halign:txtalign,fontSize:8}
+    }
 
     } else {
     var styles = cellProperties.style || {}
@@ -565,10 +602,14 @@ doc.autoTable({
                theme:'grid',
                     margin:{left:4},
                 styles: {
-                fontSize: 5,
+                //fontSize: 8,
                 lineColor: 50,
                 textColor:50,
-                columnWidth: "20px",
+                //             [20,200,100,120,120, 120,120,120,120,100,  120,120,120,120,100,    20 ]
+                //columnWidth: [5,  30 ,10 ,15, 15,  15, 15, 15, 15,10 ,   15, 15 ,15 ,15, 10,     5],
+                columnWidth:   [450 ,10 ,15, 15,  15, 15, 15, 15,10 ,   15, 15 ,15 ,15, 10],
+
+                //cellWidth: "40px"
                 //cellWidth: 'wrap'
                 },
                 
@@ -580,7 +621,6 @@ hot.addHook('afterChange', function(changes, src) {
   console.log(changes)
   console.log(src)
   if(src != 'loadData'){
-  
  
     console.log('WE ARE INSIDE EXTERNAL AFTERCHANGE ')
     console.log(changes)
@@ -588,56 +628,56 @@ hot.addHook('afterChange', function(changes, src) {
     const chh2 = changes
 
     if (!setter) {
-      console.log('chh2  : ')
-      console.log(chh2)
-      setter = true;
-      const chh3=chh2.map(([i,j,k,p])=>{
-        // if(p==''){
-        //     pa=''
-        // } else {
-        //     pa=Number(p.toString().replace('%','').replace(',','.'))
-        // }
+//       console.log('chh2  : ')
+//       console.log(chh2)
+//       setter = true;
+//       const chh3=chh2.map(([i,j,k,p])=>{
+//         // if(p==''){
+//         //     pa=''
+//         // } else {
+//         //     pa=Number(p.toString().replace('%','').replace(',','.'))
+//         // }
 
-        ddata[i][j]=p
+//         ddata[i][j]=p
 
 
-if(navigator.language=='fr-FR'){
-  console.log(p)
-  p=numbro.unformat(p.replace(',','.'))
-  console.log('p 2nd : ')
-  console.log(p)
-}
-if(j==3) {
+// if(navigator.language=='fr-FR'){
+//   console.log(p)
+//   p=numbro.unformat(p.replace(',','.'))
+//   console.log('p 2nd : ')
+//   console.log(p)
+// }
+// if(j==3) {
   
-        if(!isNaN(p) && !isBlank(p)) {
+//         if(!isNaN(p) && !isBlank(p)) {
             
-        pn=numbro(p/100).format({ output: 'percent',mantissa:2 });
-        preplace=pn.replace('.',',')
+//         pn=numbro(p/100).format({ output: 'percent',mantissa:2 });
+//         preplace=pn.replace('.',',')
 
-            //const pp = pa/100;
+//             //const pp = pa/100;
 
-         return [i,j, preplace]
+//          return [i,j, preplace]
             
-        } else {
-            return [i,j,k]
-        }
+//         } else {
+//             return [i,j,k]
+//         }
         
-}
-    })
- if(j==3){
+// }
+//     })
+//  if(j==3){
   
-    console.log('CHH3 : ')
-    console.log(chh3)
-    console.log('we are inside col 3 and if kda kda : ')
-    hot.setDataAtCell(chh3)
+//     console.log('CHH3 : ')
+//     console.log(chh3)
+//     console.log('we are inside col 3 and if kda kda : ')
+//     hot.setDataAtCell(chh3)
 
-  }
-    // hot.setCellMetaObject(chh3, { type: 'numeric',
-    //                    numericFormat: {
-    //                              pattern: {output:'percent',mantissa:1}
-    //                              }}
-    //                              );
-    // hot.render();
+//   }
+//     // hot.setCellMetaObject(chh3, { type: 'numeric',
+//     //                    numericFormat: {
+//     //                              pattern: {output:'percent',mantissa:1}
+//     //                              }}
+//     //                              );
+//     // hot.render();
 
    }  else {
       setter = false;
