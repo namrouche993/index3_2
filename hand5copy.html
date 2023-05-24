@@ -7,8 +7,13 @@
     
 </style><!-- Ugly Hack due to jsFiddle issue -->
 
-<script src="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.js"></script>
-<link type="text/css" rel="stylesheet" href="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.min.css">
+<!-- <script src="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.min.css"> -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+
 <script src="http://docs.handsontable.com/0.20.2/bower_components/numeraljs/languages/de.js"></script>
 <script src="https://unpkg.com/sheetclip"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -596,22 +601,43 @@ for (var i = 4; i < cells.length; i++) {
   }
   table.push(row);
 }
+console.log('tableeeeeeeeeeeeee :')
+console.log(table)
 
-doc.autoTable({
+doc.autoTable({  // the complete width of the A4 landscape page is : 297 (i think the unit is by mm so 297mm x 210mm  or 210mm x 297mm)
+               
                body:table,
                theme:'grid',
-                    margin:{left:4},
+                margin:{left:4,right:4},
                 styles: {
                 //fontSize: 8,
                 lineColor: 50,
                 textColor:50,
                 //             [20,200,100,120,120, 120,120,120,120,100,  120,120,120,120,100,    20 ]
                 //columnWidth: [5,  30 ,10 ,15, 15,  15, 15, 15, 15,10 ,   15, 15 ,15 ,15, 10,     5],
-                columnWidth:   [450 ,10 ,15, 15,  15, 15, 15, 15,10 ,   15, 15 ,15 ,15, 10],
 
                 //cellWidth: "40px"
                 //cellWidth: 'wrap'
                 },
+                columnStyles : {
+                  0: { columnWidth: 320 }, 
+                  1: { columnWidth: 20 }, 
+                  2: { columnWidth: 10 },
+                  3: { columnWidth: 20 },
+                  4: { columnWidth: 20 },
+                  5: { columnWidth: 20 },
+                  6: { columnWidth: 20 },
+                  7: { columnWidth: 20 },
+                  8: { columnWidth: 20 },
+                  9: { columnWidth: 20 },
+                  10: { columnWidth: 20 },
+                  11: { columnWidth: 20 },
+                  12: { columnWidth: 20 },
+                  13: { columnWidth: 20 },
+                  14: { columnWidth: 20 },
+                  15: { columnWidth: 20 },
+                  16: { columnWidth: 20 }
+                }
                 
 })
 doc.save('taaa.pdf')
@@ -692,11 +718,64 @@ hot.addHook('afterChange', function(changes, src) {
  
 
 
+  var doc = new jsPDF({orientation:'landscape'});
+
+// Data for the table
+var data = [
+  ["Column 1", "C2", "C3","C4","C5","C6","C7","C8","C9","C10","C11","C12","C13","C14"],
+  ["Row 1", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V"],
+  ["Row 2", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V"],
+];
+/*
+a1+a2+a3+a3   + a3+a4+a4+a4+a5     + a3+a4+a4+a4+a5
+a1+a2+5a3+6a4+2a5=296
+4a3+3/2a3+a3+12a3+4a3=296
+
+a1=4a3
+a2=1.5a3
+a4=2a3
+a5=2a3
+
+a3=11
+// Column styles with widths
+var columnStyles = {
+  0: { columnWidth: 55 }, // Column 1 width
+  1: { columnWidth: 17 }, // Column 2 width
+  2: { columnWidth: 11 },  
+  3: { columnWidth: 11 },  
+  4: { columnWidth: 11 },  
+  5: { columnWidth: 22 },  
+  6: { columnWidth: 22 },  
+  7: { columnWidth: 22 },  
+  8: { columnWidth: 22 },
+  9: { columnWidth: 11 },  
+  10: { columnWidth: 22 },  
+  11: { columnWidth: 22 },  
+  12: { columnWidth: 22 },  
+  13: { columnWidth: 22 },  
  
+
+};
+
+// Generate the table
+doc.autoTable({
+  margin:{left:1,right:1},
+  //head: [data[0]],    // Table header
+  body: data.slice(1), // Table body without header
+  columnStyles: columnStyles,
+  theme:'grid',
+  //columnWidth:   [450 ,10 ,15],
+
+});
+
+doc.save("table.pdf");
+ */
 </script>
 
 </body>
 </html>
+
+
 
 
 
