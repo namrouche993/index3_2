@@ -571,9 +571,9 @@ for (var i = 4; i < cells.length; i++) {
     var bgcolor = style.getPropertyValue('background-color') || '';
     var txtalign = style.getPropertyValue('text-align') || '';
     if(i==4 || i==5){
-      var styles = {fillColor: bgcolor,halign:txtalign,fontSize:6}
+      var styles = {fillColor: bgcolor,halign:txtalign}//,fontSize:6}
     } else {
-      var styles = {fillColor: bgcolor,halign:txtalign,fontSize:8}
+      var styles = {fillColor: bgcolor,halign:txtalign}//,fontSize:8}
     }
 
     } else {
@@ -604,40 +604,146 @@ for (var i = 4; i < cells.length; i++) {
 console.log('tableeeeeeeeeeeeee :')
 console.log(table)
 
+
+
+
+
+
+
+let font_size=7;
+function normalmincolwidth(fontsize) {
+    if(fontsize==7){
+        return [19,17,17,17,17,  1.15*17, 1.10*17, 1.10*17, 1.10*17,20   , 1.15*17, 1.10*17, 1.10*17, 1.10*17,20];
+    } else if (fontsize==6){
+        return [17,15,15,15,15,  1.10*18, 1.07*18, 1.07*18, 1.07*18,18   , 1.10*18, 1.07*18, 1.07*18, 1.07*18,18]
+    }
+}
+
+function calcwidth(fontsize,textwidth) {
+ if(fontsize==9){
+     return 1.8*textwidth;
+ } else if (fontsize==8){
+     return 1.64*textwidth;
+ } else if (fontsize==7){
+     return 1.5*textwidth;
+ } else if (fontsize==6){
+     return 1.38*textwidth;
+ }
+}
+var data2=table.slice(2); //editable
+console.log('data2 : ')
+console.log(data2)
+let columnMaxLengths = [];
+// Initialize the array with zeros for each column
+for (let i = 0; i < data2[0].length; i++) {
+  columnMaxLengths[i] = 0;
+}
+// Iterate over each row and update the maximum length for each column
+for (let row of data2) {
+  for (let i = 0; i < row.length; i++) {
+    var cellValue = row[i].content;
+    //console.log('cellValue : ')
+    //console.log(cellValue)
+    columnMaxLengths[i] = Math.max(columnMaxLengths[i], calcwidth(font_size,cellValue.toString().length));
+  }
+}
+console.log(columnMaxLengths)
+for (let i = 0; i < data2[0].length; i++) {
+    if(i==5 || i==6 || i==7 || i==8 ||  i==10 || i==11 || i==12 || i==13){
+  columnMaxLengths[i] = Math.max(columnMaxLengths[i],normalmincolwidth(font_size)[i]);
+    } else {
+  columnMaxLengths[i] = normalmincolwidth(font_size)[i]
+    }   
+}
+console.log('***************------------------------*******');
+console.log("columnMaxLengths avant test sum : ");
+console.log(columnMaxLengths)
+console.log(font_size)
+
+var sumcolumnMaxLengths = columnMaxLengths.reduce((acc, curr) => acc + curr, 0);
+console.log('sumcolumnMaxLengths : ')
+console.log(sumcolumnMaxLengths)
+
+    if(sumcolumnMaxLengths>290){
+        console.log('font_size : ')
+        console.log(font_size)
+        font_size--;
+        console.log(font_size);
+        console.log('yessss it is greather than 290');
+        console.log(sumcolumnMaxLengths)
+        columnMaxLengths = [];
+// Initialize the array with zeros for each column
+for (let i = 0; i < data2[0].length; i++) {
+  columnMaxLengths[i] = 0;
+}
+
+        for (let row of data2) {
+  for (let i = 0; i < row.length; i++) {
+    cellValue = row[i].content;
+    //console.log('font_size after cellvalue : ');
+    //console.log(font_size);
+    columnMaxLengths[i] = Math.max(columnMaxLengths[i], calcwidth(font_size,cellValue.toString().length));
+  }
+}
+        
+for (let i = 0; i < data2[0].length; i++) {
+    if(i==5 || i==6 || i==7 || i==8 ||  i==10 || i==11 || i==12 || i==13){
+  columnMaxLengths[i] = Math.max(columnMaxLengths[i],normalmincolwidth(font_size)[i]);
+    } else {
+  columnMaxLengths[i] = normalmincolwidth(font_size)[i]
+    }   
+}
+    }
+console.log("columnMaxLengths apres test sum : ");
+console.log(columnMaxLengths)
+var sumcolumnMaxLengths2 = columnMaxLengths.reduce((acc, curr) => acc + curr, 0);
+console.log(sumcolumnMaxLengths2)
+
+console.log('font_size : ')
+console.log(font_size)
+
+
+var columnStyles = {
+  0: { columnWidth: columnMaxLengths[0] }, // Column 1 width
+  1: { columnWidth: columnMaxLengths[1] }, // Column 2 width
+  2: { columnWidth: columnMaxLengths[2] },  
+  3: { columnWidth: columnMaxLengths[3] },  
+  4: { columnWidth: columnMaxLengths[4] },  
+  5: { columnWidth: columnMaxLengths[5] },  
+  6: { columnWidth: columnMaxLengths[6] },  
+  7: { columnWidth: columnMaxLengths[7] },  
+  8: { columnWidth: columnMaxLengths[8] },
+  9: { columnWidth: columnMaxLengths[9] },  
+  10: { columnWidth: columnMaxLengths[10] },  
+  11: { columnWidth: columnMaxLengths[11] },  
+  12: { columnWidth: columnMaxLengths[12] },  
+  13: { columnWidth: columnMaxLengths[13] },
+  14: { columnWidth: columnMaxLengths[14] },  
+
+};
+
+
+
 doc.autoTable({  // the complete width of the A4 landscape page is : 297 (i think the unit is by mm so 297mm x 210mm  or 210mm x 297mm)
                
                body:table,
                theme:'grid',
-                margin:{left:4,right:4},
-                styles: {
+                margin:{left:7,right:4},
+              /*  styles: {
                 //fontSize: 8,
                 lineColor: 50,
                 textColor:50,
-                //             [20,200,100,120,120, 120,120,120,120,100,  120,120,120,120,100,    20 ]
-                //columnWidth: [5,  30 ,10 ,15, 15,  15, 15, 15, 15,10 ,   15, 15 ,15 ,15, 10,     5],
-
-                //cellWidth: "40px"
-                //cellWidth: 'wrap'
                 },
-                columnStyles : {
-                  0: { columnWidth: 320 }, 
-                  1: { columnWidth: 20 }, 
-                  2: { columnWidth: 10 },
-                  3: { columnWidth: 20 },
-                  4: { columnWidth: 20 },
-                  5: { columnWidth: 20 },
-                  6: { columnWidth: 20 },
-                  7: { columnWidth: 20 },
-                  8: { columnWidth: 20 },
-                  9: { columnWidth: 20 },
-                  10: { columnWidth: 20 },
-                  11: { columnWidth: 20 },
-                  12: { columnWidth: 20 },
-                  13: { columnWidth: 20 },
-                  14: { columnWidth: 20 },
-                  15: { columnWidth: 20 },
-                  16: { columnWidth: 20 }
-                }
+                */
+                columnStyles: columnStyles,
+                styles:{fontSize:font_size,
+    textColor: [0, 0, 0], // Set text color to black
+    lineColor: [0, 0, 0], // Set line color to black
+    lineWidth: 0.1 // Set line width to 0.1 (adjust as needed)},
+         },
+    didParseCell:function(data){data.cell.styles.font = "helvetica";}
+
+            
                 
 })
 doc.save('taaa.pdf')
@@ -737,39 +843,7 @@ a4=2a3
 a5=2a3
 
 a3=11
-// Column styles with widths
-var columnStyles = {
-  0: { columnWidth: 55 }, // Column 1 width
-  1: { columnWidth: 17 }, // Column 2 width
-  2: { columnWidth: 11 },  
-  3: { columnWidth: 11 },  
-  4: { columnWidth: 11 },  
-  5: { columnWidth: 22 },  
-  6: { columnWidth: 22 },  
-  7: { columnWidth: 22 },  
-  8: { columnWidth: 22 },
-  9: { columnWidth: 11 },  
-  10: { columnWidth: 22 },  
-  11: { columnWidth: 22 },  
-  12: { columnWidth: 22 },  
-  13: { columnWidth: 22 },  
- 
-
-};
-
-// Generate the table
-doc.autoTable({
-  margin:{left:1,right:1},
-  //head: [data[0]],    // Table header
-  body: data.slice(1), // Table body without header
-  columnStyles: columnStyles,
-  theme:'grid',
-  //columnWidth:   [450 ,10 ,15],
-
-});
-
-doc.save("table.pdf");
- */
+*/
 </script>
 
 </body>
