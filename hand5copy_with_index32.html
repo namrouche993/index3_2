@@ -30,6 +30,27 @@
 
 
 
+
+<link rel="stylesheet" href="tableur/style.css">
+<script src="tableur/comments_messages.js"></script>
+<script src="tableur/isValidate.js"></script>
+
+<script type="module" src="tableur/module3.js"></script>
+
+
+<script src="tableur/module1.js"></script>
+<script src="tableur/module2.js"></script>
+<!-- <script type="module" src="tableur/module3.js"></script>
+<script src="tableur/module3.js"></script> -->
+
+<script src="tableur/module3.js" type="module"></script>
+<script src="tableur/main.js" type="module"></script>
+
+
+ <!-- <script src="tableur/module3.js"></script> -->
+
+
+
     <title>Document</title>
 </head>
 <body>
@@ -54,98 +75,20 @@
           
     <div id="example1" class="hot handsontable htColumnHeaders"></div>
 
-<style>
-    .handsontable .htCommentCell:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: unset;
-      border-left: 20px solid transparent;
-      border-right: none;
-      border-top: 14px solid red;
-    }
-
-    .htCommentsContainer .htCommentTextArea {
-      width: 320px;
-      height: 60px;
-    }
-
-    
-   .handsontable .htAutocompleteArrow {
-            float: right;
-            font-size: 10px;
-            color: black;
-            cursor: default;
-            width: 16px;            
-            text-align: center;
-          }
-
-          .text-right {
-        text-align: right;
-    }
-
-div#toolbarid {
-    position: fixed;
-    top: 1%;
-}
-
-div#example1 {
-    margin-top: 38px;
-}
-    .handsontable table thead th{
-   color: black;
-   font-size: 12px;
-   font-family: sans-serif;
-   }
-
-   .handsontable{
-     font-size: 12px;
-     font-family: Roboto;
-   }
-
-   td.custom-titlecell {
-     background-color: rgb(204,204,204);
-     font-weight: bold;
-     border-left: 1px solid black;
-     border-right: 0px solid black;
-     border-top: 1px solid black;
-     border-bottom: 1px solid black;
-     color: black;
-
-   }
-
-   td.custom-titlecell2 {
-     background-color: rgb(204,204,204);
-     font-weight: bold;
-     border-left: 1px solid black;
-     border-right: 0px solid black;
-     border-top: 1px solid black;
-     border-bottom: 1px solid black;
-     color: black;
-   }
-
-
-   
-   td.custom-normalcell {
-     border-left: 1px solid black;
-     border-right: 0px solid black;
-     border-top: 0px solid black;
-     border-bottom: 1px solid black;
-     color: black;
-
-   }
-
-
- .handsontable .htDimmed {
-  color: black;
-}
-
-   
-</style>
 <script>
 
-const currencyht_nbnb = '$' //'DA'
+ const comments_messages = window.Module_comments_messages.comments_messages;
+ const isValidDate = window.Module_isValidDate.isValidDate;
+ console.log('mod2 : ')
+ const mod1 = window.Module1.publicFunction();
+ const mod2 = window.Module2.publicFunction2();
+  // import { publicFunction3 } from './tableur/module3.js';
+  // publicFunction3();
+
+//  const mod3 = window.Module3.publicFunction3();
+ console.log(mod2)
+  //#region initials inputs nb
+    const currencyht_nbnb = '$' //'DA'
     const currencyht_toshow_nbnb = '' // ' $' // ' DA'  ///
     const afterdigit_nbnb = 2;
     const smallafterdigit_nbnb = Number(`1e-${afterdigit_nbnb}`)  // like 0.01 with afterdigit2
@@ -184,7 +127,7 @@ const currencyht_nbnb = '$' //'DA'
     const emails_length_em=30;
     const phonenumbers_length_pn=20;
     const onlynumbers_length_on = 20;
-
+    //#endregion initials inputs nb
 
     //#region date time zone (navigator.language)
     const userLocale = Intl.DateTimeFormat().resolvedOptions().locale //'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
@@ -192,39 +135,6 @@ const currencyht_nbnb = '$' //'DA'
     var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     var usTimeZones = [  'America/New_York',  'America/Chicago',  'America/Denver',  'America/Los_Angeles',  'America/Anchorage',  'America/Adak',  'Pacific/Honolulu',  'America/Phoenix',  'America/Indiana/Indianapolis',  'America/Indiana/Knox',  'America/Indiana/Marengo',  'America/Indiana/Petersburg',  'America/Indiana/Tell_City',  'America/Indiana/Vevay',  'America/Indiana/Vincennes',  'America/Indiana/Winamac',  'America/Kentucky/Louisville',  'America/Kentucky/Monticello',  'America/Detroit',  'America/Menominee',  'America/St_Johns',  'America/Puerto_Rico',  'America/Montserrat',  'America/New_York',  'America/North_Dakota/Beulah',  'America/North_Dakota/Center',  'America/North_Dakota/New_Salem'];
     //#endregion date time zone
-
-
-    function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
-  const datestr2 = dateStr.split(splitsign);
-  const day = parseInt(datestr2[Number(ndays)-1]);
-  const month = parseInt(datestr2[Number(nmonths)-1]);
-  const year = parseInt(datestr2[Number(nyears)-1]);
-  const parsedMonth = parseInt(month);
-  const parsedDay = parseInt(day);
-  const parsedYear = parseInt(year);
-
-  if ( isNaN(day) || isNaN(month) || isNaN(year) ){
-      return false;
-  }
-  // Check if year is within the allowed range
-  if (parsedYear < 1000 || parsedYear>3000) {
-    return false;
-  }
-
-  // Check if month is valid
-  if (parsedMonth < 1 || parsedMonth > 12) {
-    return false;
-  }
-
-  // Check if day is valid for the given month and year
-  const daysInMonth = new Date(parsedYear, parsedMonth, 0).getDate();
-  if (parsedDay < 1 || parsedDay > daysInMonth) {
-    return false;
-  }
-
-  // If all checks pass, return true
-  return true;
-}
 
   //#region decimalseparator and thousand separator 
     const options = { style: 'decimal' };
@@ -238,222 +148,8 @@ const currencyht_nbnb = '$' //'DA'
       'et le nombre devients :' + formattedNumber)
    //#endregion decimalseparator and thousand separator 
 
-
     let lastelement_supthan1=0;
-
-    const comments_messages = function(value,msg,language){
-    if(msg=='error'){
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide ";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid.";
-        return mm;
-      }
-    }
-    else if (msg=='val_try_to_fix'){
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres";
-        return mm;
-      } else if (language=='en-US'){
-
-      }
-      // ---------------- # date_correct msg # ----------------
-      // ---------------- # date_correct msg # ----------------
-      // ---------------- # date_correct msg # ----------------
-
-    }
-    else if (msg=='val_try_to_fix_comma_instead_dot'){
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.replace(/\s+/g, '').trim().replace('.', ',') + " est correct (virguale à la place du point).";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.replace(/\s+/g, '').trim().replace('.', ',') + " is correct (comma instead of a dot).";
-        return mm;
-
-      }
-    } 
-    else if (msg=='val_try_to_fix_dot_instead_comma'){
-      if(language=='fr-FR'){
-      var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.replace(/\s+/g, '').trim().replace(',', '.') + " est correct (point à la place de la virgule)";
-      return mm;
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.replace(/\s+/g, '').trim().replace(',', '.') + " is correct (dot instead of a comma).";
-        return mm;
-      }
-    }
-    else if (msg=='val_try_to_fix_4'){
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value).toLocaleString(userLocale) + " est correct";
-        return mm;
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + Number(value).toLocaleString(userLocale) + " is correct.";
-        return mm;
-      }
-    }
-    else if (msg=='val_try_to_fix_5'){
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(',', '.') + " est correct";
-        return mm;
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.trim().replace(',', '.') + " is correct.";
-        return mm;
-      }
-    }
-    else if (msg=='val_try_to_fix_6'){
-      if(language=='fr-FR'){
-        var mm =  "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + Number(value.replace(/,/g, '')).toLocaleString(userLocale) + " est correct";
-        return mm;
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + Number(value.replace(/,/g, '')).toLocaleString(userLocale) + " is correct.";
-        return mm;
-      }
-    }
-    else if (msg=='val_try_to_fix_fill_only_numbers'){
-      if(language=='fr-FR'){
-        var mm =  "la valeur '" + value + "' n'est pas valide pour cette cellule. Veuillez saisir uniquement des valeurs numériques";
-        return mm;
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid for this cell. Please enter only numeric values.";
-        return mm;
-      }
-    }
-    else if (msg=='val_try_to_fix_8'){
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  |  " + value.trim().replace(/\./g, '').replace(',', '.') + " est correct";
-        return mm;
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid. Try correcting the formatting according to your parameters. | " + value.trim().replace(/./g, '').replace(',', '.') + " is correct.";
-        return mm;
-      }
-    }
-    else if (msg=='date_try_to_fix') {
-      if(language=='fr-FR'){
-        var mm = "la date '" + value + "' n'est pas valide , Essayer de corriger l'ecriture selon le format de vos paramétres  ";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "The date '" + value + "' is not valid. Try correcting the formatting according to your parameters.";
-        return mm;
-      }
-      // ---------------- # date_no_valid msg # ----------------
-      // ---------------- # date_no_valid msg # ----------------
-      // ---------------- # date_no_valid msg # ----------------
-    }
-    else if (msg=='date_no_valid') {
-      if(language=='fr-FR'){
-        var mm = "la date '" + value + "' n'est pas valide ";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "The date '" + value + "' is not valid.";
-        return mm;
-      }
-    }
-    else if (msg=='val_no_valid') {
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide ";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid.";
-        return mm;
-      }
-
-    }
-    else if (msg=='limit_autor') {
-          // ---------------- # limite_autorise msg # ----------------
-      // ---------------- # limite_autorise msg # ----------------
-      // ---------------- # limite_autorise msg # ----------------
-      if(language=='fr-FR'){
-        var mm = "La valeur que vous avez saisie dépasse la limite autorisée !!";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "The value you entered exceeds the allowed limit!";
-        return mm;
-      }
-
-    }
-    else if (msg=='dropdown_included') {
-      if(language=='fr-FR'){
-        var mm = "Veuillez choisir une valeur incluse dans la liste";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "Please choose a value included in the list.";
-        return mm;
-      }
-    }
-    else if (msg=='percentage_no_valid_isvalidfalse_end') {
-      if(language=='fr-FR'){
-        var mm = "la valeur '" + value + "' n'est pas valide, Veuillez entrer uniquement des pourcentages. ";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "The value '" + value + "' is not valid, Please enter only percentages";
-        return mm;
-      }
-    }
-    else if (msg=='refuse_negative'){
-      if(language=='fr-FR'){
-        var mm = "Attention : La valeur que vous avez saisie est négative, Veuillez saisir un nombre supérieur à zéro. ";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "Warning: The value you entered is negative. Please enter a number greater than zero.";
-        return mm;
-      }
-    }
-    else if (msg=='refuse_float'){
-      if(language=='fr-FR'){
-        var mm = "Veuillez saisir un nombre entier et non un nombre décimal. (pas de virgule) ";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "Please enter an integer value, not a decimal number.";
-        return mm;
-      }
-    }
-      else if (msg=='email_invalid'){
-      if(language=='fr-FR'){
-        var mm = "Veuillez entrer une adresse email valide.";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "Please enter a valid email address.";
-        return mm;
-      }
-    }
-    else if (msg=='phonenumbers_invalid'){
-      if(language=='fr-FR'){
-        var mm = "Veuillez entrer un numéro de téléphone valide.";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "Please enter a valid phone number.";
-        return mm;
-      }
-    }
-    else if (msg=='onlynumbers_invalid'){
-      if(language=='fr-FR'){
-        var mm = "Veuillez saisir des nombres.";
-        return mm;
-
-      } else if (language=='en-US'){
-        var mm = "Please enter numbers only..";
-        return mm;
-      }
-    }
-
-    
-    
-  }
   
-   
-
 //#region date format starting
       if(navigator_language=='en-US'){
     if(usTimeZones.includes(userTimeZone)){
@@ -526,11 +222,6 @@ const currencyht_nbnb = '$' //'DA'
     this.TEXTAREA.setSelectionRange(0, length - 1); // set the cursor position at the end of the value
   }
 }
- 
-function isAccountingFormatted(value) {   // i think it's useless and it will be removed
-  const regex = /^\D*\d{1,3}([\s,]\d{3})*\,\d{2}$/; // Matches strings like "€ 1 234,56"
-  return typeof value === 'string' && regex.test(value);
-}
 
 var skiformat = [];
 
@@ -544,7 +235,6 @@ var skiformat = [];
       }
 
   let numOferrorPopups = 0;
-
   const errorpopup = ()=>{
         if (numOferrorPopups >= 4) {
               return;
