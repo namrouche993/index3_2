@@ -32,10 +32,12 @@
 
 
 <link rel="stylesheet" href="tableur/style.css">
-<script src="tableur/comments_messages.js"></script>
-<script src="tableur/isValidate.js"></script>
+<script src="tableur/comments_messages.js" type='module'></script>
+<script src="tableur/isValidDate.js" type='module'></script>
 
-<script type="module" src="tableur/module3.js"></script>
+<script src="tableur/existsInArray.js" type="module"></script>
+<script src="tableur/downloadfile_test.js" type="module"></script>
+
 
 
 <script src="tableur/module1.js"></script>
@@ -44,7 +46,7 @@
 <script src="tableur/module3.js"></script> -->
 
 <script src="tableur/module3.js" type="module"></script>
-<script src="tableur/main.js" type="module"></script>
+<script src="tableur/module3main.js" type="module"></script>
 
 
  <!-- <script src="tableur/module3.js"></script> -->
@@ -75,11 +77,21 @@
           
     <div id="example1" class="hot handsontable htColumnHeaders"></div>
 
-<script>
+<script type='module'>
+  import { comments_messages } from './tableur/comments_messages.js';
+  import { isValidDate } from './tableur/isValidDate.js';
 
- const comments_messages = window.Module_comments_messages.comments_messages;
- const isValidDate = window.Module_isValidDate.isValidDate;
- console.log('mod2 : ')
+  console.log('publicFunction3 avant : ')
+
+// import { publicFunction3 } from './tableur/module3.js';
+// publicFunction3()
+//  const comments_messages = window.Module_comments_messages.comments_messages;
+//  const isValidDate = window.Module_isValidDate.isValidDate;
+ console.log('mod2 and sayHello : ')
+//  sayHello()
+
+//  const modsay = window.sayHello.sayHello();
+
  const mod1 = window.Module1.publicFunction();
  const mod2 = window.Module2.publicFunction2();
   // import { publicFunction3 } from './tableur/module3.js';
@@ -140,9 +152,9 @@
     const options = { style: 'decimal' };
     const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
     const DecimalSeparator0 = formattedNumber.substring(9, 10)
-    decimalSeparator = DecimalSeparator0
+    let decimalSeparator = DecimalSeparator0
     const thousandSeparator00 = formattedNumber.substring(1, 2);
-    thousandSeparator0 = thousandSeparator00
+    let thousandSeparator0 = thousandSeparator00
     console.log('decimal separateur est :' + decimalSeparator +
       ' et thousand est :' + thousandSeparator0 +
       'et le nombre devients :' + formattedNumber)
@@ -253,14 +265,14 @@ var skiformat = [];
       }
 
 
-function existsInArray(array, pair) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i][0] === pair[0] && array[i][1] === pair[1]) {
-        return true;
-      }
-    }
-    return false;
-  }
+// function existsInArray(array, pair) {
+//     for (let i = 0; i < array.length; i++) {
+//       if (array[i][0] === pair[0] && array[i][1] === pair[1]) {
+//         return true;
+//       }
+//     }
+//     return false;
+//   }
   
   
       
@@ -295,8 +307,8 @@ function existsInArray(array, pair) {
             
             ) 
         
-        for(i=0 ; i<=last_row_after_header ; i++) {
-          zzrow=['','','','','','','','','','','','','','','','','',   '']
+        for(let i=0 ; i<=last_row_after_header ; i++) {
+          let zzrow=['','','','','','','','','','','','','','','','','',   '']
           ddata.push(zzrow);
         }
 
@@ -365,13 +377,14 @@ var normalcellloop = (imin,imax)=>{
 
 
 var columnsdata = (imin,imax) => {
-  fa=[]
+  let fa=[]
   fa.push({data:0,readOnly:true})
+    console.log(this)
     //,type:'numeric'})
     const rr = this.row;
     const cc = this.col;
 
-    for(i=imin+1;i<imax-1;i++){
+    for(let i=imin+1;i<imax-1;i++){
     // couting start from 1 (normal way ta3 normal way)  i==3 means the third column of THE SPREADSHEET without counting the first negeglible column (A)   
   
   if(i == 2){ 
