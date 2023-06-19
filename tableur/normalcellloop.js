@@ -40,7 +40,7 @@ export function normalcellloop(){
     for(let i=imin ; i<=imax ; i++) {
       for(let j=1 ; j<=14 ; j++){
         if(j==2){  // which column text align is center
-          var zz={ row: i, col: j, className: 'htCenter htMiddle custom-normalcell' };
+          var zz={ row: i, col: j, className: 'htLeft htMiddle custom-normalcell' };
           aus.push(zz);
         } else {
           var zz={ row: i, col: j, className: 'htLeft htMiddle custom-normalcell' };

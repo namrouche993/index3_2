@@ -29,7 +29,6 @@ export function afterValidatefct(isValid, oldvalue, row, prop, source, ...otherA
 
 //afterValidate: function (isValid, oldvalue, row, prop, source) {
             const commentsPlugin = hot.getPlugin('comments');
-            var condition_split=true;
             if(prop==3 || prop==4 || prop==5 || prop==10){ // afterValidate of percentage,  editable the index later 
         
 

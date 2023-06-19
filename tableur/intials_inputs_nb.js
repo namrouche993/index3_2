@@ -43,6 +43,7 @@
   export const onlynumbers_length_on = 20;
   //#endregion initials inputs nb
 
+
       //#region date time zone (navigator.language)
       export const userLocale = Intl.DateTimeFormat().resolvedOptions().locale //'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
       export const navigator_language=navigator.language // 'fr-FR' 'en-CA'  // editable
@@ -50,6 +51,8 @@
       export var usTimeZones = [  'America/New_York',  'America/Chicago',  'America/Denver',  'America/Los_Angeles',  'America/Anchorage',  'America/Adak',  'Pacific/Honolulu',  'America/Phoenix',  'America/Indiana/Indianapolis',  'America/Indiana/Knox',  'America/Indiana/Marengo',  'America/Indiana/Petersburg',  'America/Indiana/Tell_City',  'America/Indiana/Vevay',  'America/Indiana/Vincennes',  'America/Indiana/Winamac',  'America/Kentucky/Louisville',  'America/Kentucky/Monticello',  'America/Detroit',  'America/Menominee',  'America/St_Johns',  'America/Puerto_Rico',  'America/Montserrat',  'America/New_York',  'America/North_Dakota/Beulah',  'America/North_Dakota/Center',  'America/North_Dakota/New_Salem'];
       //#endregion date time zone
   
+
+
 
     //#region decimalseparator and thousand separator 
     const options = { style: 'decimal' };
@@ -62,3 +65,45 @@
       ' et thousand est :' + thousandSeparator0 +
       'et le nombre devients :' + formattedNumber)
    //#endregion decimalseparator and thousand separator 
+
+
+   //#region date format starting
+
+   if(navigator_language=='en-US'){
+    if(usTimeZones.includes(userTimeZone)){
+      var dateformatlanguage = 'mm/dd/aaaa'; 
+      var splitdate='/';
+    } else {
+      var dateformatlanguage = 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
+      var splitdate='/';
+      //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
+    }
+    } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
+      var dateformatlanguage = 'aaaa.mm.jj' // 'yyyy.mm.dd' // 1990.12.31
+      var splitdate='.';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+    } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
+      var dateformatlanguage = 'aaaa/mm/jj' //'yyyy/mm/dd' // 1990/12/31
+      var splitdate='/';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+    } else if(navigator_language=='en-CA'){
+      var dateformatlanguage = 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
+      var splitdate='-';
+      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+
+    } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){
+      var dateformatlanguage = 'jj.mm.aaaa' //'dd.mm.yyyy' // 12.31.1990
+      var splitdate='.';
+      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+
+    } else {
+      // european and other formats
+      var dateformatlanguage = 'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
+      var splitdate='/';
+      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+    }
+    export var dateformatlanguage_to_export = dateformatlanguage;
+    export var splitdate_to_export = splitdate;
+    //#endregion date format starting
