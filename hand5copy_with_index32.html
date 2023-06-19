@@ -29,27 +29,9 @@
 <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
 
 
-
-
 <link rel="stylesheet" href="tableur/style.css">
-<script src="tableur/comments_messages.js" type='module'></script>
-<script src="tableur/isValidDate.js" type='module'></script>
-
-<script src="tableur/existsInArray.js" type="module"></script>
-<script src="tableur/downloadfile_test.js" type="module"></script>
 
 
-
-<script src="tableur/adding/module1.js"></script>
-<script src="tableur/adding/module2.js"></script>
-<!-- <script type="module" src="tableur/module3.js"></script>
-<script src="tableur/module3.js"></script> -->
-
-<script src="tableur/adding/module3.js" type="module"></script>
-<script src="tableur/adding/module3main.js" type="module"></script>
-
-
- <!-- <script src="tableur/module3.js"></script> -->
 
 
 
@@ -79,114 +61,20 @@
 
 <script type='module'>
   import { comments_messages } from './tableur/comments_messages.js';
+  import { existsInArray } from './tableur/existsInArray.js'
   import { isValidDate } from './tableur/isValidDate.js';
   import { columnsdata } from './tableur/columnsdata.js';
   import { ddatafct,data22fct } from './tableur/ddata.js';
   import { normalcellloop } from './tableur/normalcellloop.js'
   import { afterValidatefct } from './tableur/afterValidate.js'
-  import { decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones } from './tableur/intials_inputs_nb.js'
+  import { decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,    dateformatlanguage_to_export as dateformatlanguage ,splitdate_to_export as splitdate } from './tableur/intials_inputs_nb.js'
   import { afterChangefct } from './tableur/afterChange.js'
 
-  console.log('publicFunction3 avant : ')
+  import { warningpopup, errorpopup } from './tableur/popups.js'
+  import { mergecellsarray } from './tableur/mergecells.js'
+  import { beforeKeyDownfct } from './tableur/beforeKeyDown.js'
+  import { beforeChangeFct } from './tableur/beforeChange.js'
 
-// import { publicFunction3 } from './tableur/module3.js';
-// publicFunction3()
-//  const comments_messages = window.Module_comments_messages.comments_messages;
-//  const isValidDate = window.Module_isValidDate.isValidDate;
- console.log('mod2 and sayHello : ')
-//  sayHello()
-
-//  const modsay = window.sayHello.sayHello();
-
- const mod1 = window.Module1.publicFunction();
- const mod2 = window.Module2.publicFunction2();
-  // import { publicFunction3 } from './tableur/module3.js';
-  // publicFunction3();
-
-//  const mod3 = window.Module3.publicFunction3();
- console.log(mod2)
-
-  
-//#region date format starting
-
-      if(navigator_language=='en-US'){
-    if(usTimeZones.includes(userTimeZone)){
-      var dateformatlanguage = 'mm/dd/aaaa'; 
-      var splitdate='/';
-    } else {
-      var dateformatlanguage = 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-      var splitdate='/';
-      //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
-    }
-    } else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){
-      var dateformatlanguage = 'aaaa.mm.jj' // 'yyyy.mm.dd' // 1990.12.31
-      var splitdate='.';
-      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
-
-    } else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){
-      var dateformatlanguage = 'aaaa/mm/jj' //'yyyy/mm/dd' // 1990/12/31
-      var splitdate='/';
-      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
-
-    } else if(navigator_language=='en-CA'){
-      var dateformatlanguage = 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
-      var splitdate='-';
-      //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
-
-    } else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){
-      var dateformatlanguage = 'jj.mm.aaaa' //'dd.mm.yyyy' // 12.31.1990
-      var splitdate='.';
-      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
-
-    } else {
-      // european and other formats
-      var dateformatlanguage = 'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
-      var splitdate='/';
-      //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
-    }
-    //#endregion date format starting
-
-
-
-var skiformat = [];
-
-  const warningpopup = ()=>{
-        toastr.options = {
-          "timeOut": 2000,
-          "positionClass": "toast-bottom-right",
-
-        };
-        toastr.warning('Hello World!', 'Notification Title');
-      }
-
-  let numOferrorPopups = 0;
-  const errorpopup = ()=>{
-        if (numOferrorPopups >= 4) {
-              return;
-           }           
-  toastr.options = {
-    onHidden: function() {
-      numOferrorPopups--;
-      console.log(`Number of popups: ${numOferrorPopups}`);
-    },
-    "timeOut": 2500,
-    "positionClass": "toast-bottom-right",
-  };
-  toastr.error('Veuillez entrer un nombre', 'Erreur');
-  numOferrorPopups++;
-  console.log(`Number of popups: ${numOferrorPopups}`);
-      }
-
-
-// function existsInArray(array, pair) {
-//     for (let i = 0; i < array.length; i++) {
-//       if (array[i][0] === pair[0] && array[i][1] === pair[1]) {
-//         return true;
-//       }
-//     }
-//     return false;
-//   }
-  
   
       
       
@@ -200,9 +88,7 @@ var skiformat = [];
       
       var ddata = ddatafct();
       var data22 = data22fct()
-      console.log('ddata ++++++ : ')
-      console.log(ddata)
-      console.log(data22)
+    
 
 var container = document.getElementById('example1')
 var sheetclip = new SheetClip();
@@ -241,309 +127,20 @@ const hot = new Handsontable(container, {
             }
             return cellProperties;
           },
-          mergeCells: [
-    { row: 0, col: 1, rowspan: 1, colspan: 15 },
-    { row: 1, col: 1, rowspan: 1, colspan: 15 },
-    { row: 2, col: 1, rowspan: 1, colspan: 15 },
-
-
-    { row: 4, col: 1, rowspan: 2, colspan: 1 },
-    { row: 4, col: 2, rowspan: 2, colspan: 1 },
-    { row: 4, col: 3, rowspan: 2, colspan: 1 },
-    { row: 4, col: 4, rowspan: 2, colspan: 1 },
-
-    { row: 4, col: 5, rowspan: 1, colspan: 5 },
-    { row: 4, col: 10, rowspan: 1, colspan: 5 },
-
-
-
-
-    ],
+          mergeCells: mergecellsarray,
           cell: normalcellloop(),
           hiddenColumns: {columns:[15]},
           DragToScroll: true,
           copyPaste: true,
-          //afterValidate : afterValidatefct,
           afterValidate: (oldvalue, row, prop, source, ...otherArgs) => {
             return afterValidatefct(oldvalue, row, prop, source, ...otherArgs, hot);
           },
-
-          beforeKeyDown: function (event) {  // editable the 2 indexx later inside 
-     
-     var selected = hot.getSelected();
-     var currentColIndex = selected ? selected[0][1] : null;
-     //console.log('currentColIndex : ')
-     //console.log(currentColIndex)
-     //console.log(selected)
-     //console.log(currentColIndex)
-     if(currentColIndex==12) {  // editable edit it later changeable , modify it later , change it later
-       if(navigator_language=='en-US'){
-   var dateformatlanguage = 'mm/dd/yyyy'; // 12/31/1990
-   var splitdate='/';
-   //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
-
-     var betweensplit_dot = this.getActiveEditor().getValue().split(".")
-     var betweensplit_slash = this.getActiveEditor().getValue().split("/")
-     var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
-
-    // console.log(event.key)
-     if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
-       var betweensplit_dot = this.getActiveEditor().getValue().split(".");
-       betweensplit_dot[1]=betweensplit_dot[1]+event.key;
-
-       var betweensplit_slash = this.getActiveEditor().getValue().split("/");
-       betweensplit_slash[1]=betweensplit_slash[1]+event.key;
-
-       var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
-       betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
-
-     
-   if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
-   if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-    condition_split=false;
-    if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }
- }
-  else if(navigator_language=='ko-KR' || navigator_language=='hu-HU'){ // ######################################################################
-   //console.log('we are in korean')
-   var dateformatlanguage = 'yyyy.mm.dd' // 1990.12.31
-   var splitdate='.';
-   //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+          beforeKeyDown: (event, ...otherArgs) => {
+            return beforeKeyDownfct(event, ...otherArgs, hot);
+          },
 
 
-     var betweensplit_dot = this.getActiveEditor().getValue().split(".")
-     var betweensplit_slash = this.getActiveEditor().getValue().split("/")
-     var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
-
-     //console.log(event.key)
-     if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
-       var betweensplit_dot = this.getActiveEditor().getValue().split(".");
-       betweensplit_dot[1]=betweensplit_dot[1]+event.key;
-
-       var betweensplit_slash = this.getActiveEditor().getValue().split("/");
-       betweensplit_slash[1]=betweensplit_slash[1]+event.key;
-
-       var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
-       betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
-
-     
-   if( ( (this.getActiveEditor().getValue().length==3 ) && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==6 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
-   if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-    condition_split=false;
-    if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }
- 
-
- } 
- else if(navigator_language=='ja-JP' || navigator_language=='ZH-CN'){ //  ######################################################################
-   var dateformatlanguage = 'yyyy/mm/dd' // 1990/12/31
-   var splitdate='/';
-   //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
-
-     var betweensplit_dot = this.getActiveEditor().getValue().split(".")
-     var betweensplit_slash = this.getActiveEditor().getValue().split("/")
-     var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
-
-     //console.log(event.key)
-     if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
-       var betweensplit_dot = this.getActiveEditor().getValue().split(".");
-       betweensplit_dot[1]=betweensplit_dot[1]+event.key;
-
-       var betweensplit_slash = this.getActiveEditor().getValue().split("/");
-       betweensplit_slash[1]=betweensplit_slash[1]+event.key;
-
-       var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
-       betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
-
-     
-   if( ( (this.getActiveEditor().getValue().length==3 ) && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==6 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
-   if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-    condition_split=false;
-    if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }
- 
- } 
- else if(navigator_language=='en-CA'){  // ######################################################################
-   var dateformatlanguage = 'yyyy-mm-dd' // 1990-12-31
-   var splitdate='-';
-   //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
-
-     var betweensplit_dot = this.getActiveEditor().getValue().split(".")
-     var betweensplit_slash = this.getActiveEditor().getValue().split("/")
-     var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
-
-     //console.log(event.key)
-     if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
-       var betweensplit_dot = this.getActiveEditor().getValue().split(".");
-       betweensplit_dot[1]=betweensplit_dot[1]+event.key;
-
-       var betweensplit_slash = this.getActiveEditor().getValue().split("/");
-       betweensplit_slash[1]=betweensplit_slash[1]+event.key;
-
-       var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
-       betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
-
-     
-   if( ( (this.getActiveEditor().getValue().length==3 ) && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==6 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
-   if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-    condition_split=false;
-    if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }
-
-
-
- }
-  else if(navigator_language=='de-DE' || navigator_language=='ru-RU' || navigator_language=='tr-TR'){ // ######################################################################
-   var dateformatlanguage = 'dd.mm.yyyy' // 12.31.1990
-   var splitdate='.';
-
-     var betweensplit_dot = this.getActiveEditor().getValue().split(".")
-     var betweensplit_slash = this.getActiveEditor().getValue().split("/")
-     var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
-
-   //  console.log(event.key)
-     if( !isNaN(Number(event.key))){
-       var betweensplit_dot = this.getActiveEditor().getValue().split(".");
-       betweensplit_dot[1]=betweensplit_dot[1]+event.key;
-
-       var betweensplit_slash = this.getActiveEditor().getValue().split("/");
-       betweensplit_slash[1]=betweensplit_slash[1]+event.key;
-
-       var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
-       betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
-
-     
-   if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
-   if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-    if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }
- 
- }
-  else {        // ############################################################################################################################################
-   // european and other formats
-   var dateformatlanguage = 'dd/mm/yyyy' // 31/12/1990
-   var splitdate='/';
-   //console.log('condition_split in beforekey start : ')
-   // console.log(condition_split)
-
-   //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
-     var betweensplit_dot = this.getActiveEditor().getValue().split(".")
-     var betweensplit_slash = this.getActiveEditor().getValue().split("/")
-     var betweensplit_hyphen = this.getActiveEditor().getValue().split("-")
-
-     //console.log(event.key)
-     if( !isNaN(Number(event.key)) && (typeof condition_split=='undefined' || condition_split==true)){
-       var betweensplit_dot = this.getActiveEditor().getValue().split(".");
-       betweensplit_dot[1]=betweensplit_dot[1]+event.key;
-
-       var betweensplit_slash = this.getActiveEditor().getValue().split("/");
-       betweensplit_slash[1]=betweensplit_slash[1]+event.key;
-
-       var betweensplit_hyphen = this.getActiveEditor().getValue().split("-");
-       betweensplit_hyphen[1]=betweensplit_hyphen[1]+event.key;
-
-     
-   if( ( (this.getActiveEditor().getValue().length==1 && this.getActiveEditor().getValue().toString()!=' ') && !isNaN(Number(event.key)) ) || (this.getActiveEditor().getValue().length==4 && !isNaN(Number(event.key))) || (Number(betweensplit_dot[1])>9 && Number(betweensplit_dot[1])<100) || (Number(betweensplit_slash[1])>9 && Number(betweensplit_slash[1])<100) || (Number(betweensplit_hyphen[1])>9 && Number(betweensplit_hyphen[1])<100)  ){
-   if( !isNaN(Number(event.key)) && (this.getActiveEditor().getValue().split(".").length-1<2 && this.getActiveEditor().getValue().split("/").length-1<2 && this.getActiveEditor().getValue().split("-").length-1<2 ) ){
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue() + event.key + splitdate);
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-    condition_split=false;
-    if(this.getActiveEditor().getValue().substring(this.getActiveEditor().getValue().length - 1)==splitdate){ 
-     this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0,this.getActiveEditor().getValue().length - 1)+event.key)
-     event.stopImmediatePropagation();
-     event.preventDefault();
-   }
- }
-    //console.log(condition_split)
-
- }
-     }
-     else if(currentColIndex!=1 && currentColIndex!=9 &&  currentColIndex!=14  ) { // editable and adding other text columns || dont equal to  
-       //console.log('++++++++++')
-        if (decimalSeparator == ',') {
-       if (event.key === '.') {
-
-         //console.log(event)
-         var selectedCell = this.getSelectedLast(); // Get selected cell object
-         //var selectedRow = selectedCell[0][0]; // Get selected row index
-         var selectedCol = selectedCell[1]; // Get selected column index
-         //console.log(selectedCell)
-         //console.log(selectedCell[1])
-         //console.log(selectedCol)
-
-         //console.log('selectedCol : '  + selectedCol)
-         if(selectedCol==3 ||  selectedCol==4        || selectedCol==5 ||        selectedCol==10 ){   // editable modify editable , it's about percentage
-           console.log('we are inside selectedCol == 3')
-           var cellpercent = this.getActiveEditor().TEXTAREA; // Get the DOM element representing the cell editor
-           this.getActiveEditor().setValue(this.getActiveEditor().getValue() + ',');
-           cellpercent.setSelectionRange(cellpercent.value.length-1, cellpercent.value.length-1); // Set the new cursor position
-           event.stopImmediatePropagation();
-           event.preventDefault();
-         } else {
-         this.getActiveEditor().setValue(this.getActiveEditor().getValue() + ',');
-         event.stopImmediatePropagation();
-         event.preventDefault();
-       
-       }
-       }
-       if (event.key === '.' && event.keyCode == 190) {
-         this.getActiveEditor().setValue(this.getActiveEditor().getValue().substring(0, this.getActiveEditor().getValue().length - 1) + '.');
-         event.stopImmediatePropagation();
-         event.preventDefault();
-       }
-     }
-   }
- },
- 
- afterCreateRow: function(index, amount) {
+       afterCreateRow: function(index, amount) {
         // Your custom logic goes here
         console.log('A new row has been added at index: ', index);
         console.log(amount)
@@ -569,36 +166,23 @@ const hot = new Handsontable(container, {
  
 });
 
-hot.addHook('beforeChange', function (changes, source) {
-        console.log('we are inside beforeChange x y z :')
-        //console.log(changes)
-        //console.log(source)
-        //console.log('commentsPlugin : ')
-        var commentsPlugin = hot.getPlugin('comments');
-        //console.log(commentsPlugin)
-        //console.log(hot.undoRedo.doneActions)
-        //console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1])
+hot.addHook('beforeChange', function(changes, source, ...otherArgs) {
+  return beforeChangeFct(changes,source, ...otherArgs, hot)
+});
 
-        changes.forEach(([row, prop, oldValue, newValue]) => {
-          if (oldValue == '' && newValue == null || oldValue == '' && newValue == '' && source == 'UndoRedo.undo') {
-            commentsPlugin.removeCommentAtCell(row, prop);
-            console.log('comments removed')
-          }
-          console.log(`Change in row ${row} property ${prop}: ${oldValue} -> ${newValue}`);
-        });
-        console.log('end before change')
-      });
 
-var setter = false;
-var newdateandtime = new Date();
+hot.addHook('afterChange', function(changes, src, ...otherArgs) {
+  return afterChangefct(changes,src, ...otherArgs, hot)
+});
 
-function isBlank(str) {
-    return (/^\s*$/.test(str));
-}
 
+
+console.log('hoooooooooooooot : ')
+let hota=hot;
+console.log(hota)
 
 const downloadfile=()=>{
-    
+    console.log('******************************************************************')
   var doc = new jsPDF({orientation:'landscape'});
 //doc.setFontSize(16)
 var hotInstance = hot;
@@ -623,11 +207,23 @@ for (var i = 4; i < cells.length; i++) {
     var colspan = cellProperties.colspan || 1;
     var rowspan = cellProperties.rowspan || 1;
     //var styles = cellProperties.style || {};
+    console.log('cellcontent.className : ')
+    console.log(cellcontent.className)
     if(cellcontent.className!=''){
 
+    console.log('stylleeee : ')
     var strcontent = "."+cellcontent.className.replace(/ /g, '.');
+    console.log(strcontent)
     var element = document.querySelector(strcontent)
+    console.log(element)
+    console.log(i)
+    console.log(j)
+    console.log(cellcontent.innerHTML)
+    console.log('*******-------********')
+
+    //console.log(window)
     var style = window.getComputedStyle(element) || '';
+    //console.log(style)
     var bgcolor = style.getPropertyValue('background-color') || '';
     var txtalign = style.getPropertyValue('text-align') || '';
     if(i==4 || i==5){
@@ -651,7 +247,7 @@ for (var i = 4; i < cells.length; i++) {
                 } else {
                var vaisk=i+is;
                var vajsk=j+js
-               valueskk=[vaisk,vajsk]
+               let valueskk=[vaisk,vajsk]
                skipped.push(valueskk)       
                 } 
             }
@@ -663,8 +259,6 @@ for (var i = 4; i < cells.length; i++) {
 }
 console.log('tableeeeeeeeeeeeee :')
 console.log(table)
-
-
 
 
 
@@ -802,44 +396,16 @@ doc.autoTable({  // the complete width of the A4 landscape page is : 297 (i thin
     lineWidth: 0.1 // Set line width to 0.1 (adjust as needed)},
          },
     didParseCell:function(data){data.cell.styles.font = "helvetica";}
-
-            
-                
+         
 })
 doc.save('taaa.pdf')
 }
 
 
-hot.addHook('afterChange', function(changes, src, ...otherArgs) {
-  return afterChangefct(changes,src, ...otherArgs, hot)
-});
+console.log('i will use downloadfile() : ')
+downloadfile()
 
 
-  console.log('hot.getcolheader : ')
-  console.log([hot.getColHeader()])
- 
-
-
-  var doc = new jsPDF({orientation:'landscape'});
-
-// Data for the table
-var data = [
-  ["Column 1", "C2", "C3","C4","C5","C6","C7","C8","C9","C10","C11","C12","C13","C14"],
-  ["Row 1", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V"],
-  ["Row 2", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V"],
-];
-/*
-a1+a2+a3+a3   + a3+a4+a4+a4+a5     + a3+a4+a4+a4+a5
-a1+a2+5a3+6a4+2a5=296
-4a3+3/2a3+a3+12a3+4a3=296
-
-a1=4a3
-a2=1.5a3
-a4=2a3
-a5=2a3
-
-a3=11
-*/
 </script>
 
 </body>
