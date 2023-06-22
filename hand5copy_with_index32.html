@@ -74,8 +74,11 @@
   import { mergecellsarray } from './tableur/mergecells.js'
   import { beforeKeyDownfct } from './tableur/beforeKeyDown.js'
   import { beforeChangeFct } from './tableur/beforeChange.js'
-
   
+  import { return_table_to_downloading_Fct } from './tableur/return_table_to_downloading.js';
+
+  import { edit_size_table_to_downloading_sadeg_Fct } from './tableur/edit_size_table_to_downloading_sadeg.js';
+
       
       
       function undohandstonetable() {
@@ -177,218 +180,21 @@ hot.addHook('afterChange', function(changes, src, ...otherArgs) {
 
 
 
-console.log('hoooooooooooooot : ')
-let hota=hot;
-console.log(hota)
+//console.log('hoooooooooooooot : ')
+//let hota=hot;
+//console.log(hota)
 
 const downloadfile=()=>{
-    console.log('******************************************************************')
+
   var doc = new jsPDF({orientation:'landscape'});
-//doc.setFontSize(16)
-var hotInstance = hot;
-var table = [];
-var skipped = []
-var cells = hotInstance.getData()
-for (var i = 4; i < cells.length; i++) {
-  var row = [];
-  for (var j = 1; j < 15; j++) {
-      if(existsInArray(skipped,[i,j])){
-          continue;
-      }
-    var cell = cells[i][j];
-    //var cellcontent = hotInstance.getCell(i, j);
-    var cellcontent = document.createElement("td");
-    cellcontent.className = hot.getCellMeta(i,j).className || '';
-    cellcontent.innerHTML = hot.getDataAtCell(i,j) || '';
-
-    var content = cellcontent.innerHTML;
-
-    var cellProperties =hotInstance.getCellMeta(i,j)
-    var colspan = cellProperties.colspan || 1;
-    var rowspan = cellProperties.rowspan || 1;
-    //var styles = cellProperties.style || {};
-    console.log('cellcontent.className : ')
-    console.log(cellcontent.className)
-    if(cellcontent.className!=''){
-
-    console.log('stylleeee : ')
-    var strcontent = "."+cellcontent.className.replace(/ /g, '.');
-    console.log(strcontent)
-    var element = document.querySelector(strcontent)
-    console.log(element)
-    console.log(i)
-    console.log(j)
-    console.log(cellcontent.innerHTML)
-    console.log('*******-------********')
-
-    //console.log(window)
-    var style = window.getComputedStyle(element) || '';
-    //console.log(style)
-    var bgcolor = style.getPropertyValue('background-color') || '';
-    var txtalign = style.getPropertyValue('text-align') || '';
-    if(i==4 || i==5){
-      var styles = {fillColor: bgcolor,halign:txtalign}//,fontSize:6}
-    } else {
-      var styles = {fillColor: bgcolor,halign:txtalign}//,fontSize:8}
-    }
-
-    } else {
-    var styles = cellProperties.style || {}
-    }
-           
-
-    if(rowspan > 1 || colspan > 1 ) {
-        console.log(content)
-        for(var is=0; is<rowspan ; is++){
-            for(var js=0; js<colspan ; js++){
-                if(is==0 & js==0) {
-                styles['valign']=txtalign || '' 
-                continue
-                } else {
-               var vaisk=i+is;
-               var vajsk=j+js
-               let valueskk=[vaisk,vajsk]
-               skipped.push(valueskk)       
-                } 
-            }
-        }
-    }
-    row.push({ content, colSpan:colspan, rowSpan:rowspan, styles:styles });
-  }
-  table.push(row);
-}
-console.log('tableeeeeeeeeeeeee :')
-console.log(table)
-
-
-
-
-
-let font_size=7;
-function normalmincolwidth(fontsize) {
-    if(fontsize==7){
-        return [19,17,17,17,17,  1.15*17, 1.10*17, 1.10*17, 1.10*17,20   , 1.15*17, 1.10*17, 1.10*17, 1.10*17,20];
-    } else if (fontsize==6){
-        return [17,15,15,15,15,  1.10*18, 1.07*18, 1.07*18, 1.07*18,18   , 1.10*18, 1.07*18, 1.07*18, 1.07*18,18]
-    }
-}
-
-function calcwidth(fontsize,textwidth) {
- if(fontsize==9){
-     return 1.8*textwidth;
- } else if (fontsize==8){
-     return 1.64*textwidth;
- } else if (fontsize==7){
-     return 1.5*textwidth;
- } else if (fontsize==6){
-     return 1.38*textwidth;
- }
-}
-var data2=table.slice(2); //editable
-console.log('data2 : ')
-console.log(data2)
-let columnMaxLengths = [];
-// Initialize the array with zeros for each column
-for (let i = 0; i < data2[0].length; i++) {
-  columnMaxLengths[i] = 0;
-}
-// Iterate over each row and update the maximum length for each column
-for (let row of data2) {
-  for (let i = 0; i < row.length; i++) {
-    var cellValue = row[i].content;
-    //console.log('cellValue : ')
-    //console.log(cellValue)
-    columnMaxLengths[i] = Math.max(columnMaxLengths[i], calcwidth(font_size,cellValue.toString().length));
-  }
-}
-console.log(columnMaxLengths)
-for (let i = 0; i < data2[0].length; i++) {
-    if(i==5 || i==6 || i==7 || i==8 ||  i==10 || i==11 || i==12 || i==13){
-  columnMaxLengths[i] = Math.max(columnMaxLengths[i],normalmincolwidth(font_size)[i]);
-    } else {
-  columnMaxLengths[i] = normalmincolwidth(font_size)[i]
-    }   
-}
-console.log('***************------------------------*******');
-console.log("columnMaxLengths avant test sum : ");
-console.log(columnMaxLengths)
-console.log(font_size)
-
-var sumcolumnMaxLengths = columnMaxLengths.reduce((acc, curr) => acc + curr, 0);
-console.log('sumcolumnMaxLengths : ')
-console.log(sumcolumnMaxLengths)
-
-    if(sumcolumnMaxLengths>290){
-        console.log('font_size : ')
-        console.log(font_size)
-        font_size--;
-        console.log(font_size);
-        console.log('yessss it is greather than 290');
-        console.log(sumcolumnMaxLengths)
-        columnMaxLengths = [];
-// Initialize the array with zeros for each column
-for (let i = 0; i < data2[0].length; i++) {
-  columnMaxLengths[i] = 0;
-}
-
-        for (let row of data2) {
-  for (let i = 0; i < row.length; i++) {
-    cellValue = row[i].content;
-    //console.log('font_size after cellvalue : ');
-    //console.log(font_size);
-    columnMaxLengths[i] = Math.max(columnMaxLengths[i], calcwidth(font_size,cellValue.toString().length));
-  }
-}
-        
-for (let i = 0; i < data2[0].length; i++) {
-    if(i==5 || i==6 || i==7 || i==8 ||  i==10 || i==11 || i==12 || i==13){
-  columnMaxLengths[i] = Math.max(columnMaxLengths[i],normalmincolwidth(font_size)[i]);
-    } else {
-  columnMaxLengths[i] = normalmincolwidth(font_size)[i]
-    }   
-}
-    }
-console.log("columnMaxLengths apres test sum : ");
-console.log(columnMaxLengths)
-var sumcolumnMaxLengths2 = columnMaxLengths.reduce((acc, curr) => acc + curr, 0);
-console.log(sumcolumnMaxLengths2)
-
-console.log('font_size : ')
-console.log(font_size)
-
-
-var columnStyles = {
-  0: { columnWidth: columnMaxLengths[0] }, // Column 1 width
-  1: { columnWidth: columnMaxLengths[1] }, // Column 2 width
-  2: { columnWidth: columnMaxLengths[2] },  
-  3: { columnWidth: columnMaxLengths[3] },  
-  4: { columnWidth: columnMaxLengths[4] },  
-  5: { columnWidth: columnMaxLengths[5] },  
-  6: { columnWidth: columnMaxLengths[6] },  
-  7: { columnWidth: columnMaxLengths[7] },  
-  8: { columnWidth: columnMaxLengths[8] },
-  9: { columnWidth: columnMaxLengths[9] },  
-  10: { columnWidth: columnMaxLengths[10] },  
-  11: { columnWidth: columnMaxLengths[11] },  
-  12: { columnWidth: columnMaxLengths[12] },  
-  13: { columnWidth: columnMaxLengths[13] },
-  14: { columnWidth: columnMaxLengths[14] },  
-
-};
-
-
+  const table=return_table_to_downloading_Fct(hot)
+  const { columnStyles, font_size } = edit_size_table_to_downloading_sadeg_Fct(table);
 
 doc.autoTable({  // the complete width of the A4 landscape page is : 297 (i think the unit is by mm so 297mm x 210mm  or 210mm x 297mm)
                
-               body:table,
-               theme:'grid',
-                margin:{left:7,right:4},
-              /*  styles: {
-                //fontSize: 8,
-                lineColor: 50,
-                textColor:50,
-                },
-                */
+                body:table,
+                theme:'grid',
+                margin:{left:7,right:4},         
                 columnStyles: columnStyles,
                 styles:{fontSize:font_size,
     textColor: [0, 0, 0], // Set text color to black
