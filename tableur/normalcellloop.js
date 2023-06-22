@@ -2,6 +2,8 @@ import{ last_row_after_header} from './intials_inputs_nb.js'
 const imin = 6;
 const imax = 6+last_row_after_header
 export function normalcellloop(){
+  console.log('******* normalcellloop ******++++++++++++++++++')
+  //console.log(otherArgs)
     const aus = [
       { row: 0, col: 1, className: 'htCenter htMiddle' },  // Etat
       { row: 1, col: 1, className: 'htCenter htMiddle' },  // Etat2
@@ -39,11 +41,16 @@ export function normalcellloop(){
   
     for(let i=imin ; i<=imax ; i++) {
       for(let j=1 ; j<=14 ; j++){
-        if(j==2){  // which column text align is center
-          var zz={ row: i, col: j, className: 'htLeft htMiddle custom-normalcell' };
+        if(j==2 || j==3){  // which column text align is center
+          console.log('we are in j==2 : ')
+          //var zz={ row: i, col: j, className: 'htRight' };
+          var zz={ row: i, col: j, className: 'htRight htMiddle custom-normalcell' };
+
           aus.push(zz);
+          console.log(zz)
+         
         } else {
-          var zz={ row: i, col: j, className: 'htLeft htMiddle custom-normalcell' };
+          var zz={ row: i, col: j, className: 'htLeft htTop custom-normalcell' };
           aus.push(zz);
         }
               }

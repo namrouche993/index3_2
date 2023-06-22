@@ -1,7 +1,7 @@
 //hot.addHook('afterChange', function (changes, src) {
 let lastelement_supthan1=0;
 import {data22fct} from './ddata.js'
- var data22 = data22fct();
+var data22 = data22fct();
 
 export function afterChangefct(changes,src, ...otherArgs){
     const hot = otherArgs[otherArgs.length - 1];

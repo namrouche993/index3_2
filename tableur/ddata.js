@@ -8,10 +8,10 @@ export function ddatafct(){
             ['','Etat444','','','','','','','','','','','','','','','','',   ''],
             //['','','','','','','','','','','','','','','','','',''],
             //[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
-            ['','Projet','Consistance de Projet',"Taux d'avancement des travaux logement","Taux d'avancement des travaux VRD",'Raccordement en énergie Electrique','','','','','Raccordement en énergie Gaziere','','','','',   ''],
+            ['','Projet','Consistance de Projet',"Taux d'\navancement\ndes travaux\nlogements","Taux d'avancement des travaux VRD",'Raccordement en énergie Electrique','','','','','Raccordement en énergie Gaziere','','','','',   ''],
             ['','','','','',"Taux d'avancement des travaux",'Montant des travaux (devis SADEG)','Montant payé (DA)','Créances détenues travaux','Contraintes',"Taux d'avancement des travaux",'Montant des travaux (devis SADEG)','Montant payé (DA)','Créances détenues travaux','Contraintes',   ''],
-            ['','aaz','36','','','','','','','','','','','','','','',   ''],
-            ['','','','','','','','','','','','','','','','','',   '']       
+            //['','aaz','36','','','','','','','','','','','','','','',   ''],
+            //['','','','','','','','','','','','','','','','','',   '']       
             //['','','','','','','','','','','','','','','','','','',   '']            
 
             
@@ -19,7 +19,7 @@ export function ddatafct(){
             ) 
         
         for(let i=0 ; i<=last_row_after_header ; i++) {
-          let zzrow=['','','','','','','','','','','','','','','','','',   '']
+          let zzrow=['','123 456 789','1234567','52%','','','','','','','','','','','','','',   '']
           ddata.push(zzrow);
         }
         return ddata
