@@ -1,113 +1,60 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Handsontable French Numeric Format Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/handsontable@12.3/dist/handsontable.full.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@12.3/dist/handsontable.full.min.css" /> 
-    <script src="https://handsontable.com/docs/8.3.2/components/numbro/dist/languages.min.js"></script>
-    <script src="https://handsontable.com/docs/scripts/fixer.js"></script>
-    
-  </head>
-  <body>
-    <style>
-         .handsontable .htCommentCell:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: unset;
-      border-left: 20px solid transparent;
-      border-right: none;
-      border-top: 14px solid red;
-  }
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
+</head>
+<body>
+  <div id="example"></div>
 
-    .htCommentsContainer .htCommentTextArea {
-        width: 320px;
-        height: 60px;
+  <script type="module">
+    import {afterval} from './afterval_essai_de_hand5.js'
+
+function ageValidator(value, callback) {
+      if (value >= 18 && value <= 65) {
+        // Valid value
+        callback(true);
+      } else {
+        // Invalid value
+        callback(false);
+      }
     }
 
-      .handsontable .htAutocompleteArrow {
-            float: right;
-            font-size: 10px;
-            color: black;
-            cursor: default;
-            width: 16px;            
-            text-align: center;
-          }
-    </style>
-    <div id="example"></div>
-    <script>
-     
 
-      var container = document.getElementById('example');
-      var hot = new Handsontable(container, {
-        data: [
-          ['6760','','',''],
-          ['568,90','','',''],
-          ['1232,90','','',''],
-          ['673,90','','',''],
-          ['578,90','','',''],
-          ['78,90','','',''],
-          ['9978,90','','',''],          
-          ],
-          colWidths: [70,70,150,70],
-          comments:true,
-          columns: [
-          {type: 'numeric'},
-          {type: 'numeric'},
-          {type: 'dropdown',
-             source: ['','yellow', 'red', 'orange', 'green', 'blue', 'gray', 'black', 'white'],
-             validator: function(value, callback) {
-               if(value==null){
-                 callback(true)
-               }else if(['','yellow', 'red', 'orange', 'green', 'blue', 'gray', 'black', 'white'].includes(value)){
-               callback(true)
-             } else if (value===' ') {
-               callback(true)
-             } else {
-               callback(false)
-             }
-             }
-                        },
-          {type: 'numeric'}
-          ],
-          afterValidate: function(isValid, value, row, prop, source) {
-            console.log('we are inside afterValidte') //console.log('a')
-            console.log(isValid)
-            console.log(value)
-            console.log('finish1 we are inside afterValidte')
-            const commentsPlugin = hot.getPlugin('comments');
-            if(value==null){
-              console.log('we are inside null');
-              commentsPlugin.removeCommentAtCell(row,prop);
 
-            }else if(!isValid){
-              console.log('first cond')
-              this.setDataAtCell(row, prop,' ');
-              commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
-              //this.setDataAtCell(row, prop,'');
-            } else if (value===' ') {
-              console.log('2 cond')
-              //commentsPlugin.removeCommentAtCell(row,prop);
-              commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
-              //this.setDataAtCell(row, prop,'');
-            } else {
-              console.log('3 cond')
-              commentsPlugin.removeCommentAtCell(row,prop);
-            }
-            console.log('finish2 we are inside afterValidte')
+    var data = [
+      [1, 'John', 11],
+      [2, 'Jane', 22],
+      [3, 'Mike', ''],
+      [4, 'Emily', 12]
+    ];
 
-           // console.log(row)
-           // console.log(prop)
-           // console.log(source)
+    var hot = new Handsontable(document.getElementById('example'), {
+      data: data,
+      comments:true,
+      columns: [
+        {data:0},
+        {data:1},
+        {
+          data: 2,
+          validator: ageValidator
+        }
+      ],
+      //afterValidate: afterval
+      // afterValidate: (oldvalue, row, prop, source, ...otherArgs) => {
+      //       return afterval(oldvalue, row, prop, source, ...otherArgs, hot);
+      //     },
+
+      afterValidate: (isValid, value, row, prop, source, ...otherArgs) => {
+            const hotInstance = hot; // Store the hot instance
+            afterval(isValid, value, row, prop, source, ...otherArgs, hotInstance);
+
+            //return afterval(oldvalue, row, prop, source, ...otherArgs, hot);
           },
-        colHeaders:true,
-        startRows: 5,
-        startCols: 5,
-      });
 
-
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
