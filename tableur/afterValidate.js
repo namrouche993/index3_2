@@ -26,9 +26,17 @@ import{
   
 export function afterValidatefct(isValid, oldvalue, row, prop, source, ...otherArgs){
             const hot = otherArgs[otherArgs.length - 1];
-
+            console.log('hot : ')
+            console.log(isValid)
+            console.log(oldvalue)
+            console.log(row)
+            console.log(prop)
+            console.log(source)
+            console.log(hot)
+            
 //afterValidate: function (isValid, oldvalue, row, prop, source) {
             const commentsPlugin = hot.getPlugin('comments');
+            console.log(commentsPlugin)
             if(prop==3 || prop==4 || prop==5 || prop==10){ // afterValidate of percentage,  editable the index later 
         
 
