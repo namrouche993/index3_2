@@ -46,7 +46,7 @@
         <button onclick="undohandstonetable()" class='material-symbols-outlined' style="font-size:18px;cursor:pointer;">undo</button>
         <button onclick="redohandstonetable()" class='material-symbols-outlined' style="font-size:18px;cursor:pointer;">redo</button>
         <button class='material-symbols-outlined' style="font-size:18px;cursor:pointer;">format_bold</button>   
-        <button onclick="downloadfile()">Download</button>
+        <button id="downloadbutton" >Download</button>
         <button id="button-id">cliquer </button>
 
 
@@ -65,7 +65,7 @@
   import { isValidDate } from './tableur/isValidDate.js';
   import { columnsdata } from './tableur/columnsdata.js';
   import { ddatafct,data22fct } from './tableur/ddata.js';
-  import { normalcellloop } from './tableur/normalcellloop.js'
+  import { normalcellloop,cellscells } from './tableur/normalcellloop.js'
   import { afterValidatefct } from './tableur/afterValidate.js'
   import { decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,    dateformatlanguage_to_export as dateformatlanguage ,splitdate_to_export as splitdate } from './tableur/intials_inputs_nb.js'
   import { afterChangefct } from './tableur/afterChange.js'
@@ -75,9 +75,9 @@
   import { beforeKeyDownfct } from './tableur/beforeKeyDown.js'
   import { beforeChangeFct } from './tableur/beforeChange.js'
   
-  import { return_table_to_downloading_Fct } from './tableur/return_table_to_downloading.js';
+  import { pdf_return_table_to_downloading_Fct } from './tableur/pdf_return_table_to_downloading.js';
 
-  import { edit_size_table_to_downloading_sadeg_Fct } from './tableur/edit_size_table_to_downloading_sadeg.js';
+  import { pdf_edit_size_table_to_downloading_sadeg_Fct } from './tableur/pdf_edit_size_table_to_downloading_sadeg.js';
 
       
       
@@ -123,20 +123,19 @@ const hot = new Handsontable(container, {
           },
           startRows: 6,
           startCols: 5,
-          cells:(row,column)=>{
-            var cellProperties = {};
-            if(row<6){
-              cellProperties.readOnly = true;
-            }
-            return cellProperties;
+          cells:(row,column) => {
+            return cellscells(row,column);
           },
           mergeCells: mergecellsarray,
           cell: normalcellloop(),
           hiddenColumns: {columns:[15]},
           DragToScroll: true,
           copyPaste: true,
-          afterValidate: (oldvalue, row, prop, source, ...otherArgs) => {
-            return afterValidatefct(oldvalue, row, prop, source, ...otherArgs, hot);
+          afterValidate: (isValid, value, row, prop, source, ...otherArgs) => {
+            const hotInstance = hot; // Store the hot instance
+            afterValidatefct(isValid, value, row, prop, source, ...otherArgs, hotInstance);
+
+            //return afterValidatefct(oldvalue, row, prop, source, ...otherArgs, hot);
           },
           beforeKeyDown: (event, ...otherArgs) => {
             return beforeKeyDownfct(event, ...otherArgs, hot);
@@ -180,15 +179,11 @@ hot.addHook('afterChange', function(changes, src, ...otherArgs) {
 
 
 
-//console.log('hoooooooooooooot : ')
-//let hota=hot;
-//console.log(hota)
-
 const downloadfile=()=>{
 
   var doc = new jsPDF({orientation:'landscape'});
-  const table=return_table_to_downloading_Fct(hot)
-  const { columnStyles, font_size } = edit_size_table_to_downloading_sadeg_Fct(table);
+  const table=pdf_return_table_to_downloading_Fct(hot)
+  const { columnStyles, font_size } = pdf_edit_size_table_to_downloading_sadeg_Fct(table);
 
 doc.autoTable({  // the complete width of the A4 landscape page is : 297 (i think the unit is by mm so 297mm x 210mm  or 210mm x 297mm)
                
@@ -208,8 +203,16 @@ doc.save('taaa.pdf')
 }
 
 
-console.log('i will use downloadfile() : ')
-downloadfile()
+document.addEventListener('DOMContentLoaded', function() {
+    var button = document.getElementById('downloadbutton');
+
+    button.addEventListener('click', function() {
+      // Your code here
+      downloadfile()
+      console.log('Button clicked!');
+      
+    });
+  });
 
 
 </script>
