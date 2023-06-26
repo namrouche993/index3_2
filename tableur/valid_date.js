@@ -26,6 +26,10 @@ import{
 
 // REMEMBER , NOTE : dont forget to add beforekeydown_dates  beforeKeyDown_Dates_fct
 
+ //     if(currentColIndex==1) {  // editable (about dates) edit it later changeable , modify it later , change it later
+ //  beforeKeyDown_Dates_fct(event, hot) // about dates
+ // }
+
 /*
   else if( i == 1 ) {
     var dd={
