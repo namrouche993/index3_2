@@ -42,12 +42,12 @@ export function normalcellloop(){
     for(let i=imin ; i<=imax ; i++) {
       for(let j=1 ; j<=14 ; j++){
         if(j==2 || j==3){  // which column text align is center
-          console.log('we are in j==2 : ')
+          //console.log('we are in j==2 : ')
           //var zz={ row: i, col: j, className: 'htRight' };
           var zz={ row: i, col: j, className: 'htRight htMiddle custom-normalcell' };
 
           aus.push(zz);
-          console.log(zz)
+          //console.log(zz)
          
         } else {
           var zz={ row: i, col: j, className: 'htLeft htTop custom-normalcell' };
@@ -57,3 +57,11 @@ export function normalcellloop(){
     }
     return aus
   }
+
+  export function cellscells(row,column){
+      var cellProperties = {};
+      if(row<6){ // editable
+        cellProperties.readOnly = true;
+      }
+      return cellProperties;
+    }

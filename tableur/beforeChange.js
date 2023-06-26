@@ -1,6 +1,10 @@
 
 export function beforeChangeFct(changes,source, ...otherArgs){
     const hot = otherArgs[otherArgs.length - 1];
+
+    console.log('hot in beforechange : ')
+    console.log(hot)
+
     console.log('we are inside beforeChange x y z :')
     //console.log(changes)
     //console.log(source)

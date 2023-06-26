@@ -5,6 +5,10 @@ var data22 = data22fct();
 
 export function afterChangefct(changes,src, ...otherArgs){
     const hot = otherArgs[otherArgs.length - 1];
+
+    console.log('hot in afterchange : ')
+    console.log(hot)
+
     console.log('start afterChange')
     console.log('lastelement_supthan1 start : ' + lastelement_supthan1)
     console.log(changes)
