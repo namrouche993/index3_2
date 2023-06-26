@@ -10,17 +10,6 @@
     <div id="example"></div>
     <button id="decimal-switcher">Switch decimal separator</button>
     <script>
-      // Get the user's language and regional settings
-      const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
-
-// Create options for toLocaleString() based on the user's locale
-const options = { style: 'decimal' };
-const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
-
-// Extract the decimal separator and thousand separator from the formatted number
-const decimalseprator0 = formattedNumber.substring(9,10)
-const decimalSeparator = decimalseprator0;
-
       const data = [
         [1, ''],
         [2, ''],
@@ -35,7 +24,6 @@ const decimalSeparator = decimalseprator0;
             validator: function(value, callback) {
               if (/^\d+(\.\d+)?$/.test(value) || /^\d+(,\d+)?$/.test(value) ) {
                 callback(true);
-                console.log('we are inside true')
               } else {
                 callback(false);
               }
@@ -75,7 +63,7 @@ const decimalSeparator = decimalseprator0;
 
       const decimalSwitcher = document.getElementById('decimal-switcher');
 
-      //let decimalSeparator = '.';
+      let decimalSeparator = '.';
 
       decimalSwitcher.addEventListener('click', function() {
         if (decimalSeparator === '.') {
@@ -102,6 +90,110 @@ const decimalSeparator = decimalseprator0;
           hot.loadData(newData);
         }
       });
+
+/*
+      // Get the user's language and regional settings
+const userLocale =  Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+
+// Create options for toLocaleString() based on the user's locale
+const options = { style: 'decimal' };
+const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
+
+// Extract the decimal separator and thousand separator from the formatted number
+const defaultSeparator = formattedNumber.substring(1, 2);
+const thousandSeparator = formattedNumber.replace(/[.\d]/g, '');
+
+// Use the decimal separator and thousand separator to format other numbers
+const otherNumber = 9876543.21;
+const otherFormattedNumber = otherNumber.toLocaleString(userLocale, {
+  style: 'decimal',
+  useGrouping: true,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+  decimalSeparator: defaultSeparator,
+  groupingSeparator: thousandSeparator,
+});
+const userLocale = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+
+// Create options for toLocaleString() based on the user's locale
+const options = { style: 'decimal' };
+const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
+
+// Extract the decimal separator and thousand separator from the formatted number
+const defaultSeparator = formattedNumber.substring(1, 2);
+const thousandSeparator = formattedNumber.replace(/[.\d]/g, '');
+
+// Use the decimal separator and thousand separator to format other numbers
+const otherNumber = 9876543.21;
+const otherFormattedNumber = otherNumber.toLocaleString(userLocale, {
+  style: 'decimal',
+  useGrouping: true,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+  decimalSeparator: defaultSeparator,
+  groupingSeparator: thousandSeparator,
+});
+
+// Get the otherFormattedNumber in the default format with dot as decimal separator and without thousand separator
+const otherFormattedNumberDefault = Number(otherFormattedNumber.replace(/[^\d,.]/g, '').replace(',', '.'));
+
+// Format otherFormattedNumberDefault using the userLocale's separators
+const optionsDefault = {
+  style: 'decimal',
+  useGrouping: true,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+};
+const otherFormattedNumberDefaultLocale = otherFormattedNumberDefault.toLocaleString(userLocale, optionsDefault);
+
+console.log(otherFormattedNumberDefaultLocale); // Outputs "9 876 543,21" for fr-FR and "9,876,543.21" for en-US
+*/
+
+
+/*
+
+const number = 1234567.89;
+const userLocale = Intl.NumberFormat().resolvedOptions().locale || 'fr' || 'en' 
+const formatter = new Intl.NumberFormat(userLocale);
+const formattedNumber = formatter.format(number);
+console.log(formattedNumber); // output depends on the user's locale
+
+
+//  1-Decimal separator: period (.), thousand separator: comma (,):
+/^\d{1,3}(,\d{3})*(\.\d+)?$/.test(value)
+value = value.replace(/,/g, '');
+
+
+//  2-Decimal separator: comma (,), thousand separator: period (.):
+/^\d{1,3}(\.\d{3})*(,\d+)?$/.test(value)
+value = value.replace(/\./g, '').replace(',', '.');
+
+
+//  3-Decimal separator: period (.), no thousand separator:
+/^\d+(\.\d+)?$/.test(value)
+// no formatting needed
+
+
+//  4-Decimal separator: comma (,), no thousand separator:
+/^\d+(,\d+)?$/.test(value)
+value = value.replace(',', '.');
+
+
+//  5-Decimal separator: period (.), thousand separator: space:
+/^\d{1,3}(\s\d{3})*(\.\d+)?$/.test(value)
+value = value.replace(/\s/g, '');
+
+
+//  6-Decimal separator: comma (,), thousand separator: space:
+/^\d{1,3}(\s\d{3})*(,\d+)?$/.test(value)
+value = value.replace(/\./g, '').replace(' ', '.');
+
+
+
+
+
+
+*/
     </script>
   </body>
 </html>

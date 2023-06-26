@@ -2,115 +2,61 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Handsontable Example</title>
-  <!-- Include Handsontable CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.min.css">
+  <title>Handsontable Custom Editor Example</title>
+  <!-- Load Handsontable CSS and JavaScript files -->
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
 </head>
 <body>
+  <!-- Create a container for the Handsontable instance -->
   <div id="example"></div>
-  <button id="removeThirdStepButton">Remove Third Step</button>
-
-  <!-- Include Handsontable JavaScript library -->
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 
   <script>
-    // Create Handsontable instance
-    var hot = new Handsontable(document.getElementById('example'), {
-      data: [
-        [''],
-        [''],
-        [''],
-        [''],
-      ],
-      comments:true,
-      columns: [
-        { title:'Age',
-        validator:(value,callback)=>{
-          console.log(value)
-          if(value==null){
-            callback(true)
-          }else if(value=='' || value==' '){
-            callback(true)
-          }else if(Number(value)>0){
-            callback(true)
-          } else {
-            callback(false)
-          }
-        }
-        }
-      ],
-      afterValidate: function(isValid, value, row, prop, source) {
-        console.log('start aftervalidate')
-        //if(hot.undoRedo.doneActions[0]!=undefined){
-        //  var hota = hot.undoRedo.doneActions.pop()
-        //  console.log('hotundoredo')
-        //  console.log(hota)
-          //console.log(hot.undoRedo.doneActions[0])
-        //}
-        console.log(source)
-        console.log(value)
-        console.log('hot.undoRedo.doneActions : ')
-        console.log(hot.undoRedo.doneActions)
-        const commentsPlugin = hot.getPlugin('comments');
-
-         if(source=='my_source'){
-          //console.log(hot.undoRedo.doneActions)
-       /* 
-         hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.forEach((x,y)=>{
-            console.log('we are inside foreach')
-            if(x[0]==row && x[1]==prop){
-              console.log(x)
-              console.log(value)
-              console.log('we are inside condition of foreach')
-                    x[3]=value.toString()
-                  }
-                })
-        */
-        }
-        //console.log(hot.undoRedo.doneActions)
-        if (Number(value) > 50) {
-          //console.log('start inside condition 50')
-          this.setDataAtCell(row, prop,value-20,'my_source2');
-          commentsPlugin.removeCommentAtCell(row,prop);
-          //console.log(hot.undoRedo.doneActions.pop().changes[0])
-          //console.log('end inside condition 50')
-        } else if(!isValid){
-          console.log('we are inside !isvalid')
-          commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie nest pas autorisée !!");
-          this.setDataAtCell(row, prop,'','my_source');
-          console.log('we are inside end !isvalid')
-        } else {
-          if(source!='my_source'){
-            commentsPlugin.removeCommentAtCell(row,prop);
-          }
-
-        }
-        //console.log(hot.undoRedo.doneActions[6])
-        console.log('end aftervalidate')
+    // Define the custom editor
+      class EditTxt extends Handsontable.editors.TextEditor {
+      prepare(row, col, prop, td, originalValue, cellProperties) {
+       super.prepare(row, col, prop, td, originalValue, cellProperties);
+       console.log('start editor')
+       console.log(row)
+       console.log(col)
+       console.log(prop)
+       console.log(td)
+       console.log(originalValue)
+       console.log(cellProperties)
+       console.log('--------end editor---------')
+       this.customEditorSpecificProperty = 'foo';
 
       }
-      })
+      getValue() {
+            // returns currently selected date, for example "2023/09/15"
+            console.log('getvalue :')
+          return calendar.getDate();
+      }
 
-      hot.addHook('afterChange', function(changes, src) {
-        console.log('start afterChange')
-        console.log(changes)
-        console.log(src)
-        if(src=='my_source2'){
-          console.log('we are inside src==my_source')
-          console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-2])
-          hot.undoRedo.doneActions.splice(hot.undoRedo.doneActions.length-2,1)
-          
-        }
-        console.log('end afterChange')
-      })
+    }
 
-      const removeThirdStepButton = document.getElementById('removeThirdStepButton');
-      removeThirdStepButton.addEventListener('click', function() {
-        const actions = hot.undoRedo.doneActions;
-        actions.splice(actions.length, 1);
-        console.log('we removed the 7th step')
-      })
-    
+
+    // Initialize a Handsontable instance with the custom editor
+    var hot = new Handsontable(document.getElementById('example'), {
+  data: [
+        ['8',''],
+        ['9',''],
+        ['5','']
+      ],
+  columns: [
+    {
+      type: 'text'
+    },
+    {
+      editor: EditTxt
+      // If you want to use string 'password' instead of passing
+      // the actual editor class check out section "Registering editor"
+    }
+  ]
+});
+
   </script>
 </body>
 </html>

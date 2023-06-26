@@ -1,0 +1,145 @@
+
+/*when fontSize:7 
+  0: { columnWidth: 19 }, // Column 1 width
+  1: { columnWidth: 17 }, // Column 2 width
+  2: { columnWidth: 17 },  
+  3: { columnWidth: 17 },  
+  4: { columnWidth: 17 },  
+  5: { columnWidth: 1.22*17},  min : 1.15
+  6: { columnWidth: 1.18*17 },  min : 1.10
+  7: { columnWidth: 1.18*17 },  min : 1.10
+  8: { columnWidth: 1.18*17 }, min : 1.10
+  9: { columnWidth: 20 },  
+  10: { columnWidth: 1.22*17 }, min : 1.15  
+  11: { columnWidth: 1.18*17 }, min : 1.10  
+  12: { columnWidth: 1.18*17 }, min : 1.10
+  13: { columnWidth: 1.18*17 }, min : 1.10
+  14: { columnWidth: 20 },  
+*/
+
+
+
+
+  var doc = new jsPDF({orientation:'landscape'});
+
+// Data for the table
+var data = [
+  ["Projet", "Consistance de Projet", "Taux d'\navancement\ndes travaux\nlogements","Taux d'\navancement\ndes travaux\nVRD","Taux d'\navancement\ndes travaux","Montant des travaux (devis Sadeg) DA","Montant payé (DA)","Créances détenues travaux","Créances détenues","Contraintes","Montant des travaux (devis Sadeg) DA","Montant payé (DA)","Créances détenues travaux","Créances détenues","Contraintes"],
+  ["Realisation 35/100/2500 LPL à BECHAR", "99999", "999%", "999%", "999%", "777 777 777 777.77", "999 999 999 999.99", "999 999 999 999.99","999 999 999 999.99", "Pas de paiement", "999 999 999 999.99", "999 999 999 999.99", "999 999 999 999.99","999 999 999 999.99", "Pas de paiement"],
+  ["Row 2", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V"],
+];
+//const normalmincolwidth=[19,17,17,17,17,  1.15*17, 1.10*17, 1.10*17, 1.10*17,20   , 1.15*17, 1.10*17, 1.10*17, 1.10*17,20];
+let font_size=7;
+function normalmincolwidth(fontsize) {
+    if(fontsize==7){
+        return [19,17,17,17,17,  1.15*17, 1.10*17, 1.10*17, 1.10*17,20   , 1.15*17, 1.10*17, 1.10*17, 1.10*17,20];
+    } else if (fontsize==6){
+        return [17,15,15,15,15,  1.10*18, 1.07*18, 1.07*18, 1.07*18,18   , 1.10*18, 1.07*18, 1.07*18, 1.07*18,18]
+    }
+}
+
+function calcwidth(fontsize,textwidth) {
+ if(fontsize==9){
+     return 1.8*textwidth;
+ } else if (fontsize==8){
+     return 1.64*textwidth;
+ } else if (fontsize==7){
+     return 1.5*textwidth;
+ } else if (fontsize==6){
+     return 1.23*textwidth;
+ }
+}
+var data2=data.slice(1);
+
+const columnMaxLengths = [];
+// Initialize the array with zeros for each column
+for (let i = 0; i < data2[0].length; i++) {
+  columnMaxLengths[i] = 0;
+}
+// Iterate over each row and update the maximum length for each column
+for (let row of data2) {
+  for (let i = 0; i < row.length; i++) {
+    const cellValue = row[i];
+    columnMaxLengths[i] = Math.max(columnMaxLengths[i], calcwidth(font_size,cellValue.length));
+  }
+}
+console.log(columnMaxLengths)
+for (let i = 0; i < data2[0].length; i++) {
+    if(i==5 || i==6 || i==7 || i==8 ||  i==10 || i==11 || i==12 || i==13){
+  columnMaxLengths[i] = Math.max(columnMaxLengths[i],normalmincolwidth(font_size)[i]);
+    } else {
+  columnMaxLengths[i] = normalmincolwidth(font_size)[i]
+    }   
+}
+console.log('***************------------------------*******');
+console.log("columnMaxLengths avant test sum : ");
+console.log(columnMaxLengths)
+console.log(font_size)
+
+var sumcolumnMaxLengths = columnMaxLengths.reduce((acc, curr) => acc + curr, 0);
+    if(sumcolumnMaxLengths>290){
+        console.log(font_size)
+        font_size--;
+        console.log(font_size);
+        console.log('yessss it is less than 290');
+        console.log(sumcolumnMaxLengths)
+        const columnMaxLengths = [];
+// Initialize the array with zeros for each column
+for (let i = 0; i < data2[0].length; i++) {
+  columnMaxLengths[i] = 0;
+}
+
+        for (let row of data2) {
+  for (let i = 0; i < row.length; i++) {
+    const cellValue = row[i];
+    columnMaxLengths[i] = Math.max(columnMaxLengths[i], calcwidth(font_size-1,cellValue.length));
+  }
+}
+        
+for (let i = 0; i < data2[0].length; i++) {
+    if(i==5 || i==6 || i==7 || i==8 ||  i==10 || i==11 || i==12 || i==13){
+  columnMaxLengths[i] = Math.max(columnMaxLengths[i],normalmincolwidth(font_size-1)[i]);
+    } else {
+  columnMaxLengths[i] = normalmincolwidth(font_size-1)[i]
+    }   
+}
+    }
+console.log("columnMaxLengths apres test sum : ");
+console.log(columnMaxLengths)
+var sumcolumnMaxLengths2 = columnMaxLengths.reduce((acc, curr) => acc + curr, 0);
+console.log(sumcolumnMaxLengths2)
+
+
+var columnStyles = {
+  0: { columnWidth: columnMaxLengths[0] }, // Column 1 width
+  1: { columnWidth: columnMaxLengths[1] }, // Column 2 width
+  2: { columnWidth: columnMaxLengths[2] },  
+  3: { columnWidth: columnMaxLengths[3] },  
+  4: { columnWidth: columnMaxLengths[4] },  
+  5: { columnWidth: columnMaxLengths[5] },  
+  6: { columnWidth: columnMaxLengths[6] },  
+  7: { columnWidth: columnMaxLengths[7] },  
+  8: { columnWidth: columnMaxLengths[8] },
+  9: { columnWidth: columnMaxLengths[9] },  
+  10: { columnWidth: columnMaxLengths[10] },  
+  11: { columnWidth: columnMaxLengths[11] },  
+  12: { columnWidth: columnMaxLengths[12] },  
+  13: { columnWidth: columnMaxLengths[13] },
+  14: { columnWidth: columnMaxLengths[14] },  
+
+};
+// Generate the table
+doc.autoTable({
+  margin:{left:6,right:4},
+  //head: [data[0]],    // Table header
+  body: data, // Table body without header
+  columnStyles: columnStyles,
+  theme:'grid',
+  styles:{fontSize:font_size,
+    textColor: [0, 0, 0], // Set text color to black
+    lineColor: [0, 0, 0], // Set line color to black
+    lineWidth: 0.1 // Set line width to 0.1 (adjust as needed)},
+         },
+    didParseCell:function(data){data.cell.styles.font = "helvetica";}
+});
+doc.save("table.pdf");

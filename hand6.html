@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
+</head>
+<body>
+  <div id="example"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@9.1.1/dist/handsontable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@9.1.1/dist/plugins/autoColumnSize.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var container = document.getElementById("example");
+
+      var data = [
+        ["Name", "Age", "Country"],
+        ["John Doe", 25, "USA"],
+        ["Jane Smith", 30, "Canada"],
+        ["Robert Johnson", 35, "Australia"]
+      ];
+
+      var hot = new Handsontable(container, {
+        data: data,
+        colHeaders: true,
+        colWidths: [90,70,60],
+        //wordWrap:false,
+        afterChange: function(changes, source) {
+  // Check if the change was made by the user
+  if (source === 'edit') {
+    var row = changes[0][0];
+    var col = changes[0][1];
+    var newValue = changes[0][3];
+    
+    // Calculate the necessary width based on the length of the new value
+    var newWidth = Math.min(newValue.length * 7, 140); // Adjust the multiplication factor as per your preference
+    var currentWidths = hot.getSettings().colWidths;
+    currentWidths[col] = newWidth;
+
+    console.log('newWidth : ')
+    console.log(newWidth)
+    console.log(newValue.length)
+    // Set the new column width dynamically
+    hot.updateSettings({
+      // modifyColWidth: function(width, col) {
+      //   return newWidth;
+      // }
+
+      colWidths: function(index) {
+                if (index === col) {
+                  return newWidth;
+                }
+                return currentWidths
+              }
+    });
+  }
+},
+
+
+      });
+    });
+  </script>
+</body>
+</html>

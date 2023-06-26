@@ -233,7 +233,7 @@ var container = document.getElementById('example1')
 var sheetclip = new SheetClip();
 var clipboardCache = '';
 
-var normalcellloop = (imin,imax)=>{
+var normalcellloop = (imin,imax)=>{ //editable
   const aus = [
     { row: 0, col: 1, className: 'htCenter htMiddle' },
     { row: 1, col: 1, className: 'htCenter htMiddle' },
@@ -271,10 +271,11 @@ var normalcellloop = (imin,imax)=>{
   ];
 
   for(i=imin ; i<=imax ; i++) {
-    for(j=1 ; j<=14 ; j++){
+    for(j=1 ; j<=14 ; j++){ //editable
       if(j==2){
         zz={ row: i, col: j, className: 'htCenter htMiddle custom-normalcell' };
         aus.push(zz);
+
       } else {
         zz={ row: i, col: j, className: 'htLeft htMiddle custom-normalcell' };
         aus.push(zz);
@@ -284,7 +285,7 @@ var normalcellloop = (imin,imax)=>{
   return aus
 }
 
-var columnsdata = (imin,imax) => {
+var columnsdata = (imin,imax) => { // editable
   fa=[]
   fa.push({data:0,readOnly:true})
     //,type:'numeric'})
@@ -307,6 +308,7 @@ var columnsdata = (imin,imax) => {
            
            );
          } else {
+          console.log(' i ======= 3')
            callback(true);
 
          }
@@ -396,7 +398,7 @@ var columnsdata = (imin,imax) => {
     
     fa.push(dd)
 }
-fa.push({data:15,readOnly:true})
+fa.push({data:15,readOnly:true}) // i forget why i added this
 return fa
 }
 
@@ -411,7 +413,7 @@ hot = new Handsontable(container, {
           manualRowResize: true,
           colWidths: [20,200,100,120,120, 120,120,120,120,100,  120,120,120,120,100,    20 ],
           undo: true,
-          columns: columnsdata(0,16),
+          columns: columnsdata(0,16), // editable
           contextMenu: {
             items:{
               "copy":{name:"Copier"},
@@ -422,16 +424,16 @@ hot = new Handsontable(container, {
              }
             }
           },
-          startRows: 6,
-          startCols: 5,
+          startRows: 6, // maybe editable , i forget what does it mean
+          startCols: 5, // maybe editable , i forget what does it mean
           cells:(row,column)=>{
             var cellProperties = {};
-            if(row<6){
+            if(row<6){ // editable
               cellProperties.readOnly = true;
             }
             return cellProperties;
           },
-          mergeCells: [
+          mergeCells: [ // editable
     { row: 0, col: 1, rowspan: 1, colspan: 15 },
     { row: 1, col: 1, rowspan: 1, colspan: 15 },
     { row: 2, col: 1, rowspan: 1, colspan: 15 },
@@ -449,7 +451,7 @@ hot = new Handsontable(container, {
 
 
     ],
-          cell: normalcellloop(6,6+last_row_after_header),
+          cell: normalcellloop(6,6+last_row_after_header), //editable
           hiddenColumns: {columns:[15]},
           DragToScroll: true,
           copyPaste: true,
@@ -545,9 +547,9 @@ var hotInstance = hot;
 var table = [];
 var skipped = []
 var cells = hotInstance.getData()
-for (var i = 4; i < cells.length; i++) {
+for (var i = 4; i < cells.length; i++) { // 4 editable
   var row = [];
-  for (var j = 1; j < 15; j++) {
+  for (var j = 1; j < 15; j++) { // 15 editable
       if(existsInArray(skipped,[i,j])){
           continue;
       }
@@ -570,8 +572,8 @@ for (var i = 4; i < cells.length; i++) {
     var style = window.getComputedStyle(element) || '';
     var bgcolor = style.getPropertyValue('background-color') || '';
     var txtalign = style.getPropertyValue('text-align') || '';
-    if(i==4 || i==5){
-      var styles = {fillColor: bgcolor,halign:txtalign}//,fontSize:6}
+    if(i==2){ // editable i forget why , but i thing because of fontsize :6 and 8 , so it will be the same, so there is no need to put this condition
+      var styles = {fillColor: bgcolor,halign:'txtalign'}//,fontSize:6}
     } else {
       var styles = {fillColor: bgcolor,halign:txtalign}//,fontSize:8}
     }

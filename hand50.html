@@ -1,82 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Handsontable Example</title>
-  <!-- Include Handsontable CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.min.css">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-  <div id="example"></div>
-  <button id="removeThirdStepButton">Remove Third Step</button>
-
-  <!-- Include Handsontable JavaScript library -->
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-
   <script>
-    // Create Handsontable instance
-    var hot = new Handsontable(document.getElementById('example'), {
-      data: [
-        [''],
-        [''],
-        [''],
-        [''],
-      ],
-      comments:true,
-      columns: [
-        { title:'Age',
-        validator:(value,callback)=>{
-          console.log(value)
-          if(value==null){
-            callback(true)
-          }else if(value=='' || value==' '){
-            callback(true)
-          }else if(Number(value)>0){
-            callback(true)
-          } else {
-            callback(false)
-          }
-        }
-        }
-      ],
-      afterValidate: function(isValid, value, row, prop, source) {
-        console.log('start aftervalidate')
-           const commentsPlugin = hot.getPlugin('comments');
-           if( (value==null || value=='' || value==' ') && source!='my_source2'){
-            commentsPlugin.removeCommentAtCell(row,prop);
-             console.log('null empty empty2')
-           }else if (Number(value>69)) {
-          this.setDataAtCell(row, prop,null,'my_source2');
-        } else if (Number(value) > 60) {
-          this.setDataAtCell(row, prop,value-20,'my_source');
-          commentsPlugin.removeCommentAtCell(row,prop);
-          } else if (!isValid){
-            commentsPlugin.setCommentAtCell(row, prop, "La valeur que vous avez saisie nest pas autorisée !!");
-            this.setDataAtCell(row, prop,null,'my_source2');
-          }
-        console.log('end aftervalidate')
+    455
+//#region isvalid
+    this.setDataAtCell(row, prop,'','my_source_invaliddate')
+    this.setDataAtCell(row, prop,'','my_source_empty_date')
+//#endregion isvalid
 
-      }
-      })
 
-      hot.addHook('afterChange', function(changes, src) {
-        console.log('start afterChange')
-        console.log(changes)
-        console.log(src)
-        if(src=='my_source2'){
-          console.log('we are inside src==my_source')
-          //console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-2])
-          hot.undoRedo.doneActions.splice(hot.undoRedo.doneActions.length-2,1)
-        } else if (src=='my_source') {
-          hot.undoRedo.doneActions.splice(hot.undoRedo.doneActions.length-2,1)
-          //hot.undoRedo.doneActions.pop()
-        }
-        console.log('end afterChange')
-        console.log(hot.undoRedo.doneActions)
-      })
+console.log('prop==6')
+         console.log(isValid)
+          if(oldvalue==null){
+              console.log('we are inside null email');
+              commentsPlugin.removeCommentAtCell(row,prop);
 
-   
-    
+            } else if(!isValid){
+              console.log('first cond email')
+              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
+              this.setDataAtCell(row, prop,' ','my_source_empty_email');
+              //this.setDataAtCell(row, prop,''); my_source_empty_dropdown
+            } else if (oldvalue===' ') {
+              console.log('2 cond email ')
+              //commentsPlugin.removeCommentAtCell(row,prop);
+              commentsPlugin.setCommentAtCell(row, prop,comments_messages(oldvalue,'email_invalid','fr-FR'))
+              //commentsPlugin.setCommentAtCell(row, prop, "Veuillez choisir une valeur incluse dans la liste");
+              
+              //this.setDataAtCell(row, prop,'');
+            } else if (isValid) {
+              if(/^\s+|\s+$/g.test(oldvalue)){
+                console.log('if there is a trainling whitespace between ')
+                console.log('we will call my_source_removewhitespacesign_email')
+                this.setDataAtCell(row, prop, oldvalue.trim(), 'my_source_removewhitespacesign');
+                commentsPlugin.removeCommentAtCell(row,prop);
+
+              } else {
+                console.log('COULD END HERE')
+                console.log('do nothing')
+                commentsPlugin.removeCommentAtCell(row,prop);
+
+              }
+            } else {
+              //if(oldvalue.length>20)
+              console.log('3 cond email')
+              commentsPlugin.removeCommentAtCell(row,prop);
+            }
+
+
+            
   </script>
+  
 </body>
 </html>
