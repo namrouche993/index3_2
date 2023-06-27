@@ -200,8 +200,20 @@ export function comments_messages(value,msg,language){
         return mm;
 
       } else if (language=='en-US'){
-        var mm = "Please enter numbers only..";
+        var mm = "Please enter numbers only.";
         return mm;
       }
     }  
+    else if (msg=='onlynumbers_depass_length'){
+      if(language=='fr-FR'){
+        var mm = "La valeur que vous avez saisie dépasse la limite autorisée !!";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The value you entered exceeds the allowed limit!";
+        return mm;
+      }
+    } 
   }
+
+  

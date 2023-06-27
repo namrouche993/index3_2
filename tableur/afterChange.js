@@ -91,8 +91,18 @@ console.log(shouldBreak==false)
     console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1])
     console.log('data22 afterchage : ')
     changes.forEach((x,y)=>{
-      if(x[1]!==1){
-        data22[x[0]][x[1]]=x[3]
+      console.log('changes before showing data22 in afterchange')
+      console.log(x)
+      console.log(y)
+      var cellgetcell = hot.getCell(x[0],x[1]);
+      console.log('cellgetcell : ')
+      console.log(cellgetcell)
+      //console.log(  cellgetcell.childNodes[cellgetcell.children.length].textContent.trim()  )
+      console.log(cellgetcell.innerHTML) 
+      if(cellgetcell.childNodes[cellgetcell.children.length]!==undefined){
+        data22[x[0]][x[1]]=cellgetcell.childNodes[cellgetcell.children.length].textContent.trim()
+      } else {
+        data22[x[0]][x[1]]=''
       }
     })
     console.log(data22)

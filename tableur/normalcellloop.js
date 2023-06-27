@@ -1,7 +1,7 @@
 import{ last_row_after_header} from './intials_inputs_nb.js'  
 const imin = 6;
 const imax = 6+last_row_after_header
-export function normalcellloop(){
+export function normalcellloop(){ // editable of course
   console.log('******* normalcellloop ******++++++++++++++++++')
   //console.log(otherArgs)
     const aus = [
@@ -62,6 +62,9 @@ export function normalcellloop(){
       var cellProperties = {};
       if(row<6){ // editable
         cellProperties.readOnly = true;
+        cellProperties.renderer = function(instance, td, row, col, prop, value, cellProperties) {
+          Handsontable.renderers.TextRenderer.apply(this, arguments); // Use the TextRenderer for those cells
+      };
       }
       return cellProperties;
     }

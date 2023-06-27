@@ -26,7 +26,12 @@ import{
   import { afterValidatefct_amounts } from './valid_amounts.js'
   import { afterValidatefct_integers } from './valid_integers.js'
   import { afterValidatefct_date } from './valid_date.js'
+  import { afterValidatefct_dropdown } from './valid_dropdown.js'
+  import { afterValidatefct_email} from './valid_email.js'
+  import { afterValidatefct_onlynb} from './valid_onlynb.js'
+  import { afterValidatefct_phonenumber} from './valid_phonenumber.js'
 
+  
   
   
 export function afterValidatefct(isValid, oldvalue, row, prop, source, ...otherArgs){
@@ -53,7 +58,9 @@ export function afterValidatefct(isValid, oldvalue, row, prop, source, ...otherA
               afterValidatefct_integers(isValid, oldvalue, row, prop, source,hot,commentsPlugin)
         }
         else if (prop==1) {
-              afterValidatefct_date(isValid, oldvalue, row, prop, source,hot,commentsPlugin)
+              //afterValidatefct_date(isValid, oldvalue, row, prop, source,hot,commentsPlugin)
+              afterValidatefct_phonenumber(isValid, oldvalue, row, prop, source,hot,commentsPlugin)
+
         }
        
           }

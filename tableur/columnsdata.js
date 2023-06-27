@@ -5,6 +5,11 @@ import { validator_integers,renderer_integers } from './valid_integers.js'
 import { validator_percentage,renderer_percentage } from './valid_percentage.js'
 
 //import { validator_date,renderer_date } from './valid_date.js'
+import { validator_dropdown,renderer_dropdown } from './valid_dropdown.js'
+import { validator_email,renderer_email } from './valid_email.js'
+import { validator_onlynb,renderer_onlynb } from './valid_onlynb.js'
+import { validator_phonenumber,renderer_phonenumber } from './valid_phonenumber.js'
+
 
 
 
@@ -114,8 +119,27 @@ export function columnsdata(imin,imax) {
                   }
              
             }
-        }
-
+        }          
+        else if( i == 1 ) {
+          var dd={
+            className: "htRight htMiddle" ,
+            validator: function (oldvalue, callback) { // validator of numbers or amounts
+                const thisrow = this.row;
+                const thiscol = this.col;
+                if(thisrow>5){ // editable
+                  validator_onlynb(oldvalue, callback,thisrow,thiscol)
+              }
+              },
+              
+            renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
+              td.innerHTML=oldvalue;
+              td.className = 'htRight htMiddle custom-normalcell';
+              }
+           
+          }
+          }
+      
+    
         else { //editable if has to
           //console.log('columnsdata else ')
             var dd={data:i,type:'text'}
