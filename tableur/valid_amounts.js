@@ -1,5 +1,6 @@
 import{
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -17,13 +18,88 @@ import{
     is_negativenb_accepted_percperc,is_float_accepted_percperc,
   
     emails_length_em,
-     phonenumbers_length_pn,
-    onlynumbers_length_on
+    phonenumbers_length_pn,
+    onlynumbers_length_on,
+    text_length_txt
   } from './intials_inputs_nb.js';
 
   import { comments_messages } from './comments_messages.js'
 
-  export function renderer_amounts(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs){
+/*
+ else if(i == 6 || i == 7 || i == 8      || i == 11 || i == 12 || i == 13 ){ //editable of course
+            var dd={
+              className: "htRight htMiddle" ,
+              validator: function (oldvalue, callback) { // validator of numbers or amounts
+                  const thisrow = this.row;
+                  const thiscol = this.col;
+                    let decimalSeparator = getValue_decimalSeparator2();
+              let userLocale = getInputValue_userLocale2();
+              let navigator_language = getInputValue_navigator_language2();
+            
+                  if(thisrow>5){ // editable
+                    validator_amounts(oldvalue, callback,thisrow,thiscol,
+                      decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+                      last_row_after_header,
+                    
+                      currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+                      bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+                      is_negativenb_accepted_nbnb,
+  
+                      )
+                }
+                },
+              renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
+                  let decimalSeparator = getValue_decimalSeparator2();
+              let userLocale = getInputValue_userLocale2();
+              let navigator_language = getInputValue_navigator_language2();
+            
+                 if(row>5){ // editable
+                  renderer_amounts(instance, td, row, col, prop, oldvalue, cellProperties,
+                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+                    last_row_after_header,
+                  
+                    currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+                    bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+                    is_negativenb_accepted_nbnb,
+                
+                    ...otherArgs,data22)
+                } else if ( row>3 ) { // editable
+                     td.innerHTML=oldvalue;
+                     data22[row][col] = td.innerHTML;
+                     td.className = 'htCenter htMiddle custom-titlecell2';
+                  }
+                  }
+             
+            }
+        }          
+       
+
+
+        afterValidatefct_amounts(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+    last_row_after_header,
+  
+    currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+    bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+    is_negativenb_accepted_nbnb,
+    )
+
+
+*/
+
+  export function renderer_amounts(instance, td, row, col, prop, oldvalue, cellProperties,
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+    last_row_after_header,
+  
+    currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+    bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+    is_negativenb_accepted_nbnb,
+    
+    ...otherArgs){
     const data22 = otherArgs[otherArgs.length - 1];
     if (oldvalue !== null) {
       var value = oldvalue.toString().replace(currencyht_nbnb, '');
@@ -278,13 +354,22 @@ import{
       console.log('WE ARE INSIDE LAST ELSE RENDERER')
     }
   
-  td.className = 'htLeft htMiddle custom-normalcell';
+  td.className = 'htRight htMiddle custom-normalcell';
   //console.log('renderer percentage end')
 
                   
   }
 
-  export function validator_amounts(oldvalue, callback,thisrow,thiscol){
+  export function validator_amounts(oldvalue, callback,thisrow,thiscol,
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+    last_row_after_header,
+  
+    currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+    bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+    is_negativenb_accepted_nbnb,
+
+    ){
     if (oldvalue != null) {//|| oldvalue.toString()!==null){
       var value = oldvalue.toString().replace(currencyht_nbnb, '');
       console.log('new VALuE in afterValidator is : ' + value)
@@ -327,7 +412,16 @@ import{
 
   
 
-  export function afterValidatefct_amounts(isValid, oldvalue, row, prop, source,hot,commentsPlugin){      
+  export function afterValidatefct_amounts(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+    last_row_after_header,
+  
+    currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+    bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+    is_negativenb_accepted_nbnb,
+
+    ){      
 
     console.log('value : aftervalidate')
     console.log(oldvalue)

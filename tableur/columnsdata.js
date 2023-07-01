@@ -4,17 +4,33 @@ import { validator_amounts,renderer_amounts } from './valid_amounts.js'
 import { validator_integers,renderer_integers } from './valid_integers.js'
 import { validator_percentage,renderer_percentage } from './valid_percentage.js'
 
-//import { validator_date,renderer_date } from './valid_date.js'
+import { validator_date,renderer_date } from './valid_date.js'
 import { validator_dropdown,renderer_dropdown } from './valid_dropdown.js'
 import { validator_email,renderer_email } from './valid_email.js'
 import { validator_onlynb,renderer_onlynb } from './valid_onlynb.js'
 import { validator_phonenumber,renderer_phonenumber } from './valid_phonenumber.js'
+import { validator_text,renderer_text } from './valid_text.js'
+
+
+import 
+{ 
+  getInputValue_userLocale2,
+  getInputValue_navigator_language2,
+  getValue_decimalSeparator2
+}
+from './intials_inputs_nb.js'
+
+// let decimalSeparator = getValue_decimalSeparator2();
+// let userLocale = getInputValue_userLocale2();
+// let navigator_language = getInputValue_navigator_language2();
+
 
 
 
 
 import{
-  decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+  //decimalSeparator,userLocale,navigator_language,
+  userTimeZone,usTimeZones,
 
   last_row_after_header,
 
@@ -32,8 +48,10 @@ import{
   is_negativenb_accepted_percperc,is_float_accepted_percperc,
 
   emails_length_em,
-   phonenumbers_length_pn,
-  onlynumbers_length_on
+  phonenumbers_length_pn,
+  onlynumbers_length_on,
+  text_length_txt,
+  use_en_time
 } from './intials_inputs_nb.js';
 
 
@@ -44,6 +62,9 @@ console.log(data22)
 
 //var columnsdata = (imin,imax) => {
 export function columnsdata(imin,imax) {
+  
+
+
         //console.log('columnsdata')
         var fa=[]
         fa.push({data:0,readOnly:true})      
@@ -57,14 +78,37 @@ export function columnsdata(imin,imax) {
               validator: function (oldvalue, callback) { // validator of integers
                 const thisrow = this.row;
                 const thiscol = this.col;
+                let decimalSeparator = getValue_decimalSeparator2();
+                let userLocale = getInputValue_userLocale2();
+                let navigator_language = getInputValue_navigator_language2();
+                
+               
                 if(thisrow>5){ // editable
-                  validator_integers(oldvalue, callback,thisrow,thiscol)
+                  validator_integers(oldvalue, callback,thisrow,thiscol,
+
+                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+
+                    )
                 }
                 },
       
               renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of integers
                 if(row>5){  // editable
-                  renderer_integers(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs,data22)
+                  let decimalSeparator = getValue_decimalSeparator2();
+                  let userLocale = getInputValue_userLocale2();
+                  let navigator_language = getInputValue_navigator_language2();
+               
+                  renderer_integers(instance, td, row, col, prop, oldvalue, cellProperties,
+
+                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+
+                    ,...otherArgs,data22)
                 } else if (row>3){ // editable about headers
                           td.innerHTML=oldvalue;
                           data22[row][col] = td.innerHTML;      
@@ -82,13 +126,36 @@ export function columnsdata(imin,imax) {
                 validator: function (value, callback) { // validator of percentage
                   const thisrow = this.row;
                   const thiscol = this.col;
+                  let decimalSeparator = getValue_decimalSeparator2();
+                let userLocale = getInputValue_userLocale2();
+                let navigator_language = getInputValue_navigator_language2();
+                
                   if(thisrow>5){ // editable
-                    validator_percentage(value, callback)
+                    validator_percentage(value, callback,
+                      
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
+
+                      
+                      )
                 }
                 },
                 renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of integers
+                  let decimalSeparator = getValue_decimalSeparator2();
+                  let userLocale = getInputValue_userLocale2();
+                  let navigator_language = getInputValue_navigator_language2();
+                
                   if(row>5){ // editable
-                    renderer_percentage(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs,data22)
+                    renderer_percentage(instance, td, row, col, prop, oldvalue, cellProperties,
+                      
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
+
+                      ,...otherArgs,data22)
                   } else if (row>3){ // editable
                     td.innerHTML=oldvalue;
                     data22[row][col] = td.innerHTML;      
@@ -103,14 +170,39 @@ export function columnsdata(imin,imax) {
               validator: function (oldvalue, callback) { // validator of numbers or amounts
                   const thisrow = this.row;
                   const thiscol = this.col;
+                  let decimalSeparator = getValue_decimalSeparator2();
+                let userLocale = getInputValue_userLocale2();
+                let navigator_language = getInputValue_navigator_language2();
+                
                   if(thisrow>5){ // editable
-                    validator_amounts(oldvalue, callback,thisrow,thiscol)
+                    validator_amounts(oldvalue, callback,thisrow,thiscol,
+                      decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+                      last_row_after_header,
+                    
+                      currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+                      bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+                      is_negativenb_accepted_nbnb,
+  
+                      )
                 }
                 },
               renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
+                let decimalSeparator = getValue_decimalSeparator2();
+                let userLocale = getInputValue_userLocale2();
+                let navigator_language = getInputValue_navigator_language2();
                 
                  if(row>5){ // editable
-                  renderer_amounts(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs,data22)
+                  renderer_amounts(instance, td, row, col, prop, oldvalue, cellProperties,
+                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+
+                    last_row_after_header,
+                  
+                    currencyht_nbnb,currencyht_toshow_nbnb,afterdigit_nbnb, smallafterdigit_nbnb, afterdigitsmallnb_nbnb,
+                    bignb_nbnb,smallnb_nbnb,decimalnumbers_toshow_withoutrenderer_innumbers_nbnb,usegrouping_nbnb_if_true,
+                    is_negativenb_accepted_nbnb,
+                
+                    ...otherArgs,data22)
                 } else if ( row>3 ) { // editable
                      td.innerHTML=oldvalue;
                      data22[row][col] = td.innerHTML;
@@ -120,25 +212,67 @@ export function columnsdata(imin,imax) {
              
             }
         }          
-        else if( i == 1 ) {
+        else if( i == 1 || i == 9) { // editable
           var dd={
             className: "htRight htMiddle" ,
-            validator: function (oldvalue, callback) { // validator of numbers or amounts
+            validator: function (oldvalue, callback) { // validator of texts
                 const thisrow = this.row;
                 const thiscol = this.col;
                 if(thisrow>5){ // editable
-                  validator_onlynb(oldvalue, callback,thisrow,thiscol)
+                  validator_text(oldvalue, callback,text_length_txt)
               }
               },
-              
             renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
-              td.innerHTML=oldvalue;
-              td.className = 'htRight htMiddle custom-normalcell';
-              }
+              let decimalSeparator = getValue_decimalSeparator2();
+              let userLocale = getInputValue_userLocale2();
+              let navigator_language = getInputValue_navigator_language2();
+              
+               if(row>5){ // editable
+                renderer_text(instance, td, row, col, prop, oldvalue, cellProperties,text_length_txt,...otherArgs,data22)
+              } else if ( row>3 ) { // editable
+                   td.innerHTML=oldvalue;
+                   data22[row][col] = td.innerHTML;
+                   td.className = 'htCenter htMiddle custom-titlecell2';
+                }
+                }
            
           }
+        }
+        else if( i == 14 ) {
+          var dd={
+            className: "htRight htMiddle" ,
+            validator: function (oldvalue, callback) { // validator of dates
+                const thisrow = this.row;
+                const thiscol = this.col;
+                  let decimalSeparator = getValue_decimalSeparator2();
+                    let userLocale = getInputValue_userLocale2();
+                    let navigator_language = getInputValue_navigator_language2();
+                  
+                if(thisrow>5){ // editable
+                  validator_date(oldvalue, callback,
+                        decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,use_en_time
+                    )
+              }
+              },
+            renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
+                    let decimalSeparator = getValue_decimalSeparator2();
+                    let userLocale = getInputValue_userLocale2();
+                    let navigator_language = getInputValue_navigator_language2();
+                  
+               if(row>5){ // editable
+                renderer_date(instance, td, row, col, prop, oldvalue, cellProperties,
+                  decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,use_en_time
+                  ,...otherArgs,data22)
+              } else if ( row>3 ) { // editable
+                   td.innerHTML=oldvalue;
+                   data22[row][col] = td.innerHTML;
+                   td.className = 'htCenter htMiddle custom-titlecell2';
+                }
+                }
+           
           }
-      
+        }
+        
     
         else { //editable if has to
           //console.log('columnsdata else ')

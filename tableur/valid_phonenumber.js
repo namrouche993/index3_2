@@ -1,5 +1,6 @@
 import{
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -17,7 +18,7 @@ import{
     is_negativenb_accepted_percperc,is_float_accepted_percperc,
   
     emails_length_em,
-     phonenumbers_length_pn,
+    phonenumbers_length_pn,
     onlynumbers_length_on
   } from './intials_inputs_nb.js';
 
@@ -27,28 +28,30 @@ import{
 /*
   else if( i == 1 ) {
     var dd={
-      className: "htRight htMiddle" ,
+      className: "htLeft htMiddle" ,
       validator: function (oldvalue, callback) { // validator of numbers or amounts
           const thisrow = this.row;
           const thiscol = this.col;
           if(thisrow>5){ // editable
-            validator_phonenumber(oldvalue, callback,thisrow,thiscol)
+            validator_phonenumber(oldvalue, callback,phonenumbers_length_pn)
         }
         },
         
-      renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
+      renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,phonenumbers_length_pn,...otherArgs) { // renderer of numbers or amounts
         td.innerHTML=oldvalue;
         td.style.whiteSpace = 'normal' // wrap text
-        td.className = 'htRight htMiddle custom-normalcell';
+        td.className = 'htLeft htMiddle custom-normalcell';
         }
      
     }
     }
+
+    afterValidatefct_phonenumber(isValid, oldvalue, row, prop, source,hot,commentsPlugin,phonenumbers_length_pn)
   */
 
   
 
-  export function renderer_phonenumber(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs){
+  export function renderer_phonenumber(instance, td, row, col, prop, oldvalue, cellProperties,phonenumbers_length_pn,...otherArgs){
     const data22 = otherArgs[otherArgs.length - 1];
     td.innerHTML=oldvalue;
     td.style.whiteSpace = 'normal' // wrap text
@@ -58,9 +61,11 @@ import{
 
                   }
   
-  export function validator_phonenumber(value, callback){
+  export function validator_phonenumber(value, callback,phonenumbers_length_pn){
     console.log(value)
-    if(value==null || /^[\d+\(\)\/\s-]+$/.test(value.trim()) ) {
+    //if(value==null || /^[\d+\(\)\/\s-]+$/.test(value.trim()) ) {
+    //if(value==null || /^\+?[\d\(\)\/\s-]+$/g.test(value.trim()) ) {  // when it may start with "+"
+    if(value==null || /^\+?[\d\/\s()\-_:]+$/.test(value.trim()) ) {  // when it may start with "+" or it includes / \ - ( ) _ : 
          callback(true)
      } else {
        callback(false)
@@ -68,7 +73,7 @@ import{
         }
 
 
-  export function afterValidatefct_phonenumber(isValid, oldvalue, row, prop, source,hot,commentsPlugin){        
+  export function afterValidatefct_phonenumber(isValid, oldvalue, row, prop, source,hot,commentsPlugin,phonenumbers_length_pn){        
     console.log('prop==7')
     console.log(isValid)
 

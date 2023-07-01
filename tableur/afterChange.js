@@ -105,6 +105,7 @@ console.log(shouldBreak==false)
         data22[x[0]][x[1]]=''
       }
     })
+    console.log('data22 afterchange : ')
     console.log(data22)
     console.log(' ----------------------------- ---------------------------- ------')
   }

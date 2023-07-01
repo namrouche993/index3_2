@@ -1,5 +1,6 @@
 import{
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -36,12 +37,14 @@ else if( i == 1 ) {
         validator: function(value, callback) {  // editable
             //const thisrow = this.row;
             //const thiscol = this.col;
-            if(thisrow>5){ // editable
+            //if(thisrow>5){ // editable
                 validator_dropdown(value, callback,['','yellow', 'red', 'orange', 'green', 'blue', 'gray', 'black', 'white']) // editable dont forget to change my_source like source above
-            }
+            //}
         }        
        }
     }
+    
+    afterValidatefct_dropdown(isValid, oldvalue, row, prop, source,hot,commentsPlugin)
     */
 
   

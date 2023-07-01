@@ -1,5 +1,6 @@
 import{
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -23,7 +24,75 @@ import{
 
   import { comments_messages } from './comments_messages.js'
 
-  export function renderer_integers(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs){
+/*
+        if(i == 2){ //editable of course
+          console.log('************** before validator i === 2 ')
+            var dd={ data:i,
+              className: "htRight htMiddle" ,
+              validator: function (oldvalue, callback) { // validator of integers
+                const thisrow = this.row;
+                const thiscol = this.col;
+                  let decimalSeparator = getValue_decimalSeparator2();
+              let userLocale = getInputValue_userLocale2();
+              let navigator_language = getInputValue_navigator_language2();
+            
+                if(thisrow>5){ // editable
+                  validator_integers(oldvalue, callback,thisrow,thiscol,
+
+                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+
+                    )
+                }
+                },
+      
+              renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of integers
+                  let decimalSeparator = getValue_decimalSeparator2();
+              let userLocale = getInputValue_userLocale2();
+              let navigator_language = getInputValue_navigator_language2();
+            
+                if(row>5){  // editable
+                  renderer_integers(instance, td, row, col, prop, oldvalue, cellProperties,
+
+                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+    
+                    ,...otherArgs,data22)
+                } else if (row>3){ // editable about headers
+                          td.innerHTML=oldvalue;
+                          data22[row][col] = td.innerHTML;      
+                          td.className = 'htCenter htMiddle custom-titlecell2';                  
+                }
+                }
+        }
+        
+      
+      }
+
+
+      
+              afterValidatefct_integers(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
+                
+                decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+
+                )
+*/
+
+  export function renderer_integers(instance, td, row, col, prop, oldvalue, cellProperties,
+    
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+
+    ,...otherArgs){
     const data22 = otherArgs[otherArgs.length - 1];
   //if(row>5){  // editable
                      if (oldvalue !== null) {
@@ -310,7 +379,7 @@ import{
                       console.log('WE ARE INSIDE LAST ELSE RENDERER')
                     }
                   
-                  td.className = 'htLeft htMiddle custom-normalcell'
+                  td.className = 'htRight htMiddle custom-normalcell'
                   //td.innerHTML=''
                     //} else if(row>3){ // editable
                     //  //td.innerHTML = '<b>' + oldvalue + '</b>';
@@ -323,7 +392,14 @@ import{
                   
   }
 
-  export function validator_integers(oldvalue, callback,thisrow,thiscol){
+  export function validator_integers(oldvalue, callback,thisrow,thiscol,
+
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+
+    ){
     console.log('************** before validator i === 2 in validator_renderers_integers ')
     console.log('i inside validator_integers : ')
            if (oldvalue != null) {//|| oldvalue.toString()!==null){
@@ -369,7 +445,14 @@ import{
           }
         }
 
-  export function afterValidatefct_integers(isValid, oldvalue, row, prop, source,hot,commentsPlugin){      
+  export function afterValidatefct_integers(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
+
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
+    bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
+    is_negativenb_accepted_intint,is_float_accepted_intint
+    
+    ){      
     console.log('//////////////////// ************** prop2 ////////////////// ****')
     console.log('//////////////////// ************** prop2 ////////////////// ****')
     console.log('//////////////////// ************** prop2 ////////////////// ****')

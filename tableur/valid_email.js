@@ -1,5 +1,6 @@
 import{
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -27,7 +28,7 @@ import{
 /*
   else if( i == 1 ) {
     var dd={
-      className: "htRight htMiddle" ,
+      className: "htLeft htMiddle" ,
       validator: function (oldvalue, callback) { // validator of numbers or amounts
           const thisrow = this.row;
           const thiscol = this.col;
@@ -38,12 +39,15 @@ import{
         
       renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
         td.innerHTML=oldvalue;
-        td.className = 'htRight htMiddle custom-normalcell';
+        td.className = 'htLeft htMiddle custom-normalcell';
         }
      
     }
     }
   }
+
+  afterValidatefct_email(isValid, oldvalue, row, prop, source,hot,commentsPlugin,emails_length_em)
+  
   */
   
 
@@ -66,7 +70,7 @@ import{
         }
 
 
-  export function afterValidatefct_email(isValid, oldvalue, row, prop, source,hot,commentsPlugin){        
+  export function afterValidatefct_email(isValid, oldvalue, row, prop, source,hot,commentsPlugin,emails_length_em){        
     console.log('prop==6')
     console.log(isValid)
 

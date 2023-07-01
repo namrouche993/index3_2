@@ -38,16 +38,19 @@
   export const is_negativenb_accepted_percperc = true;
   export const is_float_accepted_percperc = true;
 
-  export const emails_length_em=30;
-  export const phonenumbers_length_pn=20;
-  export const onlynumbers_length_on = 20;
+
+  export const emails_length_em=50;
+  export const phonenumbers_length_pn=50;
+  export const onlynumbers_length_on = 50;
+  export const text_length_txt = 600;
+  export const use_en_time = false;
   //#endregion initials inputs nb
 
 
       //#region date time zone (navigator.language)
-      export const userLocale = Intl.DateTimeFormat().resolvedOptions().locale //'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
-      export const navigator_language=navigator.language // 'fr-FR' 'en-CA'  // editable
-      export var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      //export const userLocale = 'fr'//Intl.DateTimeFormat().resolvedOptions().locale //'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+      //export const navigator_language='fr-FR' //navigator.language // 'fr-FR' 'en-CA'  // editable
+      export var userTimeZone = 'America/New_York' //Intl.DateTimeFormat().resolvedOptions().timeZone;
       export var usTimeZones = [  'America/New_York',  'America/Chicago',  'America/Denver',  'America/Los_Angeles',  'America/Anchorage',  'America/Adak',  'Pacific/Honolulu',  'America/Phoenix',  'America/Indiana/Indianapolis',  'America/Indiana/Knox',  'America/Indiana/Marengo',  'America/Indiana/Petersburg',  'America/Indiana/Tell_City',  'America/Indiana/Vevay',  'America/Indiana/Vincennes',  'America/Indiana/Winamac',  'America/Kentucky/Louisville',  'America/Kentucky/Monticello',  'America/Detroit',  'America/Menominee',  'America/St_Johns',  'America/Puerto_Rico',  'America/Montserrat',  'America/New_York',  'America/North_Dakota/Beulah',  'America/North_Dakota/Center',  'America/North_Dakota/New_Salem'];
       //#endregion date time zone
   
@@ -55,6 +58,7 @@
 
 
     //#region decimalseparator and thousand separator 
+   /*
     const options = { style: 'decimal' };
     const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
     const DecimalSeparator0 = formattedNumber.substring(9, 10)
@@ -64,11 +68,96 @@
     console.log('decimal separateur est :' + decimalSeparator +
       ' et thousand est :' + thousandSeparator0 +
       'et le nombre devients :' + formattedNumber)
+      */
    //#endregion decimalseparator and thousand separator 
 
 
-   //#region date format starting
+   let userLocale2 = 'en'//Intl.DateTimeFormat().resolvedOptions().locale //'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+   export function setInputValue_userLocale2(value) {
+      userLocale2 = value;
+    }
+   export function getInputValue_userLocale2() {
+        return userLocale2;
+    }
 
+
+
+    let navigator_language2 = 'en-US' //navigator.language // 'fr-FR' 'en-CA'  // editable
+    export function setInputValue_navigator_language2(value) {
+      navigator_language2 = value;
+   //#region date format starting
+      if(navigator_language2=='en-US'){
+        if(usTimeZones.includes(userTimeZone)){
+          var dateformatlanguage = 'mm/dd/aaaa'; 
+          var splitdate='/';
+        } else {
+          var dateformatlanguage = 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
+          var splitdate='/';
+          //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
+        }
+        } else if(navigator_language2=='ko-KR' || navigator_language2=='hu-HU'){
+          var dateformatlanguage = 'aaaa.mm.jj' // 'yyyy.mm.dd' // 1990.12.31
+          var splitdate='.';
+          //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+    
+        } else if(navigator_language2=='ja-JP' || navigator_language2=='ZH-CN'){
+          var dateformatlanguage = 'aaaa/mm/jj' //'yyyy/mm/dd' // 1990/12/31
+          var splitdate='/';
+          //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+    
+        } else if(navigator_language2=='en-CA'){
+          var dateformatlanguage = 'aaaa-mm-jj' //'yyyy-mm-dd' // 1990-12-31
+          var splitdate='-';
+          //var [yeardate,monthdate,daydate] = dateformatlanguage.split(splitdate);
+    
+        } else if(navigator_language2=='de-DE' || navigator_language2=='ru-RU' || navigator_language2=='tr-TR'){
+          var dateformatlanguage = 'jj.mm.aaaa' //'dd.mm.yyyy' // 12.31.1990
+          var splitdate='.';
+          //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+    
+        } else {
+          // european and other formats
+          var dateformatlanguage = 'jj/mm/aaaa' // 'dd/mm/yyyy' // 31/12/1990
+          var splitdate='/';
+          //var [daydate,monthdate,yeardate] = dateformatlanguage.split(splitdate);
+        }
+           //#endregion date format starting
+
+
+     }
+    export function getInputValue_navigator_language2() {
+         return navigator_language2;
+     }
+
+     
+     export function getValue_decimalSeparator2() {
+      let decimalSeparator2 = (1234567.73).toLocaleString(userLocale2, { style: 'decimal' }).substring(9, 10)
+      return decimalSeparator2;
+    }
+
+    export function getVal_dateformatlanguage() {
+      return dateformatlanguage;
+    }
+
+    
+    export function getVal_splitdate() {
+      return splitdate;
+    }
+  
+
+
+    let condition_split2=true
+    export function setInputValue_condition_split2(value) {
+      condition_split2 = value;
+     }
+    export function getInputValue_condition_split2() {
+         return condition_split2;
+     }
+
+
+   /*
+   //#region date format starting
+   let navigator_language = getInputValue_navigator_language2()
    if(navigator_language=='en-US'){
     if(usTimeZones.includes(userTimeZone)){
       var dateformatlanguage = 'mm/dd/aaaa'; 
@@ -107,3 +196,4 @@
     export var dateformatlanguage_to_export = dateformatlanguage;
     export var splitdate_to_export = splitdate;
     //#endregion date format starting
+    */

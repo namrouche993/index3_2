@@ -1,4 +1,31 @@
+import{
+  //decimalSeparator,userLocale,navigator_language,
+  userTimeZone,usTimeZones,
+
+  last_row_after_header,
+
+} from './intials_inputs_nb.js';
+
+import 
+{ 
+  getInputValue_userLocale2,
+  getInputValue_navigator_language2,
+  getValue_decimalSeparator2
+}
+from './intials_inputs_nb.js'
+
+// let decimalSeparator = getValue_decimalSeparator2();
+// let userLocale = getInputValue_userLocale2();
+// let navigator_language = getInputValue_navigator_language2();
+
+
+
 export function comments_messages(value,msg,language){
+  
+let decimalSeparator = getValue_decimalSeparator2();
+let userLocale = getInputValue_userLocale2();
+let navigator_language = getInputValue_navigator_language2();
+
     if(msg=='error'){
       if(language=='fr-FR'){
         var mm = "la valeur '" + value + "' n'est pas valide ";
@@ -206,13 +233,24 @@ export function comments_messages(value,msg,language){
     }  
     else if (msg=='onlynumbers_depass_length'){
       if(language=='fr-FR'){
-        var mm = "La valeur que vous avez saisie dépasse la limite autorisée !!";
+        var mm = "La valeur " + value.substring(0,100) + " que vous avez saisie dépasse la limite autorisée !!";
         return mm;
 
       } else if (language=='en-US'){
         var mm = "The value you entered exceeds the allowed limit!";
         return mm;
       }
+    }
+    else if (msg=='text_depass_limit'){
+      if(language=='fr-FR'){
+        var mm = "Le texte : '"+value.substring(0,100)+"...' que vous avez saisie dépasse la limite autorisée !!";
+        return mm;
+
+      } else if (language=='en-US'){
+        var mm = "The value you entered exceeds the allowed limit!";
+        return mm;
+      }
+    
     } 
   }
 

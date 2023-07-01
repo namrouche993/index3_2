@@ -1,8 +1,33 @@
-import { decimalSeparator,navigator_language   } from './intials_inputs_nb.js';
+//import { decimalSeparator,navigator_language   } from './intials_inputs_nb.js';
+
+import 
+{ 
+  getInputValue_userLocale2,
+  getInputValue_navigator_language2,
+  getValue_decimalSeparator2,
+
+  use_en_time,
+  userTimeZone,usTimeZones,
+
+  setInputValue_condition_split2,
+  getInputValue_condition_split2
+
+}
+from './intials_inputs_nb.js'
+
+
+  // let decimalSeparator = getValue_decimalSeparator2();
+  // let userLocale = getInputValue_userLocale2();
+  // let navigator_language = getInputValue_navigator_language2();
+
 
 export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx later inside 
-    var condition_split=true;
-    if(navigator_language=='en-US'){
+  let decimalSeparator = getValue_decimalSeparator2();
+  let userLocale = getInputValue_userLocale2();
+  let navigator_language = getInputValue_navigator_language2();
+  
+  let condition_split=getInputValue_condition_split2();
+    if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time){
         var dateformatlanguage = 'mm/dd/yyyy'; // 12/31/1990
         var splitdate='/';
         //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);
@@ -30,7 +55,9 @@ export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx l
           event.preventDefault();
         }
       }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-         condition_split=false;
+         //condition_split=false;
+         setInputValue_condition_split2(false)
+
          if(hot.getActiveEditor().getValue().substring(hot.getActiveEditor().getValue().length - 1)==splitdate){ 
           hot.getActiveEditor().setValue(hot.getActiveEditor().getValue().substring(0,hot.getActiveEditor().getValue().length - 1)+event.key)
           event.stopImmediatePropagation();
@@ -68,7 +95,9 @@ export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx l
           event.preventDefault();
         }
       }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-         condition_split=false;
+         //condition_split=false;
+         setInputValue_condition_split2(false)
+
          if(hot.getActiveEditor().getValue().substring(hot.getActiveEditor().getValue().length - 1)==splitdate){ 
           hot.getActiveEditor().setValue(hot.getActiveEditor().getValue().substring(0,hot.getActiveEditor().getValue().length - 1)+event.key)
           event.stopImmediatePropagation();
@@ -106,7 +135,9 @@ export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx l
           event.preventDefault();
         }
       }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-         condition_split=false;
+         //condition_split=false;
+         setInputValue_condition_split2(false)
+
          if(hot.getActiveEditor().getValue().substring(hot.getActiveEditor().getValue().length - 1)==splitdate){ 
           hot.getActiveEditor().setValue(hot.getActiveEditor().getValue().substring(0,hot.getActiveEditor().getValue().length - 1)+event.key)
           event.stopImmediatePropagation();
@@ -143,7 +174,9 @@ export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx l
           event.preventDefault();
         }
       }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-         condition_split=false;
+         //condition_split=false;
+         setInputValue_condition_split2(false)
+
          if(hot.getActiveEditor().getValue().substring(hot.getActiveEditor().getValue().length - 1)==splitdate){ 
           hot.getActiveEditor().setValue(hot.getActiveEditor().getValue().substring(0,hot.getActiveEditor().getValue().length - 1)+event.key)
           event.stopImmediatePropagation();
@@ -220,7 +253,9 @@ export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx l
           event.preventDefault();
         }
       }} else if (event.key=='.' || event.key=='/' || event.key=='-' ){
-         condition_split=false;
+         //condition_split=false;
+         setInputValue_condition_split2(false)
+
          if(hot.getActiveEditor().getValue().substring(hot.getActiveEditor().getValue().length - 1)==splitdate){ 
           hot.getActiveEditor().setValue(hot.getActiveEditor().getValue().substring(0,hot.getActiveEditor().getValue().length - 1)+event.key)
           event.stopImmediatePropagation();

@@ -1,5 +1,6 @@
 import{
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -23,8 +24,74 @@ import{
 
   import { comments_messages } from './comments_messages.js'
 
+  /*
+         else if(i == 3 || i == 4    || i == 5   || i == 10 ){  //editable of course
+            var dd={ data:i,
+              className: "htRight htMiddle" ,
+                editor: PercentageEditor,
+                validator: function (value, callback) { // validator of percentage
+                  const thisrow = this.row;
+                  const thiscol = this.col;
+                    let decimalSeparator = getValue_decimalSeparator2();
+              let userLocale = getInputValue_userLocale2();
+              let navigator_language = getInputValue_navigator_language2();
+            
+                  if(thisrow>5){ // editable
+                    validator_percentage(value, callback,
+                      
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
 
-  export function renderer_percentage(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs){
+                      
+                      )
+                }
+                },
+                renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of integers
+                    let decimalSeparator = getValue_decimalSeparator2();
+              let userLocale = getInputValue_userLocale2();
+              let navigator_language = getInputValue_navigator_language2();
+            
+                  if(row>5){ // editable
+                    renderer_percentage(instance, td, row, col, prop, oldvalue, cellProperties,
+                      
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
+
+                      ,...otherArgs,data22)
+                  } else if (row>3){ // editable
+                    td.innerHTML=oldvalue;
+                    data22[row][col] = td.innerHTML;      
+                    td.className = 'htCenter htMiddle custom-titlecell2';
+                  }
+                  }   
+      }
+    }
+
+    afterValidatefct_percentage(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
+    
+    
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
+
+    
+    )
+
+  */
+
+  export function renderer_percentage(instance, td, row, col, prop, oldvalue, cellProperties,
+
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
+
+    ,...otherArgs){
     const data22 = otherArgs[otherArgs.length - 1];
                       //console.log('renderer percentage start')
                      // if(row>5){  // editable
@@ -101,7 +168,14 @@ import{
                     
                   }
   
-  export function validator_percentage(value, callback){
+  export function validator_percentage(value, callback,
+    
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
+
+    ){
     if (value == null || // value == '' ||
     /^[-+]?(\s*\d+(\.\d+)?)\s*%$/.test(value.toString().trim()) || // for example 14.65%  "14.65 %"  
     /^[-+]?(\s*\d+(,\d+)?)\s*%$/.test(value.toString().trim()) || // for example 14,65%   "14,65 %"
@@ -118,7 +192,16 @@ import{
         }
 
 
-  export function afterValidatefct_percentage(isValid, oldvalue, row, prop, source,hot,commentsPlugin){      
+  export function afterValidatefct_percentage(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
+    
+    
+    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    afterdigit_percentage_percperc,smallafterdigit_percentage_percperc,afterdigitsmallnb_percentage_percperc,
+    bignbpercent_percperc,smallnbpercent_percperc,decimalnumbers_toshow_withoutrenderer_inpercentage_percperc,
+    is_negativenb_accepted_percperc,is_float_accepted_percperc
+
+    
+    ){      
         console.log(isValid)
         console.log(oldvalue)
         console.log(source)

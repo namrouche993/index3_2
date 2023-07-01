@@ -1,5 +1,6 @@
 import{
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -27,27 +28,30 @@ import{
 /*
   else if( i == 1 ) {
     var dd={
-      className: "htRight htMiddle" ,
+      className: "htLeft htMiddle" ,
       validator: function (oldvalue, callback) { // validator of numbers or amounts
           const thisrow = this.row;
           const thiscol = this.col;
           if(thisrow>5){ // editable
-            validator_onlynb(oldvalue, callback,thisrow,thiscol)
+            validator_onlynb(oldvalue, callback,onlynumbers_length_on)
         }
         },
         
-      renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
+      renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,onlynumbers_length_on,...otherArgs) { // renderer of numbers or amounts
         td.innerHTML=oldvalue;
-        td.className = 'htRight htMiddle custom-normalcell';
+        td.className = 'htLeft htMiddle custom-normalcell';
         }
      
     }
     }
+
+
+    afterValidatefct_onlynb(isValid, oldvalue, row, prop, source,hot,commentsPlugin,onlynumbers_length_on)
   */
 
   
 
-  export function renderer_onlynb(instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs){
+  export function renderer_onlynb(instance, td, row, col, prop, oldvalue, cellProperties,onlynumbers_length_on,...otherArgs){
     const data22 = otherArgs[otherArgs.length - 1];
     td.innerHTML=oldvalue;
     data22[row][col] = td.innerHTML;      
@@ -56,7 +60,7 @@ import{
 
                   }
   
-  export function validator_onlynb(value, callback){
+  export function validator_onlynb(value, callback,onlynumbers_length_on){
     console.log(value)
     if(value==null || /^\d+(\s*\d+)*$/.test(value.trim()) ) {
          callback(true)
@@ -66,7 +70,7 @@ import{
         }
 
 
-  export function afterValidatefct_onlynb(isValid, oldvalue, row, prop, source,hot,commentsPlugin){        
+  export function afterValidatefct_onlynb(isValid, oldvalue, row, prop, source,hot,commentsPlugin,onlynumbers_length_on){        
     console.log('prop==8')
     console.log(isValid)
 
