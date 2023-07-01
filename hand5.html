@@ -5,56 +5,101 @@
   <link rel="stylesheet" type="text/css"
     href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
   <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="./tableur/modalcss.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous">
+
 </head>
 <body>
-  <div id="example"></div>
 
+  <!-- <button type="button"  id="openModalButton">Open Modal</button> -->
+  <button type="button" class="btn btn-light" id="openModalButton" data-toggle="modal" data-target="#myModal">
+    <i class="fa-solid fa-globe fa-lg"></i>
+  </button>
+
+  <div class="modal-overlay" id="myModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Choose Format</h2>
+        <span class="close">&times;</span>
+      </div>
+  
+      <div class="modal-content">
+
+        <div class="menu-container numeric-menu">
+          <div class="format-options">
+            <p>Choose the numeric format:</p>
+            <label>
+              <input type="radio" name="format" value="european" checked>
+              European Format (<span class="example">1500,42</span>)
+              <div class="underexample">(comma , as Decimal Separator)</div>
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="format" value="american">
+              American Format (<span class="example">1500.42</span>)
+              <div class="underexample">(dot . as Decimal Separator)</div>
+            </label>
+          </div>
+        </div>
+  
+        <div class="menu-container date-menu">
+          <div class="format-options">
+            <p>Choose the date format:</p>
+            <label>
+              <input type="radio" name="date-format" value="french" checked>
+              European Date Format (<span class="example2">31/12/1990</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="american">
+              American Date Format (<span class="example2">12/31/1990</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="deutschland">
+              Deutschland Date Format (<span class="example2">31.12.1990</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="canadian">
+              Canadian Date Format (<span class="example2">1990-12-31</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="japonese">
+              Japonese Date Format (<span class="example2">1990/12/31</span>)
+            </label>
+            <br>            
+            <label>
+              <input type="radio" name="date-format" value="korean">
+              Korean Date Format (<span class="example2">1990.12.31</span>)
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-button">Close</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+  
+    </div>
+  </div>
+  
+  
+    
+    <!-- Bootstrap JavaScript (requires jQuery and Popper.js) -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+  
+    <!-- Link to modal.js -->
+    <!-- <script src="./tableur/modal_language.js"></script> -->
+  
+    <script src="./tableur/modal_language.js"></script>
   <script type="module">
-    import {afterval} from './afterval_essai_de_hand5.js'
 
-function ageValidator(value, callback) {
-      if (value >= 18 && value <= 65) {
-        // Valid value
-        callback(true);
-      } else {
-        // Invalid value
-        callback(false);
-      }
-    }
-
-
-
-    var data = [
-      [1, 'John', 11],
-      [2, 'Jane', 22],
-      [3, 'Mike', ''],
-      [4, 'Emily', 12]
-    ];
-
-    var hot = new Handsontable(document.getElementById('example'), {
-      data: data,
-      comments:true,
-      columns: [
-        {data:0},
-        {data:1},
-        {
-          data: 2,
-          validator: ageValidator
-        }
-      ],
-      //afterValidate: afterval
-      // afterValidate: (oldvalue, row, prop, source, ...otherArgs) => {
-      //       return afterval(oldvalue, row, prop, source, ...otherArgs, hot);
-      //     },
-
-      afterValidate: (isValid, value, row, prop, source, ...otherArgs) => {
-            const hotInstance = hot; // Store the hot instance
-            afterval(isValid, value, row, prop, source, ...otherArgs, hotInstance);
-
-            //return afterval(oldvalue, row, prop, source, ...otherArgs, hot);
-          },
-
-    });
   </script>
 </body>
 </html>

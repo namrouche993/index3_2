@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="./tableur/modalcss.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous">
+
+</head>
+<body>
+
+
+  <div class="modal-overlay" id="myModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Choose Format</h2>
+        <span class="close">&times;</span>
+      </div>
+  
+      <div class="modal-content">
+
+        <div class="menu-container numeric-menu">
+          <div class="format-options">
+            <p>Choose the numeric format:</p>
+            <label>
+              <input type="radio" name="format" value="european" checked>
+              European Format (<span class="example">1500,42</span>)
+              <div class="underexample">(comma , as Decimal Separator)</div>
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="format" value="american">
+              American Format (<span class="example">1500.42</span>)
+              <div class="underexample">(dot . as Decimal Separator)</div>
+            </label>
+          </div>
+        </div>
+  
+        <div class="menu-container date-menu">
+          <div class="format-options">
+            <p>Choose the date format:</p>
+            <label>
+              <input type="radio" name="date-format" value="french" checked>
+              European Date Format (<span class="example2">31/12/1990</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="american">
+              American Date Format (<span class="example2">12/31/1990</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="deutschland">
+              Deutschland Date Format (<span class="example2">31.12.1990</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="canadian">
+              Canadian Date Format (<span class="example2">1990-12-31</span>)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="date-format" value="japonese">
+              Japonese Date Format (<span class="example2">1990/12/31</span>)
+            </label>
+            <br>            
+            <label>
+              <input type="radio" name="date-format" value="korean">
+              Korean Date Format (<span class="example2">1990.12.31</span>)
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-button">Close</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+  
+    </div>
+  </div>
+  
+  
+    
+    <!-- Bootstrap JavaScript (requires jQuery and Popper.js) -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+  
+    <!-- Link to modal.js -->
+    <!-- <script src="./tableur/modal_language.js"></script> -->
+  
+    <script src="hand5modal.js"></script>
+  <script type="module">
+
+  </script>
+</body>
+</html>
