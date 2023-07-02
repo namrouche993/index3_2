@@ -12,81 +12,17 @@
 </head>
 <body>
 
-  <!-- <button type="button"  id="openModalButton">Open Modal</button> -->
-  <button type="button" class="btn btn-light" id="openModalButton" data-toggle="modal" data-target="#myModal">
-    <i class="fa-solid fa-globe fa-lg"></i>
-  </button>
-
-  <div class="modal-overlay" id="myModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 class="modal-title">Choose Format</h2>
-        <span class="close">&times;</span>
-      </div>
+  <body>
+    <button type="button" class="btn btn-light" id="openModalButton" data-toggle="modal" data-target="#myModal">
+      <i class="fa-solid fa-globe fa-lg"></i>
+    </button>
   
-      <div class="modal-content">
-
-        <div class="menu-container numeric-menu">
-          <div class="format-options">
-            <p>Choose the numeric format:</p>
-            <label>
-              <input type="radio" name="format" value="european" checked>
-              European Format (<span class="example">1500,42</span>)
-              <div class="underexample">(comma , as Decimal Separator)</div>
-            </label>
-            <br>
-            <label>
-              <input type="radio" name="format" value="american">
-              American Format (<span class="example">1500.42</span>)
-              <div class="underexample">(dot . as Decimal Separator)</div>
-            </label>
-          </div>
-        </div>
-  
-        <div class="menu-container date-menu">
-          <div class="format-options">
-            <p>Choose the date format:</p>
-            <label>
-              <input type="radio" name="date-format" value="french" checked>
-              European Date Format (<span class="example2">31/12/1990</span>)
-            </label>
-            <br>
-            <label>
-              <input type="radio" name="date-format" value="american">
-              American Date Format (<span class="example2">12/31/1990</span>)
-            </label>
-            <br>
-            <label>
-              <input type="radio" name="date-format" value="deutschland">
-              Deutschland Date Format (<span class="example2">31.12.1990</span>)
-            </label>
-            <br>
-            <label>
-              <input type="radio" name="date-format" value="canadian">
-              Canadian Date Format (<span class="example2">1990-12-31</span>)
-            </label>
-            <br>
-            <label>
-              <input type="radio" name="date-format" value="japonese">
-              Japonese Date Format (<span class="example2">1990/12/31</span>)
-            </label>
-            <br>            
-            <label>
-              <input type="radio" name="date-format" value="korean">
-              Korean Date Format (<span class="example2">1990.12.31</span>)
-            </label>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary close-button">Close</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-  
+    <div class="modal-overlay" id="myModal">
+      <script src="hand5main.js"></script>
     </div>
-  </div>
+  </body>
+
+
   
   
     
@@ -96,10 +32,10 @@
   
     <!-- Link to modal.js -->
     <!-- <script src="./tableur/modal_language.js"></script> -->
-  
-    <script src="./tableur/modal_language.js"></script>
-  <script type="module">
 
-  </script>
+    <!-- <script src="./tableur/modal_language.js"></script> -->
+  <!-- <script type="module">
+
+  </script> -->
 </body>
 </html>

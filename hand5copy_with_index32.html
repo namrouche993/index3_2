@@ -35,6 +35,8 @@
 
 
 <link rel="stylesheet" href="tableur/style.css">
+<link rel="stylesheet" href="tableur/modalcss.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous">
 
 
 
@@ -45,7 +47,6 @@
 <body>
   <script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  <script src="./tableur/modal_language.js" type="module"></script>
 
 <div id="allofthem">
     <div id='toolbarid' style="z-index: 999999999;">
@@ -60,9 +61,15 @@
 
         <button id="button-id">cliquer </button>
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-          Open Modal
+        <button type="button" class="btn btn-light" id="openModalButton" data-toggle="modal" data-target="#myModal">
+          <i class="fa-solid fa-globe fa-lg"></i>
         </button>
+      
+        <div class="modal-overlay" id="myModal">
+          <script type="module" src="./tableur/modal_language.js"></script>
+        </div>
+      </body>
+    
         
         
 
