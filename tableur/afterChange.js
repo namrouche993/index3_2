@@ -156,7 +156,45 @@ console.log(shouldBreak==false)
     console.log('end hot.undoredo after')
 
   
+} else if (src=='dataatrowprop_convert_to_fr'){
+  console.log('we are in dataatrowprop_convert_to_fr')
+  console.log('hot.undoredo bef')
+  console.log(hot.undoRedo)
+  console.log(hot.undoRedo.doneActions)
+  console.log('end hot.undoredo bef')
+
+  hot.undoRedo.doneActions.pop();
+  console.log(hot.undoRedo.doneActions)
+  for (let index = 0; index<hot.undoRedo.doneActions.length; index++) {
+    console.log('we are inside index dataatrowprop_convert_to_fr')
+    console.log(index)
+      hot.undoRedo.doneActions[index].changes.forEach((x,y)=>{
+        console.log('x in foreach :')
+        console.log(x)
+        console.log(x[1])
+        console.log(x[1]==3)
+        if( // editable
+          x[1] == 2 || x[1] == 3 || x[1] == 4  || x[1] == 5  || x[1] == 6  ||
+          x[1] == 7 || x[1] == 8 || x[1] == 10 || x[1] == 11 || x[1] == 12 || 
+          x[1] == 13
+          ){
+            console.log('hot.undoRedo.doneActions[index].changes')
+            console.log(hot.undoRedo.doneActions[index].changes)
+            x[2]=x[2].replace(/\./g, ',');
+            x[3]=x[3].replace(/\./g, ',');
+              }
+      })      
+  }
+  
+  console.log('hot.undoredo after')
+  console.log(hot.undoRedo)
+  console.log(hot.undoRedo.doneActions)
+  console.log(hot.undoRedo.undoneActions)
+  console.log('end hot.undoredo after')
+
 }
+
+
 /*
 if(src=='UndoRedo.undo' && getInputValue_ds_haschanged()==true){
 
