@@ -177,6 +177,16 @@
   // end *********** condition_split2
 
 
+     // start -------- ds_haschanged
+     let ds_haschanged=false
+     export function setInputValue_ds_haschanged(value) {
+      ds_haschanged = value;
+      }
+     export function getInputValue_ds_haschanged() {
+          return ds_haschanged;
+      }
+   // end *********** ds_haschanged
+ 
 
 
    
