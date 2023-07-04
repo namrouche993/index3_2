@@ -43,7 +43,12 @@
   export const phonenumbers_length_pn=50;
   export const onlynumbers_length_on = 50;
   export const text_length_txt = 600;
-  export const use_en_time = false;
+  export const use_en_time = false; // using english date 12/31/1993 ??
+  export const use_all_language_modal_depend_langbrowser=true;
+  export const which_lanaguage_touse_if_langbrowserisflse='fr';
+
+  export const all_european_formal_are_test=false; // if it's true so "let navigator_language2 equal to fr-FR" and "let userLocale2 equal to fr" should equal to all_european_formal_are  
+  export const all_european_formal_are = 'fr';  // works if the test above is true
   //#endregion initials inputs nb
 
 
