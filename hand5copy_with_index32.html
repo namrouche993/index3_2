@@ -181,7 +181,13 @@
         decimalseparator2_bydefault_ifnotexist,
         
         getInputValue_ds_haschanged,
-        setInputValue_ds_haschanged
+        setInputValue_ds_haschanged,
+
+        use_all_language_modal_depend_langbrowser,
+        which_lanaguage_touse_if_langbrowserisflse,
+
+        all_european_formal_are_test,
+        all_european_formal_are
 
        } from './tableur/intials_inputs_nb.js'
   import { afterChangefct } from './tableur/afterChange.js'
@@ -200,8 +206,18 @@
 
   // Call the function to initialize the modal
 
-  function setTitlemodalformat() {
-      var language = getInputValue_userLocale2() || navigator.language || navigator.userLanguage;
+
+
+  //#region modal script
+  function setTitlemodalformat(language2) {
+      //var language = getInputValue_userLocale2() || navigator.language || navigator.userLanguage;
+      console.log('langauge of the modal will be : ')
+      console.log(language2)
+      if(use_all_language_modal_depend_langbrowser==true){
+        var language=language2
+      } else {
+        var language=which_lanaguage_touse_if_langbrowserisflse
+      }
 
       var title_formatmodal = document.getElementById("title_formatmodal");
       var title_numericformatmodal = document.getElementById("title_numericformatmodal");
@@ -211,6 +227,7 @@
       var title_us_under_numericformatmodal = document.getElementById("title_us_under_numericformatmodal");
 
        if (language.startsWith("fr")) {
+        console.log('inside french modal')
   title_formatmodal.textContent = "Choisissez le format";
   title_numericformatmodal.textContent = "Choisissez le format numérique :";
   title_eu_numericformatmodal.textContent = "Format européen";
@@ -218,6 +235,8 @@
   title_us_numericformatmodal.textContent = "Format américain";
   title_us_under_numericformatmodal.textContent = "(point . comme séparateur décimal)";
 } else if (language.startsWith("de")) {
+  console.log('inside de modal')
+
   title_formatmodal.textContent = "Format wählen";
   title_numericformatmodal.textContent = "Wählen Sie das Zahlenformat:";
   title_eu_numericformatmodal.textContent = "Europäisches Format";
@@ -225,6 +244,8 @@
   title_us_numericformatmodal.textContent = "Amerikanisches Format";
   title_us_under_numericformatmodal.textContent = "(Punkt . als Dezimaltrennzeichen)";
 } else if (language.startsWith("es")) {
+  console.log('inside es modal')
+
   title_formatmodal.textContent = "Elegir formato";
   title_numericformatmodal.textContent = "Elegir el formato numérico:";
   title_eu_numericformatmodal.textContent = "Formato Europeo";
@@ -232,7 +253,7 @@
   title_us_numericformatmodal.textContent = "Formato Americano";
   title_us_under_numericformatmodal.textContent = "(punto . como separador decimal)";
 } else {
-
+  console.log('inside english modal')
 title_formatmodal.textContent = "Choose Format";
 title_numericformatmodal.textContent = "Choose the numeric format:";
 title_eu_numericformatmodal.textContent = "European Format";
@@ -247,8 +268,6 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
 
     // Call the setTitlemodalformat function when the page loads
 
-
-  //#region modal script
   const modalOverlay = document.getElementById("myModal");
   const openModalButton = document.getElementById("openModalButton");
   const closeModalButton = modalOverlay.querySelector(".close-button");
@@ -340,12 +359,24 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
       console.log('data_to_convert :')
       console.log(data_to_convert)  
      
-      const columnsToConvert = [2,3,4,5,6,7,8,10,11,12,13]; // Specify the indices of the columns to convert
-      const startRowIndex = 5; // Specify the starting row index for conversion
-      const changesdata = [];
+      const columnsToConvert = [2,3,4,5,6,7,8,10,11,12,13]; // editable Specify the indices of the columns to convert
+      const startRowIndex = 5; // editable Specify the starting row index for conversion
+      const changesdata = [];    
 
       if(selectedNumericFormat==',' ){
-          setInputValue_userLocale2('fr')
+        if(all_european_formal_are_test==true && all_european_formal_are=='fr'){ // editable 'fr the change it if the previous is true'
+          // when we set the numeric format always be in fr 1 234 567.89  and modal language is in fr
+          setInputValue_userLocale2('fr'); // editable if it's necessary
+          setTitlemodalformat('fr'); // editable if it's necessary
+        } else if( (1234567.73).toLocaleString(Intl.DateTimeFormat().resolvedOptions().locale, { style: 'decimal' }).substring(9, 10).toString()==','){
+            
+            setInputValue_userLocale2(Intl.DateTimeFormat().resolvedOptions().locale);
+            setTitlemodalformat(Intl.DateTimeFormat().resolvedOptions().locale);
+
+          } else {
+            setInputValue_userLocale2('fr');
+            setTitlemodalformat('en')
+          }
           setInputValue_decimalSeparator2(',')
           data_to_convert.forEach((row, rowIndex) => {
                 if (rowIndex >= startRowIndex) {
@@ -364,8 +395,6 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
               });
               setInputValue_ds_haschanged(true)
               hot.setDataAtRowProp(changesdata,'dataatrowprop_convert_to_fr');
-     
-
       } else {
           setInputValue_userLocale2('en')
           setInputValue_decimalSeparator2('.')
@@ -390,12 +419,13 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
       //setInputValue_userLocale2(selectedNumericFormat)
 
       setInputValue_navigator_language2(selectedDateFormat)
-      setTitlemodalformat();
       modalOverlay.style.display = "none";
-      console.log('decimalseparator : ')
-      console.log(getValue_decimalSeparator2())
+
+
       // Your action code goes here
     });
+    //setTitlemodalformat(getInputValue_userLocale2());
+
 
   //#endregion modal script
 
