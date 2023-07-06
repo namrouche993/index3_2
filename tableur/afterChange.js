@@ -1,7 +1,11 @@
 //hot.addHook('afterChange', function (changes, src) {
 let lastelement_supthan1=0;
 import {data22fct} from './ddata.js'
-import {getInputValue_ds_haschanged,setInputValue_ds_haschanged} from './intials_inputs_nb.js';
+import {
+  getInputValue_ds_haschanged,setInputValue_ds_haschanged,
+  
+
+} from './intials_inputs_nb.js';
 var data22 = data22fct();
 
 export function afterChangefct(changes,src, ...otherArgs){
@@ -193,6 +197,26 @@ console.log(shouldBreak==false)
   console.log('end hot.undoredo after')
 
 }
+//  else if (src=='dataatrowprop_convert_date_fr_to_en'){
+//   hot.undoRedo.doneActions.pop();
+//   console.log(hot.undoRedo.doneActions)
+//   for (let index = 0; index<hot.undoRedo.doneActions.length; index++) {
+//     console.log('we are inside index dataatrowprop_convert_date_fr_to_en')
+//     console.log(index)
+//       hot.undoRedo.doneActions[index].changes.forEach((x,y)=>{
+//         console.log('x in foreach :')
+//         console.log(x)
+//         console.log(x[1])
+//         console.log(x[1]==3)
+//         if( // editable
+//           x[1] == 14
+//           ){
+//             x[2]=convertFrenchToAmerican(x[2]);
+//             x[3]=convertFrenchToAmerican(x[3]);
+//               }
+//       })      
+//   }
+// }
 
 
 /*

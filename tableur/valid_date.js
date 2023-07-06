@@ -22,7 +22,8 @@ import{
     onlynumbers_length_on,
     text_length_txt,
     use_en_time,
-    setInputValue_condition_split2
+    setInputValue_condition_split2,
+    getInputValue_use_english_date_by_user_himeself_in_modal
   } from './intials_inputs_nb.js';
 
   import { comments_messages } from './comments_messages.js'
@@ -163,7 +164,7 @@ import{
                 console.log(navigator_language)
                 console.log(usTimeZones.includes(userTimeZone))
                 console.log(use_en_time)
-                if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                if( (navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true){
                   console.log('english 3 correct : ')
                   var [monthdate,daydate, yeardate] = oldvalue.split(splitdate01); // edit it modify it change it , when US date format occurs                  
                   // isValidDate('35/02/2002','/',1,2,3)
@@ -184,7 +185,7 @@ import{
                  if(navigator_language=='en-US'){
                  // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
                  var splitdate001='/';
-                 if(usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                 if( (usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true){
                        // var dateformatlanguage = 'mm/dd/aaaa';
                   
             if(daydate.toString().length==1 && monthdate.toString().length==1){
@@ -285,7 +286,7 @@ import{
                 console.log('condition date 2.2.2  31-12-1995 like no one')                  
                 var splitdate02='-';
                 //var [daydate,monthdate, yeardate] = oldvalue.split(splitdate02); // edit it modify it change it , when US date format occurs                  
-                if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                if( (navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                   var [monthdate,daydate, yeardate] = oldvalue.split(splitdate02); // edit it modify it change it , when US date format occurs                  
                   // isValidDate('35/02/2002','/',1,2,3)
                   var is_validate_date=isValidDate(oldvalue,'-',2,1,3)
@@ -300,7 +301,7 @@ import{
                 
                  if(navigator_language=='en-US'){
                  // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                 if(usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                 if( (usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                   var splitdate1='/';
                   hot.setDataAtCell(row, prop, monthdate+splitdate1+daydate+splitdate1+yeardate,'my_source_date')
                   console.log('new date format : ' + monthdate+splitdate1+daydate+splitdate1+yeardate)   
@@ -354,7 +355,7 @@ import{
 } else if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(oldvalue.trim().replace(/\s*\.\s*/g,".")) ){
                 console.log('condition date 2.2.3  31.12.1995 like  de-DE date format ')                  
                 var splitdate03='.';
-                if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                if( (navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                   var [monthdate,daydate, yeardate] = oldvalue.split(splitdate03); // edit it modify it change it , when US date format occurs                  
                   var is_validate_date=isValidDate(oldvalue,'.',2,1,3)
                 } else {
@@ -367,7 +368,7 @@ import{
                                   
                 if(navigator_language=='en-US'){
                  // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                  if(usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                  if( (usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                     var splitdate1='/';
                     hot.setDataAtCell(row, prop, daydate+splitdate1+monthdate+splitdate1+yeardate,'my_source_date')
                     console.log('new date format : ' + monthdate+splitdate1+daydate+splitdate1+yeardate)
@@ -445,7 +446,7 @@ import{
   console.log('condition date 2.2.4  1995/12/31 like ja-JP')
                   
                 var splitdate04='/';
-                if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                if( (navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                   var [yeardate,daydate,monthdate] = oldvalue.split(splitdate04); // edit it modify it change it , when US date format occurs                  
                   var is_validate_date=isValidDate(oldvalue,'/',3,1,2)
                 } else {
@@ -458,7 +459,7 @@ import{
                                   
                 if(navigator_language=='en-US'){
                  // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                  if(usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                  if( (usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                     var splitdate1='/';
                     hot.setDataAtCell(row, prop, monthdate+splitdate1+daydate+splitdate1+yeardate,'my_source_date')
                     console.log('new date format : ' + monthdate+splitdate1+daydate+splitdate1+yeardate)
@@ -539,7 +540,7 @@ import{
   console.log('condition date 2.2.5  1995-12-31 like en-CA')
 
                 var splitdate05='-';
-                if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                if( (navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                   var [yeardate,daydate,monthdate] = oldvalue.split(splitdate05); // edit it modify it change it , when US date format occurs                  
                   var is_validate_date=isValidDate(oldvalue,'-',3,1,2)
                 } else {
@@ -552,7 +553,7 @@ import{
                                   
                 if(navigator_language=='en-US'){
                  // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                  if(usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                  if( (usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                     var splitdate1='/';
                     hot.setDataAtCell(row, prop, monthdate+splitdate1+daydate+splitdate1+yeardate,'my_source_date')
                     console.log('new date format : ' + monthdate+splitdate1+daydate+splitdate1+yeardate)
@@ -631,7 +632,7 @@ import{
   console.log('condition date 2.2.6  1995.12.31 like ko-KR')
 
                 var splitdate06='.';
-                if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                if( (navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                   var [yeardate,daydate,monthdate] = oldvalue.split(splitdate06); // edit it modify it change it , when US date format occurs                  
                   var is_validate_date=isValidDate(oldvalue,'.',3,1,2)
                 } else {
@@ -644,7 +645,7 @@ import{
                                   
                 if(navigator_language=='en-US'){
                  // 'jj/mm/aaaa' // 'mm/dd/yyyy'; // 12/31/1990 edit it later , modify it later  , change it later
-                  if(usTimeZones.includes(userTimeZone) && use_en_time==true ){
+                  if( (usTimeZones.includes(userTimeZone) && use_en_time==true) || getInputValue_use_english_date_by_user_himeself_in_modal()==true ){
                     var splitdate1='/';
                     hot.setDataAtCell(row, prop, monthdate+splitdate1+daydate+splitdate1+yeardate,'my_source_date')
                     console.log('new date format : ' + monthdate+splitdate1+daydate+splitdate1+yeardate)

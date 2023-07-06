@@ -43,7 +43,7 @@
   export const phonenumbers_length_pn=50;
   export const onlynumbers_length_on = 50;
   export const text_length_txt = 600;
-  export const use_en_time = false; // using english date 12/31/1993 ??
+  export const use_en_time = true; // using english date 12/31/1993 ??
   export const use_all_language_modal_depend_langbrowser=true;
   export const which_lanaguage_touse_if_langbrowserisflse='fr';
 
@@ -60,21 +60,6 @@
       //#endregion date time zone
   
 
-
-
-    //#region decimalseparator and thousand separator 
-   /*
-    const options = { style: 'decimal' };
-    const formattedNumber = (1234567.73).toLocaleString(userLocale, options);
-    const DecimalSeparator0 = formattedNumber.substring(9, 10)
-    export let decimalSeparator = DecimalSeparator0
-    const thousandSeparator00 = formattedNumber.substring(1, 2);
-    let thousandSeparator0 = thousandSeparator00
-    console.log('decimal separateur est :' + decimalSeparator +
-      ' et thousand est :' + thousandSeparator0 +
-      'et le nombre devients :' + formattedNumber)
-      */
-   //#endregion decimalseparator and thousand separator 
 
 
   // start -------- navigator_language2
@@ -193,10 +178,67 @@
    // end *********** ds_haschanged
  
 
+   export function convertDateFormat(date, fromFormat, toFormat) {
+    var parts;
+    
+    if (fromFormat === 'en-CA') {
+      parts = date.split('-');
+    } else if (fromFormat === 'ja-JP') {
+      parts = date.split('/');
+    } else if (fromFormat === 'ko-KR' || fromFormat === 'de-DE') {
+      parts = date.split('.');
+    } else {
+      parts = date.split('/');
+    }
+  
+    var day, month, year;
+  
+    if (fromFormat === 'en-US') {
+      day = parts[1];
+      month = parts[0];
+      year = parts[2];
+    } else if (fromFormat === 'en-CA') {
+      day = parts[2];
+      month = parts[1];
+      year = parts[0];
+    } else if (fromFormat === 'ja-JP') {
+      day = parts[2];
+      month = parts[1];
+      year = parts[0];
+    } else if (fromFormat === 'ko-KR') {
+      day = parts[2];
+      month = parts[1];
+      year = parts[0];
+    } else {
+      day = parts[0];
+      month = parts[1];
+      year = parts[2];
+    }
+  
+    if (toFormat === 'fr-FR') {
+      return day + '/' + month + '/' + year;
+    } else if (toFormat === 'en-US') {
+      return month + '/' + day + '/' + year;
+    } else if (toFormat === 'de-DE') {
+      return day + '.' + month + '.' + year;
+    } else if (toFormat === 'en-CA') {
+      return year + '-' + month + '-' + day;
+    } else if (toFormat === 'ja-JP') {
+      return year + '/' + month + '/' + day;
+    } else if (toFormat === 'ko-KR') {
+      return year + '.' + month + '.' + day;
+    } else if (toFormat === 'de-DE') {
+      return day + '.' + month + '.' + year;
+    }
+  }
 
-   
-
-
+  let use_english_date_by_user_himeself_in_modal = false
+  export function setInputValue_use_english_date_by_user_himeself_in_modal(value) {
+   use_english_date_by_user_himeself_in_modal = value;
+   }
+  export function getInputValue_use_english_date_by_user_himeself_in_modal() {
+       return use_english_date_by_user_himeself_in_modal;
+   }
 
 
 
