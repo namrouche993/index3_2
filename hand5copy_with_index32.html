@@ -94,7 +94,7 @@
           
               <div class="menu-container date-menu">
                 <div class="format-options">
-                  <p>Choose the date format:</p>
+                  <p id="title_formatmodal_date">Choose the date format:</p>
                   <label>
                     <input type="radio" name="date-format" value="fr-FR" checked>
                     European Date Format (<span class="example2">31/12/1990</span>)
@@ -187,7 +187,13 @@
         which_lanaguage_touse_if_langbrowserisflse,
 
         all_european_formal_are_test,
-        all_european_formal_are
+        all_european_formal_are,
+
+        convertDateFormat,
+
+        getInputValue_use_english_date_by_user_himeself_in_modal,
+        setInputValue_use_english_date_by_user_himeself_in_modal
+        
 
        } from './tableur/intials_inputs_nb.js'
   import { afterChangefct } from './tableur/afterChange.js'
@@ -205,6 +211,7 @@
   // import { initializeModal } from './tableur/modal_language.js';
 
   // Call the function to initialize the modal
+
 
 
 
@@ -226,45 +233,51 @@
       var title_us_numericformatmodal = document.getElementById("title_us_numericformatmodal");
       var title_us_under_numericformatmodal = document.getElementById("title_us_under_numericformatmodal");
 
+      var title_formatmodal_date = document.getElementById("title_formatmodal_date");
+      
        if (language.startsWith("fr")) {
-        console.log('inside french modal')
   title_formatmodal.textContent = "Choisissez le format";
   title_numericformatmodal.textContent = "Choisissez le format numérique :";
   title_eu_numericformatmodal.textContent = "Format européen";
   title_eu_under_numericformatmodal.textContent = "(virgule , comme séparateur décimal)";
   title_us_numericformatmodal.textContent = "Format américain";
   title_us_under_numericformatmodal.textContent = "(point . comme séparateur décimal)";
-} else if (language.startsWith("de")) {
-  console.log('inside de modal')
+  title_formatmodal_date.textContent = "Choisissez le format de date";
 
+} else if (language.startsWith("de")) {
   title_formatmodal.textContent = "Format wählen";
   title_numericformatmodal.textContent = "Wählen Sie das Zahlenformat:";
   title_eu_numericformatmodal.textContent = "Europäisches Format";
   title_eu_under_numericformatmodal.textContent = "(Komma , als Dezimaltrennzeichen)";
   title_us_numericformatmodal.textContent = "Amerikanisches Format";
   title_us_under_numericformatmodal.textContent = "(Punkt . als Dezimaltrennzeichen)";
-} else if (language.startsWith("es")) {
-  console.log('inside es modal')
+  title_formatmodal_date.textContent = "Wählen Sie das Datumsformat";
 
+} else if (language.startsWith("es")) {
   title_formatmodal.textContent = "Elegir formato";
   title_numericformatmodal.textContent = "Elegir el formato numérico:";
   title_eu_numericformatmodal.textContent = "Formato Europeo";
   title_eu_under_numericformatmodal.textContent = "(coma , como separador decimal)";
   title_us_numericformatmodal.textContent = "Formato Americano";
   title_us_under_numericformatmodal.textContent = "(punto . como separador decimal)";
+  title_formatmodal_date.textContent = "Elige el formato de fecha";
+
+  
 } else {
-  console.log('inside english modal')
+
 title_formatmodal.textContent = "Choose Format";
 title_numericformatmodal.textContent = "Choose the numeric format:";
 title_eu_numericformatmodal.textContent = "European Format";
 title_eu_under_numericformatmodal.textContent = "(comma , as Decimal Separator)";
 title_us_numericformatmodal.textContent = "American Format";
 title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";      
-
-}
-      }
+title_formatmodal_date.textContent = "Choose the date format";
 
 
+}      }
+
+
+  
 
     // Call the setTitlemodalformat function when the page loads
 
@@ -294,6 +307,7 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
 
 
   if (!dateValues.includes(getInputValue_navigator_language2())){
+    // editable later for russian and turkey and some others
       setInputValue_navigator_language2(navigator_language2_bydefault_ifnotexist);
       console.log(getInputValue_navigator_language2())
       let radioElement = document.querySelector('input[name="date-format"][value='+navigator_language2_bydefault_ifnotexist+']');
@@ -302,7 +316,7 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
 
 
 
-  openModalButton.addEventListener("click", function() {  
+  openModalButton.addEventListener("click", function() {
     console.log('openmodalbt ::')
     console.log(getInputValue_userLocale2())
     console.log((1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString())
@@ -359,9 +373,42 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
       console.log('data_to_convert :')
       console.log(data_to_convert)  
      
-      const columnsToConvert = [2,3,4,5,6,7,8,10,11,12,13]; // editable Specify the indices of the columns to convert
+      const NumColumnsToConvert = [2,3,4,5,6,7,8,10,11,12,13]; // editable Specify the indices of the columns to convert
       const startRowIndex = 5; // editable Specify the starting row index for conversion
-      const changesdata = [];    
+      const DateColumnsToConvert = [14]; // editable
+      const changesdata_numeric = [];
+      const changesdata_date = [];
+
+      data_to_convert.forEach((row, rowIndex) => {
+        if (rowIndex > startRowIndex) {
+          DateColumnsToConvert.forEach(columnIndex => {
+            const cellValueDate = row[columnIndex];
+            if(cellValueDate!==null && cellValueDate!=='' && cellValueDate!==' ' && cellValueDate!==undefined){     
+                 outerLoop: for (const lang of dateValues) {
+                    for (const lang2 of dateValues) {
+                      if(getInputValue_navigator_language2()==lang && selectedDateFormat==lang2){
+                        var convertedDate = convertDateFormat(cellValueDate, lang, lang2);
+                           if(convertedDate!=cellValueDate){
+                               var changeonedata = [rowIndex, columnIndex, convertedDate];
+                               changesdata_date.push(changeonedata);
+                               if(lang2=='en-US'){
+                                setInputValue_use_english_date_by_user_himeself_in_modal(true)
+                               } else {
+                                setInputValue_use_english_date_by_user_himeself_in_modal(false)
+                               }
+                           }
+                          break outerLoop;
+                        }
+                     }
+                 }
+
+            }
+          })
+        }
+         })
+         setInputValue_navigator_language2(selectedDateFormat)
+         hot.setDataAtRowProp(changesdata_date,'dataatrowprop_convert_date');
+
 
       if(selectedNumericFormat==',' ){
         if(all_european_formal_are_test==true && all_european_formal_are=='fr'){ // editable 'fr the change it if the previous is true'
@@ -379,46 +426,45 @@ title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
           }
           setInputValue_decimalSeparator2(',')
           data_to_convert.forEach((row, rowIndex) => {
-                if (rowIndex >= startRowIndex) {
-                    columnsToConvert.forEach(columnIndex => {
+                if (rowIndex > startRowIndex) {
+                    NumColumnsToConvert.forEach(columnIndex => {
                          const cellValue = row[columnIndex];
                          const convertedNumber = cellValue.replace(/\./g, ',');
                          if(convertedNumber!=cellValue){
                            console.log('convert dontequal to cellvalue : ')
                            console.log(convertedNumber)
                            console.log(cellValue)
-                           const changeonedata = [rowIndex, columnIndex, convertedNumber];
-                           changesdata.push(changeonedata);
+                           var changeonedata = [rowIndex, columnIndex, convertedNumber];
+                           changesdata_numeric.push(changeonedata);
                         }
                     });
                   }
               });
               setInputValue_ds_haschanged(true)
-              hot.setDataAtRowProp(changesdata,'dataatrowprop_convert_to_fr');
+              hot.setDataAtRowProp(changesdata_numeric,'dataatrowprop_convert_to_fr');
       } else {
           setInputValue_userLocale2('en')
           setInputValue_decimalSeparator2('.')
           data_to_convert.forEach((row, rowIndex) => {
-                if (rowIndex >= startRowIndex) {
-                    columnsToConvert.forEach(columnIndex => {
+                if (rowIndex > startRowIndex) {
+                    NumColumnsToConvert.forEach(columnIndex => {
                          const cellValue = row[columnIndex];
                          const convertedNumber = cellValue.replace(/,/g, '.');
                          if(convertedNumber!=cellValue){
                            console.log('convert dontequal to cellvalue : ')
                            console.log(convertedNumber)
                            console.log(cellValue)
-                           const changeonedata = [rowIndex, columnIndex, convertedNumber];
-                           changesdata.push(changeonedata);
+                           var changeonedata = [rowIndex, columnIndex, convertedNumber];
+                           changesdata_numeric.push(changeonedata);
                         }
                     });
                   }
               });
               setInputValue_ds_haschanged(true)
-              hot.setDataAtRowProp(changesdata,'dataatrowprop_convert_to_en');
+              hot.setDataAtRowProp(changesdata_numeric,'dataatrowprop_convert_to_en');
       }
       //setInputValue_userLocale2(selectedNumericFormat)
 
-      setInputValue_navigator_language2(selectedDateFormat)
       modalOverlay.style.display = "none";
 
 
