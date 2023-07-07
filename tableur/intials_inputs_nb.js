@@ -110,6 +110,15 @@
     export const navigator_language2_bydefault_ifnotexist='fr-FR'
  // end *********** navigator_language2 
 
+ let navigator_language2_avant_modify=getInputValue_navigator_language2();
+ export function setInputValue_navigator_language2_avant_modify(value) {
+  navigator_language2_avant_modify = value;
+}
+export function getInputValue_navigator_language2_avant_modify() {
+    return navigator_language2_avant_modify;
+}
+
+
 
   // start -------- userlocale2
    let userLocale2 = Intl.DateTimeFormat().resolvedOptions().locale //'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
@@ -238,7 +247,15 @@
    }
   export function getInputValue_use_english_date_by_user_himeself_in_modal() {
        return use_english_date_by_user_himeself_in_modal;
+   };
+
+   let hot_undone2={};
+   export function setInputValue_hot_undone2(value){
+    hot_undone2=value
    }
+   export function getInputValue_hot_undone2() {
+    return hot_undone2;
+  };
 
 
 
