@@ -37,6 +37,10 @@
 <link rel="stylesheet" href="tableur/style.css">
 <link rel="stylesheet" href="tableur/modalcss.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous">
+<!-- <script src="lodash.js"> </script> -->
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+
+
 
 
 
@@ -192,7 +196,13 @@
         convertDateFormat,
 
         getInputValue_use_english_date_by_user_himeself_in_modal,
-        setInputValue_use_english_date_by_user_himeself_in_modal
+        setInputValue_use_english_date_by_user_himeself_in_modal,
+
+        getInputValue_navigator_language2_avant_modify,
+        setInputValue_navigator_language2_avant_modify,
+
+        getInputValue_hot_undone2,
+        setInputValue_hot_undone2
         
 
        } from './tableur/intials_inputs_nb.js'
@@ -211,6 +221,8 @@
   // import { initializeModal } from './tableur/modal_language.js';
 
   // Call the function to initialize the modal
+  // import {_} from './lodash.js'
+
 
 
 
@@ -218,8 +230,8 @@
   //#region modal script
   function setTitlemodalformat(language2) {
       //var language = getInputValue_userLocale2() || navigator.language || navigator.userLanguage;
-      console.log('langauge of the modal will be : ')
-      console.log(language2)
+      //console.log('langauge of the modal will be : ')
+      //console.log(language2)
       if(use_all_language_modal_depend_langbrowser==true){
         var language=language2
       } else {
@@ -292,15 +304,15 @@ title_formatmodal_date.textContent = "Choose the date format";
 
   const numericRadios = document.querySelectorAll('input[name="numeric-format"]');
   const numericValues = Array.from(numericRadios).map(numeric => numeric.value);
-  console.log('numericValues')
-  console.log(numericValues)
+  //console.log('numericValues')
+  //console.log(numericValues)
 
  
   if (!numericValues.includes((1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10))){
     setInputValue_userLocale2(userlocale2_bydefault_ifnotexist);
     setInputValue_decimalSeparator2(decimalseparator2_bydefault_ifnotexist)
     
-    console.log(getInputValue_userLocale2())
+    //console.log(getInputValue_userLocale2())
     let radioElement_numeric = document.querySelector('input[name="numeric-format"][value="'+(1234567.73).toLocaleString(userlocale2_bydefault_ifnotexist, { style: 'decimal' }).substring(9, 10)+'"]');
     radioElement_numeric.checked = true;  
   }
@@ -309,7 +321,7 @@ title_formatmodal_date.textContent = "Choose the date format";
   if (!dateValues.includes(getInputValue_navigator_language2())){
     // editable later for russian and turkey and some others
       setInputValue_navigator_language2(navigator_language2_bydefault_ifnotexist);
-      console.log(getInputValue_navigator_language2())
+      //console.log(getInputValue_navigator_language2())
       let radioElement = document.querySelector('input[name="date-format"][value='+navigator_language2_bydefault_ifnotexist+']');
       radioElement.checked = true;  
     }
@@ -317,9 +329,9 @@ title_formatmodal_date.textContent = "Choose the date format";
 
 
   openModalButton.addEventListener("click", function() {
-    console.log('openmodalbt ::')
-    console.log(getInputValue_userLocale2())
-    console.log((1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString())
+    //console.log('openmodalbt ::')
+    //console.log(getInputValue_userLocale2())
+    //console.log((1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString())
 
     let radioElement_numeric = document.querySelector('input[name="numeric-format"][value="'+(1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString()+'"]');
     radioElement_numeric.checked = true;
@@ -367,11 +379,11 @@ title_formatmodal_date.textContent = "Choose the date format";
 
   
     submitButton.addEventListener("click", function() {
-      console.log('hot : ')
-      console.log(hot.getData())
+      //console.log('hot : ')
+      //console.log(hot.getData())
       var data_to_convert = hot.getData(); // Get the data from the Handsontable
-      console.log('data_to_convert :')
-      console.log(data_to_convert)  
+      //console.log('data_to_convert :')
+      //console.log(data_to_convert)  
      
       const NumColumnsToConvert = [2,3,4,5,6,7,8,10,11,12,13]; // editable Specify the indices of the columns to convert
       const startRowIndex = 5; // editable Specify the starting row index for conversion
@@ -379,6 +391,7 @@ title_formatmodal_date.textContent = "Choose the date format";
       const changesdata_numeric = [];
       const changesdata_date = [];
 
+    if(selectedDateFormat!==getInputValue_navigator_language2()){
       data_to_convert.forEach((row, rowIndex) => {
         if (rowIndex > startRowIndex) {
           DateColumnsToConvert.forEach(columnIndex => {
@@ -387,6 +400,10 @@ title_formatmodal_date.textContent = "Choose the date format";
                  outerLoop: for (const lang of dateValues) {
                     for (const lang2 of dateValues) {
                       if(getInputValue_navigator_language2()==lang && selectedDateFormat==lang2){
+                        //console.log('before convertdateformat :')
+                        //console.log(cellValueDate)
+                        //console.log(lang)
+                        //console.log(lang2)
                         var convertedDate = convertDateFormat(cellValueDate, lang, lang2);
                            if(convertedDate!=cellValueDate){
                                var changeonedata = [rowIndex, columnIndex, convertedDate];
@@ -406,9 +423,24 @@ title_formatmodal_date.textContent = "Choose the date format";
           })
         }
          })
-         setInputValue_navigator_language2(selectedDateFormat)
-         hot.setDataAtRowProp(changesdata_date,'dataatrowprop_convert_date');
 
+  for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) {
+    hot.undoRedo.undoneActions[index].changes.forEach((x,y)=>{
+      if(x[1]==14) {  // editable
+        if(x[2]!==null && x[2]!=='' && x[2]!==' '){
+          x[2]=convertDateFormat(x[2], getInputValue_navigator_language2(), selectedDateFormat) 
+        }
+        if(x[3]!==null && x[3]!=='' && x[3]!==' '){
+          x[3]=convertDateFormat(x[3], getInputValue_navigator_language2(), selectedDateFormat) 
+        }
+        }
+    })
+  }
+         setInputValue_navigator_language2_avant_modify(getInputValue_navigator_language2())
+         setInputValue_navigator_language2(selectedDateFormat)
+         setInputValue_hot_undone2(_.cloneDeep(hot.undoRedo.undoneActions));              
+         hot.setDataAtRowProp(changesdata_date,'dataatrowprop_convert_date');
+    }
 
       if(selectedNumericFormat==',' ){
         if(all_european_formal_are_test==true && all_european_formal_are=='fr'){ // editable 'fr the change it if the previous is true'
@@ -431,16 +463,32 @@ title_formatmodal_date.textContent = "Choose the date format";
                          const cellValue = row[columnIndex];
                          const convertedNumber = cellValue.replace(/\./g, ',');
                          if(convertedNumber!=cellValue){
-                           console.log('convert dontequal to cellvalue : ')
-                           console.log(convertedNumber)
-                           console.log(cellValue)
+                           //console.log('convert dontequal to cellvalue : ')
+                           //console.log(convertedNumber)
+                           //console.log(cellValue)
                            var changeonedata = [rowIndex, columnIndex, convertedNumber];
                            changesdata_numeric.push(changeonedata);
                         }
                     });
                   }
               });
+              
+  for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) {
+    hot.undoRedo.undoneActions[index].changes.forEach((x,y)=>{
+      //console.log('x in foreach :')
+      if( // editable
+        x[1] == 2 || x[1] == 3 || x[1] == 4  || x[1] == 5  || x[1] == 6  ||
+        x[1] == 7 || x[1] == 8 || x[1] == 10 || x[1] == 11 || x[1] == 12 || 
+        x[1] == 13
+        ){
+          x[2]=x[2].replace(/\./g, ',');
+          x[3]=x[3].replace(/\./g, ',');
+        }
+    })
+  }
               setInputValue_ds_haschanged(true)
+              setInputValue_hot_undone2(_.cloneDeep(hot.undoRedo.undoneActions));              
+              // setInputValue_hot_undone2(JSON.parse(JSON.stringify(hot.undoRedo.undoneActions)));              
               hot.setDataAtRowProp(changesdata_numeric,'dataatrowprop_convert_to_fr');
       } else {
           setInputValue_userLocale2('en')
@@ -451,16 +499,32 @@ title_formatmodal_date.textContent = "Choose the date format";
                          const cellValue = row[columnIndex];
                          const convertedNumber = cellValue.replace(/,/g, '.');
                          if(convertedNumber!=cellValue){
-                           console.log('convert dontequal to cellvalue : ')
-                           console.log(convertedNumber)
-                           console.log(cellValue)
+                           //console.log('convert dontequal to cellvalue : ')
+                           //console.log(convertedNumber)
+                           //console.log(cellValue)
                            var changeonedata = [rowIndex, columnIndex, convertedNumber];
                            changesdata_numeric.push(changeonedata);
                         }
                     });
                   }
               });
-              setInputValue_ds_haschanged(true)
+
+              for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) {
+    hot.undoRedo.undoneActions[index].changes.forEach((x,y)=>{
+      //console.log('x in foreach :')
+      if( // editable
+        x[1] == 2 || x[1] == 3 || x[1] == 4  || x[1] == 5  || x[1] == 6  ||
+        x[1] == 7 || x[1] == 8 || x[1] == 10 || x[1] == 11 || x[1] == 12 || 
+        x[1] == 13
+        ){
+          x[2]=x[2].replace(/,/g, '.');
+          x[3]=x[3].replace(/,/g, '.');
+        }
+    })
+  }
+
+              setInputValue_ds_haschanged(true);
+              setInputValue_hot_undone2(_.cloneDeep(hot.undoRedo.undoneActions));              
               hot.setDataAtRowProp(changesdata_numeric,'dataatrowprop_convert_to_en');
       }
       //setInputValue_userLocale2(selectedNumericFormat)
@@ -542,11 +606,11 @@ const hot = new Handsontable(container, {
 
        afterCreateRow: function(index, amount) {
         // Your custom logic goes here
-        console.log('A new row has been added at index: ', index);
-        console.log(amount)
-        console.log(index)
+        //console.log('A new row has been added at index: ', index);
+        //console.log(amount)
+        //console.log(index)
         data22.push(['','','','','','',''])
-        console.log(data22)
+        //console.log(data22)
       },
 
        afterSelection: (r1, c1, r2, c2) => {
@@ -620,26 +684,26 @@ document.addEventListener('DOMContentLoaded', function() {
     button_download.addEventListener('click', function() {
       // Your code here
       downloadfile()
-      console.log('Button clicked!');
+      //console.log('Button clicked!');
       
     });
 
     button_undo.addEventListener('click', function() {
       // Your code here
       undohandstonetable()
-      console.log('getnavigator_language2 : ')
-      console.log(getInputValue_navigator_language2())
-      console.log('Button clicked!');
+      //console.log('getnavigator_language2 : ')
+      //console.log(getInputValue_navigator_language2())
+      //console.log('Button clicked!');
       
     });
 
     button_redo.addEventListener('click', function() {
       // Your code here
       redohandstonetable()
-      console.log('getInputValue_userLocale2 : ')
-      console.log(getInputValue_userLocale2())
+      //console.log('getInputValue_userLocale2 : ')
+      //console.log(getInputValue_userLocale2())
 
-      console.log('Button clicked!');
+      //console.log('Button clicked!');
       
     });
 
@@ -652,11 +716,11 @@ document.addEventListener('DOMContentLoaded', function() {
       setInputValue_navigator_language2('en-EN')
 
       var datatochange = hot.getSourceData();
-      console.log('datatochange : ')
-      console.log(datatochange)
+      //console.log('datatochange : ')
+      //console.log(datatochange)
 
 
-      console.log('Button clicked!');
+      //console.log('Button clicked!');
       
     });
   });
