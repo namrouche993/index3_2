@@ -1,4 +1,4 @@
-import { beforeKeyDown_Dates_fct } from './beforeKeyDown_Dates.js';
+import { beforeKeyDown_Dates_fct } from './beforeKeyDown_Dates.js'; //is_date_exist==false
 import { beforeKeyDown_Nb_fct } from './beforeKeyDown_Nb.js';
 
 // import { decimalSeparator,navigator_language   } from './intials_inputs_nb.js';
@@ -10,10 +10,8 @@ export function beforeKeyDownfct(event, ...otherArgs) {  // editable the 2 index
     var selected = hot.getSelected();
     var currentColIndex = selected ? selected[0][1] : null;
     var currentRowIndex = selected ? selected[0][0] : null;
-    //console.log('currentRowIndex : ')
-    //console.log(selected)
-    //console.log(currentRowIndex)
-  if(currentColIndex==14 && currentRowIndex>5) {  // editable (about dates) edit it later changeable , modify it later , change it later
+
+  if(currentColIndex==14 && currentRowIndex>5) {  //  editable (about dates)  //is_date_exist==false edit it later changeable , modify it later , change it later
    beforeKeyDown_Dates_fct(event, hot) // about dates
   }
   

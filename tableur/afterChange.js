@@ -3,13 +3,13 @@ let lastelement_supthan1=0;
 import {data22fct} from './ddata.js'
 import {
   getInputValue_ds_haschanged,setInputValue_ds_haschanged,
-  getInputValue_navigator_language2_avant_modify,
-  setInputValue_navigator_language2_avant_modify,
+  getInputValue_navigator_language2_avant_modify, //is_date_exist==false
+  setInputValue_navigator_language2_avant_modify, //is_date_exist==false
 
-  getInputValue_navigator_language2,
+  getInputValue_navigator_language2, //is_date_exist==false
   setInputValue_decimalSeparator2,
 
-  convertDateFormat,
+  convertDateFormat, //is_date_exist==false
 
   
   getInputValue_hot_undone2,
@@ -108,21 +108,10 @@ export function afterChangefct(changes,src, ...otherArgs){
               })
 
     }
-    //console.log('lastelement_supthan1 end : ' + lastelement_supthan1)
-    //console.log('end afterChange')
-    //console.log(changes)
-    //console.log(hot.undoRedo.doneActions)
-    //console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1])
-    //console.log('data22 afterchage : ')
     if(src!=='loadData'){
     changes.forEach((x,y)=>{
-      //console.log('changes before showing data22 in afterchange')
-      //console.log(x)
       //console.log(y)
       var cellgetcell = hot.getCell(x[0],x[1]);
-      //console.log('cellgetcell : ')
-      //console.log(cellgetcell)
-      ////console.log(  cellgetcell.childNodes[cellgetcell.children.length].textContent.trim()  )
       //console.log(cellgetcell.innerHTML) 
       if(cellgetcell.childNodes[cellgetcell.children.length]!==undefined){
         data22[x[0]][x[1]]=cellgetcell.childNodes[cellgetcell.children.length].textContent.trim()
@@ -130,45 +119,26 @@ export function afterChangefct(changes,src, ...otherArgs){
         data22[x[0]][x[1]]=''
       }
     })
-    //console.log('data22 afterchange : ')
-    //console.log(data22)
     //console.log(' ----------------------------- ---------------------------- ------')
   }
   if(src=='dataatrowprop_convert_to_en'){
-    //console.log('we are in dataatrowprop_convert_to_en')
-    //console.log('hot.undoredo bef')
-    //console.log(hot.undoRedo)
-    //console.log(hot.undoRedo.doneActions)
-    //console.log('end hot.undoredo bef')
-
+    
     hot.undoRedo.doneActions.pop();
     //console.log(hot.undoRedo.doneActions)
     for (let index = 0; index<hot.undoRedo.doneActions.length; index++) {
       //console.log('we are inside index dataatrowprop_convert_to_en')
       //console.log(index)
         hot.undoRedo.doneActions[index].changes.forEach((x,y)=>{
-          ////console.log('x in foreach :')
-          ////console.log(x)
-          ////console.log(x[1])
-          ////console.log(x[1]==3)
           if( // editable
             x[1] == 2 || x[1] == 3 || x[1] == 4  || x[1] == 5  || x[1] == 6  ||
             x[1] == 7 || x[1] == 8 || x[1] == 10 || x[1] == 11 || x[1] == 12 || 
             x[1] == 13
             ){
-              //console.log('hot.undoRedo.doneActions[index].changes')
-              //console.log(hot.undoRedo.doneActions[index].changes)
               x[2]=x[2].replace(/,/g, '.');
               x[3]=x[3].replace(/,/g, '.');
                 }
         })      
     }
-    
-    //console.log('hot.undoredo after')
-    //console.log(hot.undoRedo)
-    //console.log(hot.undoRedo.doneActions)
-    //console.log(hot.undoRedo.undoneActions)
-    //console.log('end hot.undoredo after')
     hot.undoRedo.undoneActions=_.cloneDeep(getInputValue_hot_undone2())  
 } else if (src=='dataatrowprop_convert_to_fr'){
 
@@ -189,7 +159,7 @@ export function afterChangefct(changes,src, ...otherArgs){
   hot.undoRedo.undoneActions=_.cloneDeep(getInputValue_hot_undone2())
   
 }
-else if (src=='dataatrowprop_convert_date'){
+else if (src=='dataatrowprop_convert_date'){ //is_date_exist==false
   hot.undoRedo.doneActions.pop();
   for (let index = 0; index<hot.undoRedo.doneActions.length; index++) {
     hot.undoRedo.doneActions[index].changes.forEach((x,y)=>{
@@ -208,56 +178,6 @@ else if (src=='dataatrowprop_convert_date'){
 
 
 
-/*
-if(src=='UndoRedo.undo' && getInputValue_ds_haschanged()==true){
-
-  //console.log('yes it is UndoRedo.undo before : ')
-  //console.log(hot.undoRedo.doneActions)
-  //console.log(hot.undoRedo.undoneActions)
-
-  for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) {
-    hot.undoRedo.undoneActions[index].changes.forEach((x,y)=>{
-      //console.log('x in foreach :')
-      if( // editable
-        x[1] == 2 || x[1] == 3 || x[1] == 4  || x[1] == 5  || x[1] == 6  ||
-        x[1] == 7 || x[1] == 8 || x[1] == 10 || x[1] == 11 || x[1] == 12 || 
-        x[1] == 13
-        ){
-          x[2]=x[2].replace(/,/g, '.');
-          x[3]=x[3].replace(/,/g, '.');
-        }
-    })
-  }
-  //console.log('yes it is UndoRedo.undo after : ')
-  //console.log(hot.undoRedo.doneActions)
-  //console.log(hot.undoRedo.undoneActions)
-
-}
-*/
-console.log('last in afterChange : ')
-console.log('hotundoredo  doneActions : ')
-for (let index = 0; index<hot.undoRedo.doneActions.length; index++) {
-  hot.undoRedo.doneActions[index].changes.forEach((x,y)=>{
-  console.log('x :')
-  console.log(x)
-  })
-}
-console.log('---------')
-console.log('hotundoredo  undoneActions : ')
-for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) {
-  hot.undoRedo.undoneActions[index].changes.forEach((x,y)=>{
-  console.log('x :')
-  console.log(x)
-  })
-}
-
-console.log('***** ')
-console.log('getInputValue_hot_undone2 :')
-//console.log(getInputValue_hot_undone2())
-console.log(_.cloneDeep(hot.undoRedo.doneActions))
-console.log(hot.undoRedo.doneActions)
-console.log(hot.undoRedo.undoneActions)
-console.log('+++++')
 
 }
   //)

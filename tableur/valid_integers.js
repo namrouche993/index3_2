@@ -1,6 +1,6 @@
 import{
     //decimalSeparator,userLocale,navigator_language,
-    userTimeZone,usTimeZones,
+    //userTimeZone,usTimeZones,
 
     last_row_after_header,
   
@@ -34,12 +34,13 @@ import{
                 const thiscol = this.col;
                   let decimalSeparator = getValue_decimalSeparator2();
               let userLocale = getInputValue_userLocale2();
-              let navigator_language = getInputValue_navigator_language2();
+              //let navigator_language = getInputValue_navigator_language2();
             
                 if(thisrow>5){ // editable
                   validator_integers(oldvalue, callback,thisrow,thiscol,
 
-                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+                    decimalSeparator,userLocale,
+                    //navigator_language,userTimeZone,usTimeZones,
     currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
     bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
     is_negativenb_accepted_intint,is_float_accepted_intint
@@ -51,12 +52,13 @@ import{
               renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of integers
                   let decimalSeparator = getValue_decimalSeparator2();
               let userLocale = getInputValue_userLocale2();
-              let navigator_language = getInputValue_navigator_language2();
+              //let navigator_language = getInputValue_navigator_language2();
             
                 if(row>5){  // editable
                   renderer_integers(instance, td, row, col, prop, oldvalue, cellProperties,
 
-                    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+                    decimalSeparator,userLocale,
+                    //navigator_language,userTimeZone,usTimeZones,
     currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
     bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
     is_negativenb_accepted_intint,is_float_accepted_intint
@@ -77,7 +79,8 @@ import{
       
               afterValidatefct_integers(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
                 
-                decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+                decimalSeparator,userLocale,
+                //navigator_language,userTimeZone,usTimeZones,
     currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
     bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
     is_negativenb_accepted_intint,is_float_accepted_intint
@@ -87,7 +90,8 @@ import{
 
   export function renderer_integers(instance, td, row, col, prop, oldvalue, cellProperties,
     
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    decimalSeparator,userLocale,
+    //navigator_language,userTimeZone,usTimeZones,
     currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
     bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
     is_negativenb_accepted_intint,is_float_accepted_intint
@@ -394,7 +398,8 @@ import{
 
   export function validator_integers(oldvalue, callback,thisrow,thiscol,
 
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    decimalSeparator,userLocale,
+    //navigator_language,userTimeZone,usTimeZones,
     currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
     bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
     is_negativenb_accepted_intint,is_float_accepted_intint
@@ -447,7 +452,8 @@ import{
 
   export function afterValidatefct_integers(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
 
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,
+    decimalSeparator,userLocale,
+    //navigator_language,userTimeZone,usTimeZones,
     currencyht_intint,currencyht_toshow_intint,afterdigit_intint,smallafterdigit_intint,afterdigitsmallnb_intint,
     bignb_intint,smallnb_intint,decimalnumbers_toshow_withoutrenderer_innumbers_intint,usegrouping_intint_if_true,
     is_negativenb_accepted_intint,is_float_accepted_intint

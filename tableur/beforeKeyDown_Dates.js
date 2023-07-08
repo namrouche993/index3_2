@@ -1,5 +1,4 @@
-//import { decimalSeparator,navigator_language   } from './intials_inputs_nb.js';
-
+//is_date_exist==false
 import 
 { 
   getInputValue_userLocale2,

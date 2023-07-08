@@ -1,35 +1,24 @@
 import 
 { 
   getInputValue_userLocale2,
-  getInputValue_navigator_language2,
+  getInputValue_navigator_language2, //is_date_exist==false
   getValue_decimalSeparator2,
 
-  userTimeZone,usTimeZones,
+  userTimeZone,usTimeZones, //is_date_exist==false
 
 }
 from './intials_inputs_nb.js'
 
 export function beforeChangeFct(changes,source, ...otherArgs){
     const hot = otherArgs[otherArgs.length - 1];
-
-    console.log('hot in beforechange : ')
-    //console.log(hot)
-
-    console.log('we are inside beforeChange x y z :')
-    //console.log(changes)
-    //console.log(source)
-    //console.log('commentsPlugin : ')
     var commentsPlugin = hot.getPlugin('comments');
-    //console.log(commentsPlugin)
-    //console.log(hot.undoRedo.doneActions)
-    //console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1])
 
     changes.forEach(([row, prop, oldValue, newValue]) => {
       if (oldValue == '' && newValue == null || oldValue == '' && newValue == '' && source == 'UndoRedo.undo') {
         commentsPlugin.removeCommentAtCell(row, prop);
-        console.log('comments removed')
+        //console.log('comments removed')
       }
-      console.log(`Change in row ${row} property ${prop}: ${oldValue} -> ${newValue}`);
+      //console.log(`Change in row ${row} property ${prop}: ${oldValue} -> ${newValue}`);
     });
-    console.log('end before change')
+    //console.log('end before change')
 }

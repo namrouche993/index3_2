@@ -241,7 +241,7 @@ export function getInputValue_navigator_language2_avant_modify() {
     }
   }
 
-  let use_english_date_by_user_himeself_in_modal = false
+  let use_english_date_by_user_himeself_in_modal = false;
   export function setInputValue_use_english_date_by_user_himeself_in_modal(value) {
    use_english_date_by_user_himeself_in_modal = value;
    }

@@ -23,7 +23,6 @@ import{
   } from './intials_inputs_nb.js';
 
   import { comments_messages } from './comments_messages.js'
-  import {isValidDate} from './isValidDate.js'
 
 /*
   else if( i == 1 ) {

@@ -1,4 +1,5 @@
-  export function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
+//is_date_exist==false
+export function isValidDate(dateStr,splitsign,ndays,nmonths,nyears) {
         const datestr2 = dateStr.split(splitsign);
         const day = parseInt(datestr2[Number(ndays)-1]);
         const month = parseInt(datestr2[Number(nmonths)-1]);
