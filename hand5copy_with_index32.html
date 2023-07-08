@@ -61,8 +61,6 @@
         <button id="downloadundo" class='material-symbols-outlined' style="font-size:18px;cursor:pointer;">undo</button>
         <button id="downloadredo" class='material-symbols-outlined' style="font-size:18px;cursor:pointer;">redo</button>
 
-        <button id="downloadchangelang">changelang</button>
-
         <button id="button-id">cliquer </button>
 
         <button type="button" class="btn btn-light" id="openModalButton" data-toggle="modal" data-target="#myModal">
@@ -96,6 +94,8 @@
                 </div>
               </div>
           
+              <!-- //is_date_exist==false -->
+
               <div class="menu-container date-menu">
                 <div class="format-options">
                   <p id="title_formatmodal_date">Choose the date format:</p>
@@ -160,46 +160,46 @@
 <script type='module'>
   import { comments_messages } from './tableur/comments_messages.js';
   import { existsInArray } from './tableur/existsInArray.js'
-  import { isValidDate } from './tableur/isValidDate.js';
+  import { isValidDate } from './tableur/isValidDate.js'; //is_date_exist==false
   import { columnsdata } from './tableur/columnsdata.js';
   import { ddatafct,data22fct } from './tableur/ddata.js';
   import { normalcellloop,cellscells } from './tableur/normalcellloop.js'
   import { afterValidatefct } from './tableur/afterValidate.js'
   import { 
     //decimalSeparator,userLocale,navigator_language,
-    userTimeZone,usTimeZones,
-        getVal_dateformatlanguage ,
-        getVal_splitdate,
+    userTimeZone,usTimeZones, //is_date_exist==false
+        getVal_dateformatlanguage , //is_date_exist==false
+        getVal_splitdate, //is_date_exist==false
 
         setInputValue_userLocale2,
-        setInputValue_navigator_language2,
+        setInputValue_navigator_language2, //is_date_exist==false 
 
         getInputValue_userLocale2,
-        getInputValue_navigator_language2,
+        getInputValue_navigator_language2, //is_date_exist==false
         getValue_decimalSeparator2,
         setInputValue_decimalSeparator2,
         
         
-        navigator_language2_bydefault_ifnotexist,
-        userlocale2_bydefault_ifnotexist,
+        navigator_language2_bydefault_ifnotexist, //is_date_exist==false
+        userlocale2_bydefault_ifnotexist, 
         decimalseparator2_bydefault_ifnotexist,
         
         getInputValue_ds_haschanged,
         setInputValue_ds_haschanged,
 
-        use_all_language_modal_depend_langbrowser,
+        use_all_language_modal_depend_langbrowser, 
         which_lanaguage_touse_if_langbrowserisflse,
 
         all_european_formal_are_test,
         all_european_formal_are,
 
-        convertDateFormat,
+        convertDateFormat, //is_date_exist==false
 
-        getInputValue_use_english_date_by_user_himeself_in_modal,
-        setInputValue_use_english_date_by_user_himeself_in_modal,
+        getInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
+        setInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
 
-        getInputValue_navigator_language2_avant_modify,
-        setInputValue_navigator_language2_avant_modify,
+        getInputValue_navigator_language2_avant_modify, //is_date_exist==false
+        setInputValue_navigator_language2_avant_modify, //is_date_exist==false
 
         getInputValue_hot_undone2,
         setInputValue_hot_undone2
@@ -228,7 +228,7 @@
 
 
   //#region modal script
-  function setTitlemodalformat(language2) {
+  function setTitlemodalformat(language2) { //is_date_exist==false
       //var language = getInputValue_userLocale2() || navigator.language || navigator.userLanguage;
       //console.log('langauge of the modal will be : ')
       //console.log(language2)
@@ -300,7 +300,7 @@ title_formatmodal_date.textContent = "Choose the date format";
 
 
   const dateRadios = document.querySelectorAll('input[name="date-format"]');
-  const dateValues = Array.from(dateRadios).map(radio => radio.value);  
+  const dateValues = Array.from(dateRadios).map(radio => radio.value);  //is_date_exist==false
 
   const numericRadios = document.querySelectorAll('input[name="numeric-format"]');
   const numericValues = Array.from(numericRadios).map(numeric => numeric.value);
@@ -318,7 +318,7 @@ title_formatmodal_date.textContent = "Choose the date format";
   }
 
 
-  if (!dateValues.includes(getInputValue_navigator_language2())){
+  if (!dateValues.includes(getInputValue_navigator_language2())){ //is_date_exist==false
     // editable later for russian and turkey and some others
       setInputValue_navigator_language2(navigator_language2_bydefault_ifnotexist);
       //console.log(getInputValue_navigator_language2())
@@ -336,8 +336,10 @@ title_formatmodal_date.textContent = "Choose the date format";
     let radioElement_numeric = document.querySelector('input[name="numeric-format"][value="'+(1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString()+'"]');
     radioElement_numeric.checked = true;
 
+    //is_date_exist==false:
     let radioElement =         document.querySelector('input[name="date-format"][value='+getInputValue_navigator_language2()+']');
     radioElement.checked = true;
+
     modalOverlay.style.display = "block";
     // setInputValue_navigator_language2(getInputValue_navigator_language2())
   });
@@ -370,7 +372,7 @@ title_formatmodal_date.textContent = "Choose the date format";
     });
 
     
-    let selectedDateFormat = getInputValue_navigator_language2();    
+    let selectedDateFormat = getInputValue_navigator_language2(); //is_date_exist==false
     dateRadios.forEach(function(radio) {      
       radio.addEventListener("click", function() {  
         selectedDateFormat = this.value;     
@@ -387,11 +389,11 @@ title_formatmodal_date.textContent = "Choose the date format";
      
       const NumColumnsToConvert = [2,3,4,5,6,7,8,10,11,12,13]; // editable Specify the indices of the columns to convert
       const startRowIndex = 5; // editable Specify the starting row index for conversion
-      const DateColumnsToConvert = [14]; // editable
+      const DateColumnsToConvert = [14]; // editable //is_date_exist==false
       const changesdata_numeric = [];
-      const changesdata_date = [];
+      const changesdata_date = []; //is_date_exist==false
 
-    if(selectedDateFormat!==getInputValue_navigator_language2()){
+    if(selectedDateFormat!==getInputValue_navigator_language2()){ //is_date_exist==false
       data_to_convert.forEach((row, rowIndex) => {
         if (rowIndex > startRowIndex) {
           DateColumnsToConvert.forEach(columnIndex => {
@@ -408,11 +410,7 @@ title_formatmodal_date.textContent = "Choose the date format";
                            if(convertedDate!=cellValueDate){
                                var changeonedata = [rowIndex, columnIndex, convertedDate];
                                changesdata_date.push(changeonedata);
-                               if(lang2=='en-US'){
-                                setInputValue_use_english_date_by_user_himeself_in_modal(true)
-                               } else {
-                                setInputValue_use_english_date_by_user_himeself_in_modal(false)
-                               }
+                              
                            }
                           break outerLoop;
                         }
@@ -436,12 +434,20 @@ title_formatmodal_date.textContent = "Choose the date format";
         }
     })
   }
+          if(selectedDateFormat=='en-US'){
+            setInputValue_use_english_date_by_user_himeself_in_modal(true)
+          } else {
+            setInputValue_use_english_date_by_user_himeself_in_modal(false)
+          }
          setInputValue_navigator_language2_avant_modify(getInputValue_navigator_language2())
          setInputValue_navigator_language2(selectedDateFormat)
          setInputValue_hot_undone2(_.cloneDeep(hot.undoRedo.undoneActions));              
          hot.setDataAtRowProp(changesdata_date,'dataatrowprop_convert_date');
     }
+    //console.log('comparaison : ')
+    //console.log(getValue_decimalSeparator2()==selectedNumericFormat)
 
+if(getValue_decimalSeparator2()!=selectedNumericFormat){
       if(selectedNumericFormat==',' ){
         if(all_european_formal_are_test==true && all_european_formal_are=='fr'){ // editable 'fr the change it if the previous is true'
           // when we set the numeric format always be in fr 1 234 567.89  and modal language is in fr
@@ -463,9 +469,9 @@ title_formatmodal_date.textContent = "Choose the date format";
                          const cellValue = row[columnIndex];
                          const convertedNumber = cellValue.replace(/\./g, ',');
                          if(convertedNumber!=cellValue){
-                           //console.log('convert dontequal to cellvalue : ')
-                           //console.log(convertedNumber)
-                           //console.log(cellValue)
+                           ////console.log('convert dontequal to cellvalue : ')
+                           ////console.log(convertedNumber)
+                           ////console.log(cellValue)
                            var changeonedata = [rowIndex, columnIndex, convertedNumber];
                            changesdata_numeric.push(changeonedata);
                         }
@@ -475,7 +481,7 @@ title_formatmodal_date.textContent = "Choose the date format";
               
   for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) {
     hot.undoRedo.undoneActions[index].changes.forEach((x,y)=>{
-      //console.log('x in foreach :')
+      ////console.log('x in foreach :')
       if( // editable
         x[1] == 2 || x[1] == 3 || x[1] == 4  || x[1] == 5  || x[1] == 6  ||
         x[1] == 7 || x[1] == 8 || x[1] == 10 || x[1] == 11 || x[1] == 12 || 
@@ -527,6 +533,7 @@ title_formatmodal_date.textContent = "Choose the date format";
               setInputValue_hot_undone2(_.cloneDeep(hot.undoRedo.undoneActions));              
               hot.setDataAtRowProp(changesdata_numeric,'dataatrowprop_convert_to_en');
       }
+    }
       //setInputValue_userLocale2(selectedNumericFormat)
 
       modalOverlay.style.display = "none";
@@ -678,7 +685,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var button_undo = document.getElementById('downloadundo');
     var button_redo = document.getElementById('downloadredo');
 
-    var button_changelang = document.getElementById('downloadchangelang');
 
 
     button_download.addEventListener('click', function() {
@@ -689,40 +695,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     button_undo.addEventListener('click', function() {
-      // Your code here
-      undohandstonetable()
-      //console.log('getnavigator_language2 : ')
-      //console.log(getInputValue_navigator_language2())
-      //console.log('Button clicked!');
-      
+      undohandstonetable(); 
     });
 
     button_redo.addEventListener('click', function() {
-      // Your code here
-      redohandstonetable()
-      //console.log('getInputValue_userLocale2 : ')
-      //console.log(getInputValue_userLocale2())
-
-      //console.log('Button clicked!');
-      
+      redohandstonetable();
     });
 
     
-    button_changelang.addEventListener('click', function() {
-      // Your code here
-      //redohandstonetable()
-      //changeinputslang()
-      setInputValue_userLocale2('en')
-      setInputValue_navigator_language2('en-EN')
-
-      var datatochange = hot.getSourceData();
-      //console.log('datatochange : ')
-      //console.log(datatochange)
-
-
-      //console.log('Button clicked!');
-      
-    });
   });
 
 
