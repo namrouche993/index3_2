@@ -1,14 +1,12 @@
 import 
 { 
   getInputValue_userLocale2,
-  getInputValue_navigator_language2, //is_date_exist==false
   getValue_decimalSeparator2
 }
 from './intials_inputs_nb.js'
 
 
 import{
-    userTimeZone,usTimeZones, //is_date_exist==false
 
     last_row_after_header,
   
@@ -29,8 +27,6 @@ import{
     phonenumbers_length_pn,
     onlynumbers_length_on,
     text_length_txt,
-    use_en_time, //is_date_exist==false
-    getInputValue_use_english_date_by_user_himeself_in_modal //is_date_exist==false
   } from './intials_inputs_nb.js';
 
 
@@ -51,9 +47,6 @@ export function afterValidatefct(isValid, oldvalue, row, prop, source, ...otherA
   
   let decimalSeparator = getValue_decimalSeparator2();
   let userLocale = getInputValue_userLocale2();
-  let navigator_language = getInputValue_navigator_language2(); //is_date_exist==false
-
-  let getInputValue_use_english_date_by_user_himeself_in_modal_withoutfct=getInputValue_use_english_date_by_user_himeself_in_modal()
 
 //console.log('afterValidatefct')
 //console.log(decimalSeparator)

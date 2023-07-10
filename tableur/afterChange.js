@@ -3,15 +3,7 @@ let lastelement_supthan1=0;
 import {data22fct} from './ddata.js'
 import {
   getInputValue_ds_haschanged,setInputValue_ds_haschanged,
-  getInputValue_navigator_language2_avant_modify, //is_date_exist==false
-  setInputValue_navigator_language2_avant_modify, //is_date_exist==false
 
-  getInputValue_navigator_language2, //is_date_exist==false
-  setInputValue_decimalSeparator2,
-
-  convertDateFormat, //is_date_exist==false
-
-  
   getInputValue_hot_undone2,
   setInputValue_hot_undone2
   
@@ -22,28 +14,10 @@ var data22 = data22fct();
 export function afterChangefct(changes,src, ...otherArgs){
     const hot = otherArgs[otherArgs.length - 1];
 
-    //console.log('hot in afterchange : ')
-    //console.log(hot)
-
-    //console.log('start afterChange')
-    //console.log('lastelement_supthan1 start : ' + lastelement_supthan1)
-    //console.log(changes)
-    //console.log(src)
-    //console.log('getInputValue_ds_haschanged : ')
-    //console.log(getInputValue_ds_haschanged())
-
-    //console.log('hot.undoredo in afterchange')
-    //console.log(hot.undoRedo.doneActions)
-    //console.log(hot.undoRedo.undoneActions)
-    //console.log('end hot.undoredo in afterchange')
-
 
     if(hot.undoRedo.isUndoAvailable()){
        hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].src=src;
      }
-    //console.log('source : ' + src)
-    ////console.log(hot.undoRedo.doneActions)
-    ////console.log(hot.undoRedo.doneActions[hot.undoRedo.doneActions.length-1].changes.toString())
  if(src=='Autofill.fill' && changes.length>1){
   lastelement_supthan1=hot.undoRedo.doneActions.length
  } else if (src=='edit' && changes.length>1 && changes.every(row => row[3] === null) ){
@@ -158,23 +132,8 @@ export function afterChangefct(changes,src, ...otherArgs){
   }
   hot.undoRedo.undoneActions=_.cloneDeep(getInputValue_hot_undone2())
   
-}
-else if (src=='dataatrowprop_convert_date'){ //is_date_exist==false
-  hot.undoRedo.doneActions.pop();
-  for (let index = 0; index<hot.undoRedo.doneActions.length; index++) {
-    hot.undoRedo.doneActions[index].changes.forEach((x,y)=>{
-      if(x[1]==14) {  // editable
-        if(x[2]!==null && x[2]!=='' && x[2]!==' '){
-          x[2]=convertDateFormat(x[2], getInputValue_navigator_language2_avant_modify(), getInputValue_navigator_language2()) 
-        }
-        if(x[3]!==null && x[3]!=='' && x[3]!==' '){
-          x[3]=convertDateFormat(x[3], getInputValue_navigator_language2_avant_modify(), getInputValue_navigator_language2()) 
-        }
-        }
-    })
-  }
-  hot.undoRedo.undoneActions=_.cloneDeep(getInputValue_hot_undone2())
-}
+} 
+// place of else datepart
 
 
 

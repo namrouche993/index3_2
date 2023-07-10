@@ -36,7 +36,24 @@ import{
  //  beforeKeyDown_Dates_fct(event, hot) // about dates
  // }
 
+
+ 
+
 /*
+//#region columnsdata copied scripts : 
+import { validator_date,renderer_date } from './valid_date.js' //is_date_exist==false
+
+import 
+{ 
+  userTimeZone,usTimeZones, //is_date_exist==false
+  getInputValue_userLocale2,
+  getInputValue_navigator_language2, //is_date_exist==false
+  getValue_decimalSeparator2,
+  use_en_time
+}
+from './intials_inputs_nb.js'
+
+
   else if( i == 1 ) {
     var dd={
       className: "htRight htMiddle" ,
@@ -72,13 +89,130 @@ import{
      
     }
   }
+//#endregion columnsdata copied scripts
+**********************************************************************
 
-  
-  afterValidatefct_date(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
-    decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,use_en_time
-    )
-    
-    
+
+----------------------------------------------------------------------
+//region afterChange copied script :
+import {
+  getInputValue_navigator_language2_avant_modify, //is_date_exist==false
+  setInputValue_navigator_language2_avant_modify, //is_date_exist==false
+
+  getInputValue_navigator_language2, //is_date_exist==false
+  setInputValue_decimalSeparator2,
+
+  convertDateFormat, //is_date_exist==false
+
+} from './intials_inputs_nb.js';
+
+
+else if (src=='dataatrowprop_convert_date'){ //is_date_exist==false
+  hot.undoRedo.doneActions.pop();
+  for (let index = 0; index<hot.undoRedo.doneActions.length; index++) {
+    hot.undoRedo.doneActions[index].changes.forEach((x,y)=>{
+      if(x[1]==14) {  // editable
+        if(x[2]!==null && x[2]!=='' && x[2]!==' '){
+          x[2]=convertDateFormat(x[2], getInputValue_navigator_language2_avant_modify(), getInputValue_navigator_language2()) 
+        }
+        if(x[3]!==null && x[3]!=='' && x[3]!==' '){
+          x[3]=convertDateFormat(x[3], getInputValue_navigator_language2_avant_modify(), getInputValue_navigator_language2()) 
+        }
+        }
+    })
+  }
+  hot.undoRedo.undoneActions=_.cloneDeep(getInputValue_hot_undone2())
+}
+
+//end region afterChange copied scripts
+**********************************************************************
+
+
+
+----------------------------------------------------------------------
+//region afterValidate copied script :
+
+  import { afterValidatefct_date } from './valid_date.js'  //is_date_exist==false
+
+import 
+{ 
+  getInputValue_navigator_language2, //is_date_exist==false
+  userTimeZone,usTimeZones, //is_date_exist==false
+  use_en_time, //is_date_exist==false
+  getInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
+
+}
+from './intials_inputs_nb.js'
+
+// juste after let decimalSeparator and after let userLocale :  
+let navigator_language = getInputValue_navigator_language2(); //is_date_exist==false
+let getInputValue_use_english_date_by_user_himeself_in_modal_withoutfct=getInputValue_use_english_date_by_user_himeself_in_modal()
+
+
+     else if (prop == 14) {
+          afterValidatefct_date(isValid, oldvalue, row, prop, source,hot,commentsPlugin,
+            decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,use_en_time,
+            getInputValue_use_english_date_by_user_himeself_in_modal_withoutfct
+            )        
+        }
+
+//end region afterValidate copied scripts
+**********************************************************************
+
+
+----------------------------------------------------------------------
+//region main.html copied script :
+  import { isValidDate } from './tableur/isValidDate.js'; //is_date_exist==false
+
+    import { 
+    //decimalSeparator,userLocale,navigator_language,
+    userTimeZone,usTimeZones, //is_date_exist==false
+        getVal_dateformatlanguage , //is_date_exist==false
+        getVal_splitdate, //is_date_exist==false
+
+        setInputValue_userLocale2,
+        setInputValue_navigator_language2, //is_date_exist==false 
+
+        getInputValue_userLocale2,
+        getInputValue_navigator_language2, //is_date_exist==false
+        getValue_decimalSeparator2,
+        setInputValue_decimalSeparator2,
+        
+        
+        navigator_language2_bydefault_ifnotexist, //is_date_exist==false
+        userlocale2_bydefault_ifnotexist, 
+        decimalseparator2_bydefault_ifnotexist,
+        
+        getInputValue_ds_haschanged,
+        setInputValue_ds_haschanged,
+
+        use_all_language_modal_depend_langbrowser, 
+        which_lanaguage_touse_if_langbrowserisflse,
+
+        all_european_formal_are_test,
+        all_european_formal_are,
+
+        convertDateFormat, //is_date_exist==false
+
+        getInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
+        setInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
+
+        getInputValue_navigator_language2_avant_modify, //is_date_exist==false
+        setInputValue_navigator_language2_avant_modify, //is_date_exist==false
+
+        getInputValue_hot_undone2,
+        setInputValue_hot_undone2
+        
+
+       } from './tableur/intials_inputs_nb.js'
+
+
+
+       
+//end region main.html copied scripts
+**********************************************************************
+ 
+
   */
 
   export function renderer_date(instance, td, row, col, prop, oldvalue, cellProperties,

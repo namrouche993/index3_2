@@ -23,7 +23,6 @@ from './intials_inputs_nb.js'
 
 import{
   //decimalSeparator,userLocale,navigator_language,
-  userTimeZone,usTimeZones, //is_date_exist==false
 
   last_row_after_header,
 
@@ -44,7 +43,6 @@ import{
   phonenumbers_length_pn,
   onlynumbers_length_on,
   text_length_txt,
-  use_en_time //is_date_exist==false
 } from './intials_inputs_nb.js';
 
 
@@ -233,44 +231,7 @@ export function columnsdata(imin,imax) {
            
           }
         }
-        
-        /*
-        else if( i == 14 ) { //is_date_exist==false
-          var dd={
-            className: "htRight htMiddle" ,
-            validator: function (oldvalue, callback) { // validator of dates
-                const thisrow = this.row;
-                const thiscol = this.col;
-                  let decimalSeparator = getValue_decimalSeparator2();
-                    let userLocale = getInputValue_userLocale2();
-                    let navigator_language = getInputValue_navigator_language2();
-                  
-                if(thisrow>5){ // editable
-                  validator_date(oldvalue, callback,
-                        decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,use_en_time
-                    )
-              }
-              },
-            renderer: function (instance, td, row, col, prop, oldvalue, cellProperties,...otherArgs) { // renderer of numbers or amounts
-                    let decimalSeparator = getValue_decimalSeparator2();
-                    let userLocale = getInputValue_userLocale2();
-                    let navigator_language = getInputValue_navigator_language2();
-                  
-               if(row>5){ // editable
-                renderer_date(instance, td, row, col, prop, oldvalue, cellProperties,
-                  decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,use_en_time
-                  ,...otherArgs,data22)
-              } else if ( row>3 ) { // editable
-                   td.innerHTML=oldvalue;
-                   data22[row][col] = td.innerHTML;
-                   td.className = 'htCenter htMiddle custom-titlecell2';
-                }
-                }
-           
-          }
-        }
-        */
-    
+      
         else { //editable if has to
           ////console.log('columnsdata else ')
             var dd={data:i,type:'text'}
