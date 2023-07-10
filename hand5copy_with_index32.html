@@ -95,8 +95,7 @@
               </div>
           
               <!-- //is_date_exist==false -->
-
-              <div class="menu-container date-menu">
+              <div class="menu-container date-menu"> 
                 <div class="format-options">
                   <p id="title_formatmodal_date">Choose the date format:</p>
                   <label>
@@ -167,7 +166,7 @@
   import { afterValidatefct } from './tableur/afterValidate.js'
   import { 
     //decimalSeparator,userLocale,navigator_language,
-    userTimeZone,usTimeZones, //is_date_exist==false
+        userTimeZone,usTimeZones, //is_date_exist==false
         getVal_dateformatlanguage , //is_date_exist==false
         getVal_splitdate, //is_date_exist==false
 
@@ -243,9 +242,9 @@
       var title_eu_numericformatmodal = document.getElementById("title_eu_numericformatmodal");
       var title_eu_under_numericformatmodal = document.getElementById("title_eu_under_numericformatmodal");
       var title_us_numericformatmodal = document.getElementById("title_us_numericformatmodal");
-      var title_us_under_numericformatmodal = document.getElementById("title_us_under_numericformatmodal");
+      var title_us_under_numericformatmodal = document.getElementById("title_us_under_numericformatmodal"); 
 
-      var title_formatmodal_date = document.getElementById("title_formatmodal_date");
+      var title_formatmodal_date = document.getElementById("title_formatmodal_date"); //is_date_exist==false
       
        if (language.startsWith("fr")) {
   title_formatmodal.textContent = "Choisissez le format";
@@ -254,7 +253,8 @@
   title_eu_under_numericformatmodal.textContent = "(virgule , comme séparateur décimal)";
   title_us_numericformatmodal.textContent = "Format américain";
   title_us_under_numericformatmodal.textContent = "(point . comme séparateur décimal)";
-  title_formatmodal_date.textContent = "Choisissez le format de date";
+
+  title_formatmodal_date.textContent = "Choisissez le format de date"; //is_date_exist==false
 
 } else if (language.startsWith("de")) {
   title_formatmodal.textContent = "Format wählen";
@@ -263,7 +263,8 @@
   title_eu_under_numericformatmodal.textContent = "(Komma , als Dezimaltrennzeichen)";
   title_us_numericformatmodal.textContent = "Amerikanisches Format";
   title_us_under_numericformatmodal.textContent = "(Punkt . als Dezimaltrennzeichen)";
-  title_formatmodal_date.textContent = "Wählen Sie das Datumsformat";
+
+  title_formatmodal_date.textContent = "Wählen Sie das Datumsformat"; //is_date_exist==false
 
 } else if (language.startsWith("es")) {
   title_formatmodal.textContent = "Elegir formato";
@@ -272,7 +273,8 @@
   title_eu_under_numericformatmodal.textContent = "(coma , como separador decimal)";
   title_us_numericformatmodal.textContent = "Formato Americano";
   title_us_under_numericformatmodal.textContent = "(punto . como separador decimal)";
-  title_formatmodal_date.textContent = "Elige el formato de fecha";
+
+  title_formatmodal_date.textContent = "Elige el formato de fecha"; //is_date_exist==false
 
   
 } else {
@@ -282,8 +284,9 @@ title_numericformatmodal.textContent = "Choose the numeric format:";
 title_eu_numericformatmodal.textContent = "European Format";
 title_eu_under_numericformatmodal.textContent = "(comma , as Decimal Separator)";
 title_us_numericformatmodal.textContent = "American Format";
-title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";      
-title_formatmodal_date.textContent = "Choose the date format";
+title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
+
+title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==false
 
 
 }      }
@@ -422,7 +425,7 @@ title_formatmodal_date.textContent = "Choose the date format";
         }
          })
 
-  for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) {
+  for (let index = 0; index<hot.undoRedo.undoneActions.length; index++) { 
     hot.undoRedo.undoneActions[index].changes.forEach((x,y)=>{
       if(x[1]==14) {  // editable
         if(x[2]!==null && x[2]!=='' && x[2]!==' '){
