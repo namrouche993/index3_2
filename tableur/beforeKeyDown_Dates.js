@@ -21,12 +21,22 @@ from './intials_inputs_nb.js'
 
 
 export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx later inside 
+
+  function startsWithElement(array, substring) {
+    for (let i = 0; i < array.length; i++) {
+      if (substring.startsWith(array[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   let decimalSeparator = getValue_decimalSeparator2();
   let userLocale = getInputValue_userLocale2();
   let navigator_language = getInputValue_navigator_language2();
   
   let condition_split=getInputValue_condition_split2();
-    if(navigator_language=='en-US' && usTimeZones.includes(userTimeZone) && use_en_time){
+    if(navigator_language=='en-US' && startsWithElement(usTimeZones,userTimeZone) && use_en_time){
         var dateformatlanguage = 'mm/dd/yyyy'; // 12/31/1990
         var splitdate='/';
         //var [monthdate,daydate, yeardate] = dateformatlanguage.split(splitdate);

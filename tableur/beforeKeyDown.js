@@ -11,9 +11,9 @@ export function beforeKeyDownfct(event, ...otherArgs) {  // editable the 2 index
     var currentColIndex = selected ? selected[0][1] : null;
     var currentRowIndex = selected ? selected[0][0] : null;
 
-  if(currentColIndex==14 && currentRowIndex>5) {  //  editable (about dates)  //is_date_exist==false edit it later changeable , modify it later , change it later
-   beforeKeyDown_Dates_fct(event, hot) // about dates
-  }
+  // if(currentColIndex==14 && currentRowIndex>5) {  //  //is_date_exist==false editable (about dates)  //is_date_exist==false edit it later changeable , modify it later , change it later
+  //  beforeKeyDown_Dates_fct(event, hot) // about dates
+  // }
   
 
     if(currentColIndex!=1 && currentColIndex!=9 &&  currentColIndex!=14  ) { // editable and adding other text columns || dont equal to  
