@@ -95,7 +95,7 @@
               </div>
           
               <!-- //is_date_exist==false -->
-              <div class="menu-container date-menu"> 
+              <!-- <div class="menu-container date-menu"> 
                 <div class="format-options">
                   <p id="title_formatmodal_date">Choose the date format:</p>
                   <label>
@@ -128,7 +128,7 @@
                     Korean Date Format (<span class="example2">1990.12.31</span>)
                   </label>
                 </div>
-              </div>
+              </div> -->
           
             </div>
           
@@ -159,27 +159,26 @@
 <script type='module'>
   import { comments_messages } from './tableur/comments_messages.js';
   import { existsInArray } from './tableur/existsInArray.js'
-  import { isValidDate } from './tableur/isValidDate.js'; //is_date_exist==false
+  // import { isValidDate } from './tableur/isValidDate.js'; //is_date_exist==false
   import { columnsdata } from './tableur/columnsdata.js';
   import { ddatafct,data22fct } from './tableur/ddata.js';
   import { normalcellloop,cellscells } from './tableur/normalcellloop.js'
   import { afterValidatefct } from './tableur/afterValidate.js'
   import { 
-    //decimalSeparator,userLocale,navigator_language,
-        userTimeZone,usTimeZones, //is_date_exist==false
-        getVal_dateformatlanguage , //is_date_exist==false
-        getVal_splitdate, //is_date_exist==false
+        // userTimeZone,usTimeZones, //is_date_exist==false
+        // getVal_dateformatlanguage , //is_date_exist==false
+        // getVal_splitdate, //is_date_exist==false
 
         setInputValue_userLocale2,
-        setInputValue_navigator_language2, //is_date_exist==false 
+        // setInputValue_navigator_language2, //is_date_exist==false 
 
         getInputValue_userLocale2,
-        getInputValue_navigator_language2, //is_date_exist==false
+        // getInputValue_navigator_language2, //is_date_exist==false
         getValue_decimalSeparator2,
         setInputValue_decimalSeparator2,
         
         
-        navigator_language2_bydefault_ifnotexist, //is_date_exist==false
+        // navigator_language2_bydefault_ifnotexist, //is_date_exist==false
         userlocale2_bydefault_ifnotexist, 
         decimalseparator2_bydefault_ifnotexist,
         
@@ -192,13 +191,13 @@
         all_european_formal_are_test,
         all_european_formal_are,
 
-        convertDateFormat, //is_date_exist==false
+        // convertDateFormat, //is_date_exist==false
 
-        getInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
-        setInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
+        // getInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
+        // setInputValue_use_english_date_by_user_himeself_in_modal, //is_date_exist==false
 
-        getInputValue_navigator_language2_avant_modify, //is_date_exist==false
-        setInputValue_navigator_language2_avant_modify, //is_date_exist==false
+        // getInputValue_navigator_language2_avant_modify, //is_date_exist==false
+        // setInputValue_navigator_language2_avant_modify, //is_date_exist==false
 
         getInputValue_hot_undone2,
         setInputValue_hot_undone2
@@ -244,7 +243,7 @@
       var title_us_numericformatmodal = document.getElementById("title_us_numericformatmodal");
       var title_us_under_numericformatmodal = document.getElementById("title_us_under_numericformatmodal"); 
 
-      var title_formatmodal_date = document.getElementById("title_formatmodal_date"); //is_date_exist==false
+      // var title_formatmodal_date = document.getElementById("title_formatmodal_date"); //is_date_exist==false
       
        if (language.startsWith("fr")) {
   title_formatmodal.textContent = "Choisissez le format";
@@ -254,7 +253,7 @@
   title_us_numericformatmodal.textContent = "Format américain";
   title_us_under_numericformatmodal.textContent = "(point . comme séparateur décimal)";
 
-  title_formatmodal_date.textContent = "Choisissez le format de date"; //is_date_exist==false
+  // title_formatmodal_date.textContent = "Choisissez le format de date"; //is_date_exist==false
 
 } else if (language.startsWith("de")) {
   title_formatmodal.textContent = "Format wählen";
@@ -264,7 +263,7 @@
   title_us_numericformatmodal.textContent = "Amerikanisches Format";
   title_us_under_numericformatmodal.textContent = "(Punkt . als Dezimaltrennzeichen)";
 
-  title_formatmodal_date.textContent = "Wählen Sie das Datumsformat"; //is_date_exist==false
+  // title_formatmodal_date.textContent = "Wählen Sie das Datumsformat"; //is_date_exist==false
 
 } else if (language.startsWith("es")) {
   title_formatmodal.textContent = "Elegir formato";
@@ -274,7 +273,7 @@
   title_us_numericformatmodal.textContent = "Formato Americano";
   title_us_under_numericformatmodal.textContent = "(punto . como separador decimal)";
 
-  title_formatmodal_date.textContent = "Elige el formato de fecha"; //is_date_exist==false
+  // title_formatmodal_date.textContent = "Elige el formato de fecha"; //is_date_exist==false
 
   
 } else {
@@ -286,7 +285,7 @@ title_eu_under_numericformatmodal.textContent = "(comma , as Decimal Separator)"
 title_us_numericformatmodal.textContent = "American Format";
 title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
 
-title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==false
+// title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==false
 
 
 }      }
@@ -303,7 +302,7 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
 
 
   const dateRadios = document.querySelectorAll('input[name="date-format"]');
-  const dateValues = Array.from(dateRadios).map(radio => radio.value);  //is_date_exist==false
+  // const dateValues = Array.from(dateRadios).map(radio => radio.value);  //is_date_exist==false
 
   const numericRadios = document.querySelectorAll('input[name="numeric-format"]');
   const numericValues = Array.from(numericRadios).map(numeric => numeric.value);
@@ -321,13 +320,13 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
   }
 
 
-  if (!dateValues.includes(getInputValue_navigator_language2())){ //is_date_exist==false
-    // editable later for russian and turkey and some others
-      setInputValue_navigator_language2(navigator_language2_bydefault_ifnotexist);
-      //console.log(getInputValue_navigator_language2())
-      let radioElement = document.querySelector('input[name="date-format"][value='+navigator_language2_bydefault_ifnotexist+']');
-      radioElement.checked = true;  
-    }
+  // if (!dateValues.includes(getInputValue_navigator_language2())){ //is_date_exist==false
+  //   // editable later for russian and turkey and some others
+  //     setInputValue_navigator_language2(navigator_language2_bydefault_ifnotexist);
+  //     //console.log(getInputValue_navigator_language2())
+  //     let radioElement = document.querySelector('input[name="date-format"][value='+navigator_language2_bydefault_ifnotexist+']');
+  //     radioElement.checked = true;  
+  //   }
 
 
 
@@ -339,9 +338,9 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
     let radioElement_numeric = document.querySelector('input[name="numeric-format"][value="'+(1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString()+'"]');
     radioElement_numeric.checked = true;
 
-    //is_date_exist==false:
-    let radioElement =         document.querySelector('input[name="date-format"][value='+getInputValue_navigator_language2()+']');
-    radioElement.checked = true;
+    // //is_date_exist==false:
+    // let radioElement =         document.querySelector('input[name="date-format"][value='+getInputValue_navigator_language2()+']');
+    // radioElement.checked = true;
 
     modalOverlay.style.display = "block";
     // setInputValue_navigator_language2(getInputValue_navigator_language2())
@@ -375,12 +374,12 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
     });
 
     
-    let selectedDateFormat = getInputValue_navigator_language2(); //is_date_exist==false
-    dateRadios.forEach(function(radio) {      
-      radio.addEventListener("click", function() {  
-        selectedDateFormat = this.value;     
-      });
-    });
+    // let selectedDateFormat = getInputValue_navigator_language2(); //is_date_exist==false
+    // dateRadios.forEach(function(radio) {      
+    //   radio.addEventListener("click", function() {  
+    //     selectedDateFormat = this.value;     
+    //   });
+    // });
 
   
     submitButton.addEventListener("click", function() {
@@ -392,11 +391,12 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
      
       const NumColumnsToConvert = [2,3,4,5,6,7,8,10,11,12,13]; // editable Specify the indices of the columns to convert
       const startRowIndex = 5; // editable Specify the starting row index for conversion
-      const DateColumnsToConvert = [14]; // editable //is_date_exist==false
+      // const DateColumnsToConvert = [14]; // editable //is_date_exist==false
       const changesdata_numeric = [];
-      const changesdata_date = []; //is_date_exist==false
+      // const changesdata_date = []; //is_date_exist==false
 
-    if(selectedDateFormat!==getInputValue_navigator_language2()){ //is_date_exist==false
+/*
+      if(selectedDateFormat!==getInputValue_navigator_language2()){ //is_date_exist==false
       data_to_convert.forEach((row, rowIndex) => {
         if (rowIndex > startRowIndex) {
           DateColumnsToConvert.forEach(columnIndex => {
@@ -447,8 +447,7 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
          setInputValue_hot_undone2(_.cloneDeep(hot.undoRedo.undoneActions));              
          hot.setDataAtRowProp(changesdata_date,'dataatrowprop_convert_date');
     }
-    //console.log('comparaison : ')
-    //console.log(getValue_decimalSeparator2()==selectedNumericFormat)
+*/
 
 if(getValue_decimalSeparator2()!=selectedNumericFormat){
       if(selectedNumericFormat==',' ){
