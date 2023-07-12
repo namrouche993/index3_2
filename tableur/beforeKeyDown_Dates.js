@@ -13,6 +13,7 @@ import
 
 }
 from './intials_inputs_nb.js'
+import {startsWithElement} from './startsWithElement.js'
 
 
   // let decimalSeparator = getValue_decimalSeparator2();
@@ -22,15 +23,6 @@ from './intials_inputs_nb.js'
 
 export function beforeKeyDown_Dates_fct(event,hot) {  // editable the 2 indexx later inside 
 
-  function startsWithElement(array, substring) {
-    for (let i = 0; i < array.length; i++) {
-      if (substring.startsWith(array[i])) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
   let decimalSeparator = getValue_decimalSeparator2();
   let userLocale = getInputValue_userLocale2();
   let navigator_language = getInputValue_navigator_language2();

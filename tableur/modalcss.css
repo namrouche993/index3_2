@@ -15,7 +15,8 @@
   margin: 5% auto;
   padding: 20px;
   border-radius: 4px;
-  width: 80%;
+  /* //is_date_exist==false : change the modal width : */
+  width: 80%;        
   max-width: 700px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }

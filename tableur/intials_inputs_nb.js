@@ -51,6 +51,8 @@
   export const all_european_formal_are = 'fr';  // works if the test above is true
   //#endregion initials inputs nb
 
+  import {startsWithElement} from './startsWithElement.js'
+
 
       //#region date time zone (navigator.language)
       //export const userLocale = 'fr'//Intl.DateTimeFormat().resolvedOptions().locale //'fr'// editable maybe Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
@@ -68,7 +70,8 @@
      navigator_language2 = value;
   //#region date format starting
      if(navigator_language2=='en-US'){
-       if(usTimeZones.includes(userTimeZone)){
+      
+       if(startsWithElement(usTimeZones,userTimeZone)){
          var dateformatlanguage = 'mm/dd/aaaa'; 
          var splitdate='/';
        } else {
@@ -263,7 +266,7 @@ export function getInputValue_navigator_language2_avant_modify() {
    //#region date format starting
    let navigator_language = getInputValue_navigator_language2()
    if(navigator_language=='en-US'){
-    if(usTimeZones.includes(userTimeZone)){
+    if(startsWithElement(usTimeZones,userTimeZone)){
       var dateformatlanguage = 'mm/dd/aaaa'; 
       var splitdate='/';
     } else {

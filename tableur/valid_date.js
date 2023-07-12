@@ -29,6 +29,7 @@ import{
 
   import { comments_messages } from './comments_messages.js'
   import {isValidDate} from './isValidDate.js'
+  import {startsWithElement} from './startsWithElement.js'
 
 // REMEMBER , NOTE : dont forget to add beforekeydown_dates  beforeKeyDown_Dates_fct
 
@@ -215,14 +216,6 @@ let getInputValue_use_english_date_by_user_himeself_in_modal_withoutfct=getInput
 
   */
 
-function startsWithElement(array, substring) {
-  for (let i = 0; i < array.length; i++) {
-    if (substring.startsWith(array[i])) {
-      return true;
-    }
-  }
-  return false;
-}
 
   export function renderer_date(instance, td, row, col, prop, oldvalue, cellProperties,
     decimalSeparator,userLocale,navigator_language,userTimeZone,usTimeZones,use_en_time
