@@ -251,7 +251,58 @@ let navigator_language = getInputValue_navigator_language2();
         return mm;
       }
     
-    } 
+    }
+    else if (msg=='tooltip_undo'){
+      if(language=='fr-FR'){
+        var mm = "Annuler la dernière action ( Ctrl + Z )";
+        return mm;
+//      } else if (language=='en-US'){
+      } else {
+        var mm = "Undo ( Ctrl + Z )";
+        return mm;
+      }
+    }
+    else if (msg=='tooltip_redo'){
+      if(language=='fr-FR'){
+        var mm = "Rétablir ( Ctrl + Y )";
+        return mm;
+//      } else if (language=='en-US'){
+      } else {
+        var mm = "Redo ( Ctrl + Y )";
+        return mm;
+      }
+    }
+    else if (msg=='tooltip_finish'){
+      if(language=='fr-FR'){
+        var mm = "Envoyer les données"; // ou Envoyer
+        return mm;
+      //} else if (language=='en-US'){
+      } else {
+        var mm = "Send data";
+        return mm;
+      }
+    }
+    else if (msg=='tooltip_modalformat'){
+      if(language=='fr-FR'){
+        var mm = "Changer les formats"; // ou Envoyer
+        return mm;
+      //} else if (language=='en-US'){
+      } else {
+        var mm = "Change Format";
+        return mm;
+      }
+    }
+    else if (msg=='tooltip_logout'){
+      if(language=='fr-FR'){
+        var mm = "Modifier vos renseignements préliminaires"; // ou Envoyer
+        return mm;
+      //} else if (language=='en-US'){
+      } else {
+        var mm = "Edit your preliminary information";
+        return mm;
+      }
+    }
+     
   }
 
   

@@ -29,13 +29,9 @@
         text-align: right;
     }
 
-div#toolbarid {
-    position: fixed;
-    top: 1%;
-}
 
 div#example1 {
-    margin-top: 38px;
+    margin-top: 12px;
 }
     .handsontable table thead th{
    color: black;
@@ -92,3 +88,130 @@ div#example1 {
  .handsontable .htDimmed {
   color: black;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #f2f2f2;
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+  padding: 6px 35px 5px 15px;
+  border-bottom: ridge;
+}
+
+#undoBttn{
+  padding: 1px 7px 0px 7px;
+  border-radius: 3px;
+  border: none;
+  /* color: #fff; */
+  color: black;
+  font-size: 14px;
+  cursor: pointer;
+  /* background-color:lightslategrey; */
+  background-color: transparent;
+  transition: background-color 0.3s ease; /* Add this line for the animation */
+
+}
+
+#undoBttn:hover{
+  background-color: darkslategray; /* Add this line for the hover effect */
+  color:white;
+}
+
+#redoBttn {
+  padding: 1px 7px 0px 7px;
+  border-radius: 3px;
+  border: none;
+  /* color: #fff; */
+  color: black;
+  font-size: 14px;
+  cursor: pointer;
+  /* background-color:lightslategrey; */
+  background-color: transparent;
+  transition: background-color 0.3s ease; /* Add this line for the animation */
+}
+
+
+#redoBttn:hover {
+  background-color: darkslategray; /* Add this line for the hover effect */
+  color:white;
+}
+
+#finishBttn {
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: auto;
+  background-color: #007bff;
+  transition: background-color 0.3s ease; /* Add this line for the animation */
+  margin-left:15px;
+  margin-right:60px
+}
+
+#finishBttn:hover {
+  background-color: #0056b3; /* Add this line for the hover effect */
+}
+
+
+#example1 {
+  width: 100%;
+  height: calc(100vh - 50px); /* Adjust this to leave space for the toolbar */
+  overflow: auto;
+}
+
+.fa-lg {
+  font-size: 1.25em;
+  line-height: .05em;
+  vertical-align: -0.035em;
+  margin-left: -4px;
+  padding-right: 5px;
+  transition: background-color 0.3s ease; /* Add this line for the animation */
+}
+
+.fa-lg:hover {
+  color: darkslategray; /* Add this line for the hover effect */
+}
+
+
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 110%;
+  left: 80%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #000;
+  color: #fff;
+  font-size: 12px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+  width:100px;
+}
+
+.tooltip:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+
