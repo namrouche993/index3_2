@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
+    
 
 <!-- <script src="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.js"></script>
 <link type="text/css" rel="stylesheet" href="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.min.css"> -->
@@ -31,13 +30,15 @@
 
 
 <link rel="stylesheet" href="tableur/style.css">
-<!-- <link rel="stylesheet" href="tableur/modalcss.css"> -->
-  <!-- //is_date_exist==false change the modal width-->
+<link rel="stylesheet" href="tableur/modalcss.css">  <!-- //is_date_exist==false change the modal width-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous">
 
 <!-- <script src="lodash.js"> </script> -->
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" > -->
+
+<!-- <link rel="stylesheet" href="tableur/bootstrapdropdownmin.scss"> -->
 
 
 <title>Document</title>
@@ -50,6 +51,7 @@
 <body>
   <script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
 
 <div id="allofthem">
   <div id="toolbar" style="z-index: 999999999;">
@@ -69,80 +71,77 @@
         <i class="fa-solid fa-globe fa-lg" style=" font-size: 1.25em;line-height: .05em;vertical-align: -0.18em;"></i>
       </button>
       
-      
-      <div class="modal fade custom-modal" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-overlay" id="myModal">
+        <!-- <script type="module" src="./tableur/modal_language.js"></script> -->
+        <div class="modal">
+          <div class="modal-header">
+            <h2 id='title_formatmodal' class="modal-title">Choose Format</h2>
+            <span class="close">&times;</span>
+          </div>
+        
           <div class="modal-content">
-            <div class="modal-header">
-              <h2 id='title_formatmodal' class="modal-title">Choose Format</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="menu-container numeric-menu">
-                    <div class="format-options">
-                      <p id='title_numericformatmodal'>Choose the numeric format:</p>
-                      <label>
-                        <input id='title_eu_numericformatmodal' type="radio" name="numeric-format" value="," checked>
-                        European Format (<span class="example">1500,42</span>)
-                        <div id='title_eu_under_numericformatmodal' class="underexample">(comma , as Decimal Separator)</div>
-                      </label>
-                      <!-- <br class='brheightline'> -->
-                      <label>
-                        <input id='title_us_numericformatmodal' type="radio" name="numeric-format" value=".">
-                        American Format (<span class="example">1500.42</span>)
-                        <div id='title_us_under_numericformatmodal' class="underexample">(dot . as Decimal Separator)</div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="menu-container date-menu">
-                    <div class="format-options">
-                      <p id="title_formatmodal_date" >Choose the date format:</p>
-                      <label>
-                        <input type="radio" name="date-format" value="fr-FR" checked>
-                        European Date Format (<span class="example2">31/12/1990</span>)
-                      </label>
-                      <!-- <br class='brheightline'> -->
-                      <label>
-                        <input type="radio" name="date-format" value="en-US">
-                        American Date Format (<span class="example2">12/31/1990</span>)
-                      </label>
-                      <!-- <br class='brheightline'> -->
-                      <label>
-                        <input type="radio" name="date-format" value="de-DE">
-                        Deutschland Date Format (<span class="example2">31.12.1990</span>)
-                      </label>
-                      <!-- <br class='brheightline'> -->
-                      <label>
-                        <input type="radio" name="date-format" value="en-CA">
-                        Canadian Date Format (<span class="example2">1990-12-31</span>)
-                      </label>
-                      <!-- <br class='brheightline'> -->
-                      <label>
-                        <input type="radio" name="date-format" value="ja-JP">
-                        Japanese Date Format (<span class="example2">1990/12/31</span>)
-                      </label>
-                      <!-- <br class='brheightline'> -->            
-                      <label>
-                        <input type="radio" name="date-format" value="ko-KR">
-                        Korean Date Format (<span class="example2">1990.12.31</span>)
-                      </label>
-                    </div>
-                  </div>
-                </div>
+        
+            <div class="menu-container numeric-menu">
+              <div class="format-options">
+                <p id='title_numericformatmodal'> Choose the numeric format:</p>
+                <label>
+                  <input  type="radio" name="numeric-format" value="," checked>
+                  <span id='title_eu_numericformatmodal'>European Format </span> (<span class="example">1500,42</span>)
+                  <div id='title_eu_under_numericformatmodal' class="underexample">(comma , as Decimal Separator)</div>
+                </label>
+                <br>
+                <label>
+                  <input  type="radio" name="numeric-format" value=".">
+                  <span id='title_us_numericformatmodal' >American Format </span>(<span class="example">1500.42</span>)
+                  <div id='title_us_under_numericformatmodal' class="underexample">(dot . as Decimal Separator)</div>
+                </label>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" id='closeBtn' class="btn btn-secondary close-button" data-bs-dismiss="modal">Close</button>
-              <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
+        
+            <!-- //is_date_exist==false -->
+            <div class="menu-container date-menu"> 
+              <div class="format-options">
+                <p id="title_formatmodal_date">Choose the date format:</p>
+                <label>
+                  <input type="radio" name="date-format" value="fr-FR" checked>
+                  European Date Format (<span class="example2">31/12/1990</span>)
+                </label>
+                <br>
+                <label>
+                  <input type="radio" name="date-format" value="en-US">
+                  American Date Format (<span class="example2">12/31/1990</span>)
+                </label>
+                <br>
+                <label>
+                  <input type="radio" name="date-format" value="de-DE">
+                  Deutschland Date Format (<span class="example2">31.12.1990</span>)
+                </label>
+                <br>
+                <label>
+                  <input type="radio" name="date-format" value="en-CA">
+                  Canadian Date Format (<span class="example2">1990-12-31</span>)
+                </label>
+                <br>
+                <label>
+                  <input type="radio" name="date-format" value="ja-JP">
+                  Japonese Date Format (<span class="example2">1990/12/31</span>)
+                </label>
+                <br>            
+                <label>
+                  <input type="radio" name="date-format" value="ko-KR">
+                  Korean Date Format (<span class="example2">1990.12.31</span>)
+                </label>
+              </div>
             </div>
+        
+          </div>
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close-button">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
           </div>
         </div>
       </div>
-          
       
       <button id="finishBttn">Términer</button>  <!-- editable -->
       
@@ -150,6 +149,48 @@
         <i class="material-icons">logout</i>
       </button>
 
+      <div class="modal-overlay" id="myModal_logout">
+        <!-- <script type="module" src="./tableur/modal_language.js"></script> -->
+        <div class="modal" style="width: 550px;">
+          <div class="modal-header">
+            <h2 id='title_formatmodal_logout' class="modal-title">Preliminary information</h2>
+            <span class="close">&times;</span>
+          </div>
+        
+          <div class="modal-content">
+        
+            <div class="menu-container numeric-menu">
+              <div class="format-options">
+                <p id='title_numericformatmodal_logout'> Choose the numeric format:</p>
+                <br>
+
+                <div class="dropdown custom-dropdown">
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select an option
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Option 1</a></li>
+                    <li><a class="dropdown-item" href="#">Option 2</a></li>
+                    <li><a class="dropdown-item" href="#">Option 3</a></li>
+                    <li><a class="dropdown-item" href="#">Option 4</a></li>
+                  </ul>
+                </div>
+              
+                <label>
+                  <input  type="radio" name="numeric-format" value=".">
+                  <span id='title_us_numericformatmodal_logout' >American Format </span>(<span class="example">1500.42</span>)
+                  <div id='title_us_under_numericformatmodal_logout' class="underexample">(dot . as Decimal Separator)</div>
+                </label>
+              </div>
+            </div>
+          </div>
+                    
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close-button">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
       
     </div>
   </div>
@@ -157,6 +198,7 @@
         
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
       </body>
     
         
@@ -173,8 +215,6 @@
           
     <div id="example1" class="hot handsontable htColumnHeaders"></div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type='module'>
   import { comments_messages } from './tableur/comments_messages.js';
@@ -311,29 +351,10 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
 
     // Call the setTitlemodalformat function when the page loads
 
-    const openModalButton = document.getElementById("openModalButton");
-    const modalOverlay = document.getElementById("myModal");
-    const modal = new bootstrap.Modal(modalOverlay);
-
-
-
-    openModalButton.addEventListener("click", function() {
-      let radioElement_numeric = document.querySelector('input[name="numeric-format"][value="'+(1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString()+'"]');
-     radioElement_numeric.checked = true;
-
-     //is_date_exist==false:
-    let radioElement =         document.querySelector('input[name="date-format"][value='+getInputValue_navigator_language2()+']');
-    radioElement.checked = true;
-    
-    modal.show();
-    });
-
-
-
+  const modalOverlay = document.getElementById("myModal");
+  const openModalButton = document.getElementById("openModalButton");
   const closeModalButton = modalOverlay.querySelector(".close-button");
-
-  const closeButton = document.getElementById('closeBtn');
-  // const closeButton = modalOverlay.querySelector(".close");
+  const closeButton = modalOverlay.querySelector(".close");
 
 
   const dateRadios = document.querySelectorAll('input[name="date-format"]');
@@ -346,15 +367,14 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
 
 
   
-  // openModalButton.setAttribute('data-tooltip', comments_messages("",'tooltip_modalformat',getInputValue_userLocale2()));
-  // openModalButton.addEventListener('mouseenter', () => {
-  //   openModalButton.classList.add('tooltip');
-  //     });
+  openModalButton.setAttribute('data-tooltip', comments_messages("",'tooltip_modalformat',getInputValue_userLocale2()));
+  openModalButton.addEventListener('mouseenter', () => {
+    openModalButton.classList.add('tooltip');
+      });
     
-  // openModalButton.addEventListener('mouseleave', () => {
-  //       openModalButton.classList.remove('tooltip');
-  // });
-
+  openModalButton.addEventListener('mouseleave', () => {
+        openModalButton.classList.remove('tooltip');
+  });
  
   if (!numericValues.includes((1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10))){
     setInputValue_userLocale2(userlocale2_bydefault_ifnotexist);
@@ -374,8 +394,39 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
       radioElement.checked = true;  
     }
 
-    // const submitButton = document.querySelector(".modal-footer .btn-primary");
-    const submitButton = document.getElementById("submitBtn");
+
+
+  openModalButton.addEventListener("click", function() {
+    //console.log('openmodalbt ::')
+    //console.log(getInputValue_userLocale2())
+    //console.log((1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString())
+
+    let radioElement_numeric = document.querySelector('input[name="numeric-format"][value="'+(1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString()+'"]');
+    radioElement_numeric.checked = true;
+
+    //is_date_exist==false:
+    let radioElement =         document.querySelector('input[name="date-format"][value='+getInputValue_navigator_language2()+']');
+    radioElement.checked = true;
+
+    modalOverlay.style.display = "block";
+    // setInputValue_navigator_language2(getInputValue_navigator_language2())
+  });
+
+  closeModalButton.addEventListener("click", function() {
+    modalOverlay.style.display = "none";  
+
+  });
+
+  closeButton.addEventListener("click", function() {
+    modalOverlay.style.display = "none";
+
+
+  });
+
+  // Add event listeners or any other logic related to the modal
+
+
+    const submitButton = document.querySelector(".modal-footer .btn-primary");
 
 
 
@@ -553,8 +604,7 @@ if(getValue_decimalSeparator2()!=selectedNumericFormat){
     }
       //setInputValue_userLocale2(selectedNumericFormat)
 
-      // modalOverlay.style.display = "none";
-      modal.hide()
+      modalOverlay.style.display = "none";
 
 
       // Your action code goes here
@@ -704,10 +754,10 @@ document.addEventListener('DOMContentLoaded', function() {
     var button_redo = document.getElementById('redoBttn');
     //var button_modalformat = document.getElementById('openModalButton');
   
-    // var button_logout = document.getElementById('logoutBttn');
-    // const modalOverlay_logout = document.getElementById("myModal_logout");
-    // const closeModalButton_logout = modalOverlay_logout.querySelector(".close-button");
-    // const closeButton_logout = modalOverlay_logout.querySelector(".close");
+    var button_logout = document.getElementById('logoutBttn');
+    const modalOverlay_logout = document.getElementById("myModal_logout");
+    const closeModalButton_logout = modalOverlay_logout.querySelector(".close-button");
+    const closeButton_logout = modalOverlay_logout.querySelector(".close");
 
 
     //const myfinishBttn = document.getElementById('finishBttn');
@@ -743,15 +793,27 @@ document.addEventListener('DOMContentLoaded', function() {
    
 
     
-    // button_logout.setAttribute('data-tooltip', comments_messages("",'tooltip_logout',getInputValue_userLocale2()));
-    // button_logout.addEventListener('mouseenter', () => {
-    //   button_logout.classList.add('tooltip');
-    //   });
+    button_logout.setAttribute('data-tooltip', comments_messages("",'tooltip_logout',getInputValue_userLocale2()));
+    button_logout.addEventListener('mouseenter', () => {
+      button_logout.classList.add('tooltip');
+      });
     
-    //   button_logout.addEventListener('mouseleave', () => {
-    //     button_logout.classList.remove('tooltip');
-    // });
+      button_logout.addEventListener('mouseleave', () => {
+        button_logout.classList.remove('tooltip');
+    });
 
+
+  const dropdownButton = document.querySelector("#dropdownMenuButton");
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  // const textElement = document.querySelector("#text1");
+
+  dropdownItems.forEach(item => {
+    item.addEventListener("click", function() {
+      const selectedOption = this.textContent;
+      dropdownButton.textContent = selectedOption;
+      // textElement.textContent = selectedOption;
+    });
+  });
 
 
     button_finish.addEventListener('click', function() {
@@ -771,20 +833,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     
-  //   logoutBttn.addEventListener("click", function() {
-  //   modalOverlay_logout.style.display = "block";
-  // });
+    logoutBttn.addEventListener("click", function() {
+  /*  
+      let radioElement_numeric = document.querySelector('input[name="numeric-format"][value="'+(1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10).toString()+'"]');
+      radioElement_numeric.checked = true;
 
-  // closeModalButton_logout.addEventListener("click", function() {
-  //   modalOverlay_logout.style.display = "none";  
+      let radioElement =         document.querySelector('input[name="date-format"][value='+getInputValue_navigator_language2()+']');
+      radioElement.checked = true;
+*/
+    modalOverlay_logout.style.display = "block";
+  });
 
-  // });
+  closeModalButton_logout.addEventListener("click", function() {
+    modalOverlay_logout.style.display = "none";  
 
-  // closeButton_logout.addEventListener("click", function() {
-  //   modalOverlay_logout.style.display = "none";
+  });
+
+  closeButton_logout.addEventListener("click", function() {
+    modalOverlay_logout.style.display = "none";
 
 
-  // });
+  });
 
 
 
