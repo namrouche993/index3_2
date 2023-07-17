@@ -117,42 +117,6 @@
   border-radius: 4px;
 }
 
-/* Same CSS styles as before */
-.format-options label {
-  display: block;
-  margin-bottom: 5px;
-}
-/* Same CSS styles as before */
-.example {
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.example2 {
-  font-weight: bold;
-  font-size: 1.0em;
-}
-
-.underexample {
-  /* font-weight: bold; */
-  font-size: 0.9em;
-  padding-left: 25px;
-}
-
-
-.menu-container {
-  flex: 1;
-  padding: 10px;
-}
-
-.numeric-menu {
-  margin-right: 20px;
-}
-
-.date-menu {
-  margin-left: 20px;
-}
-
 
 
 /* 

@@ -215,3 +215,60 @@ html, body {
 }
 
 
+
+
+.custom-modal .format-options {
+  margin-bottom: 20px;
+}
+
+.custom-modal .format-options p {
+  margin-bottom: 10px;
+}
+
+.custom-modal .format-options label {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.custom-modal .format-options input[type="radio"] {
+  margin-right: 6px;
+}
+
+.custom-modal .underexample {
+  /* font-weight: bold; */
+  font-size: 0.9em;
+  padding-left: 25px;
+  font-size: 13px;
+}
+
+.custom-modal .example {
+    font-weight: bold;
+    font-size: 20px;     
+ }
+
+ .custom-modal .example2 {
+    font-weight: bold;
+    font-size: 1.0em;
+}
+
+.custom-modal .menu-container {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.custom-modal .modal-dialog {
+  max-width: 800px;
+}
+
+.custom-modal .format-options label {
+  line-height: 1.2;
+}
+
+.menu-separator {
+  border-right: 1px solid #ddd;
+  height: 100%;
+  margin-right: 15px;
+  padding-right: 15px;
+}
