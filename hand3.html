@@ -1,35 +1,116 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
-    <script>
-  let numOfPopups = 0;
-
-function showPopup() {
-  if (numOfPopups >= 3) {
-    return;
-  }
-
-  toastr.options = {
-    onHidden: function() {
-      numOfPopups--;
-      console.log(`Number of popups: ${numOfPopups}`);
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Dropdown Example</title>
+  <style>
+    /* Custom Dropdown CSS styles */
+    .custom-dropdown {
+      position: relative;
+      display: inline-block;
     }
-  };
 
-  toastr.info("This is a sample popup");
-  numOfPopups++;
-  console.log(`Number of popups: ${numOfPopups}`);
-}
-   </script>
-  </head>
-  <body>
-    <script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  
-    <button onclick="showPopup()"> Show Popup </button>
-  </body>
+    .custom-dropdown .btn {
+      border: 1px solid #6c757d;
+      border-radius: 4px;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #6c757d;
+      background-color: transparent;
+      position: relative;
+      width: 160px;
+    }
+
+    .custom-dropdown .btn .arrow-down {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 4px 4px 0 4px;
+      border-color: #6c757d transparent transparent transparent;
+    }
+
+    .custom-dropdown .btn:hover {
+      color: #fff;
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .custom-dropdown .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      display: none;
+      min-width: 160px;
+      padding: 0.5rem 0;
+      margin: 0.125rem 0 0;
+      font-size: 1rem;
+      color: #212529;
+      text-align: left;
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 0.25rem;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    }
+
+    .custom-dropdown .dropdown-menu .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 0.25rem 1.5rem;
+      clear: both;
+      font-weight: 400;
+      color: #212529;
+      text-align: inherit;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .custom-dropdown .dropdown-menu .dropdown-item:hover {
+      color: #16181b;
+      text-decoration: none;
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dropdown custom-dropdown">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Select an option
+      <span class="arrow-down"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <li><a class="dropdown-item" href="#">Option 1</a></li>
+      <li><a class="dropdown-item" href="#">Option 2</a></li>
+      <li><a class="dropdown-item" href="#">Option 3</a></li>
+      <li><a class="dropdown-item" href="#">Option 4</a></li>
+    </ul>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Handle custom dropdown toggle
+      $('.custom-dropdown .dropdown-toggle').on('click', function() {
+        var dropdownMenu = $(this).next('.dropdown-menu');
+        dropdownMenu.toggleClass('show');
+      });
+
+      // Close dropdown when clicking outside
+      $(document).on('click', function(e) {
+        var target = e.target;
+        if (!$('.custom-dropdown').is(target) && $('.custom-dropdown').has(target).length === 0) {
+          $('.custom-dropdown .dropdown-menu').removeClass('show');
+        }
+      });
+    });
+  </script>
+</body>
 </html>

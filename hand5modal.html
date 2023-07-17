@@ -6,48 +6,99 @@
     href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
   <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
   <style>
-    html, body {
+  html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+      overflow: hidden;
     }
 
     #toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
       background-color: #f2f2f2;
       padding: 10px;
       width: 100%;
       display: flex;
       justify-content: space-between;
+      box-sizing: border-box;
+      margin-bottom: 12px;
     }
 
-    #toolbar button {
+    #leftside button {
       padding: 5px 10px;
       border-radius: 3px;
       border: none;
-      background-color: #ddd;
-      color: #333;
+      color: #fff;
       font-size: 14px;
-      margin-right: 10px;
       cursor: pointer;
+      background-color:lightslategrey
     }
 
     #toolbar button:last-child {
-      margin-right: 0;
+      margin-right: 60;
     }
 
+    #downloadBtn {
+      padding: 5px 10px;
+      border-radius: 3px;
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+
+      margin-right: auto;
+      background-color: #007bff;
+      transition: background-color 0.3s ease; /* Add this line for the animation */
+    }
+
+    #downloadBtn:hover {
+      background-color: #0056b3; /* Add this line for the hover effect */
+    }
+    
     #spreadsheetContainer {
       width: 100%;
       height: calc(100vh - 50px); /* Adjust this to leave space for the toolbar */
+      overflow: auto;
     }
+
+    .tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #000;
+  color: #fff;
+  font-size: 14px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
   </style>
 </head>
 <body>
   <div id="toolbar">
-    <div>
+    <div id="leftside">
       <button id="undoBtn">Undo</button>
       <button id="redoBtn">Redo</button>
       <button id="button3">Button3</button>
     </div>
-    <div>
+    <div id="'rightside">
       <button id="downloadBtn">Download</button>
     </div>
   </div>
@@ -56,28 +107,56 @@
 
   <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
   <script>
+    
+    // Function to generate sample data
+    function generateData(rows, cols) {
+      var data = [];
+      for (var i = 0; i < rows; i++) {
+        var row = [];
+        for (var j = 0; j < cols; j++) {
+          row.push(`Cell ${i + 1}-${j + 1}`);
+        }
+        data.push(row);
+      }
+      return data;
+    }
+    const dda=generateData(50,30)
+    console.log('dda :')
+    console.log(dda)
     // Add event listeners to your buttons
     document.getElementById('redoBtn').addEventListener('click', redoAction);
     document.getElementById('undoBtn').addEventListener('click', undoAction);
     document.getElementById('button3').addEventListener('click', button3Action);
     document.getElementById('downloadBtn').addEventListener('click', downloadAction);
 
+    const downloadBtn = document.getElementById('downloadBtn');
+    downloadBtn.setAttribute('data-tooltip', 'This is a tooltip');
+
+    downloadBtn.addEventListener('mouseenter', () => {
+      downloadBtn.classList.add('tooltip');
+      });
+    
+    downloadBtn.addEventListener('mouseleave', () => {
+      downloadBtn.classList.remove('tooltip');
+    });
+
+
     // Initialize your Handsontable instance inside the spreadsheet container
     var container = document.getElementById('spreadsheetContainer');
     var hot = new Handsontable(container, {
-      data: generateData(50, 10), // Generating sample data of 50 rows and 10 columns
+      data: dda, // Generating sample data of 50 rows and 10 columns
       licenseKey: 'non-commercial-and-evaluation', // for non-commercial use only
       rowHeaders: true,
       colHeaders: true,
-      width: '100%',
-      height: '100%',
-      stretchH: 'all',
-      autoWrapRow: true,
-      manualRowResize: true,
-      manualColumnResize: true,
-      manualRowMove: true,
-      manualColumnMove: true,
-      contextMenu: true,
+      //width: '100%',
+      //height: '100%',
+      //stretchH: 'all',
+      //autoWrapRow: true,
+      //manualRowResize: true,
+      //manualColumnResize: true,
+      //manualRowMove: true,
+      //manualColumnMove: true,
+      //contextMenu: true,
     });
 
     // Define the functions for each button
@@ -97,18 +176,6 @@
       // Implement download logic here
     }
 
-    // Function to generate sample data
-    function generateData(rows, cols) {
-      var data = [];
-      for (var i = 0; i < rows; i++) {
-        var row = [];
-        for (var j = 0; j < cols; j++) {
-          row.push(`Cell ${i + 1}-${j + 1}`);
-        }
-        data.push(row);
-      }
-      return data;
-    }
   </script>
 </body>
 </html>
