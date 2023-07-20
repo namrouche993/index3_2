@@ -112,6 +112,7 @@ html, body {
 }
 
 #undoBttn{
+  margin-left:45px;
   padding: 1px 7px 0px 7px;
   border-radius: 3px;
   border: none;
@@ -189,31 +190,6 @@ html, body {
 
 
 
-.tooltip {
-  position: relative;
-}
-
-.tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: 110%;
-  left: 80%;
-  transform: translateX(-50%);
-  padding: 5px;
-  background-color: #000;
-  color: #fff;
-  font-size: 12px;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s;
-  width:100px;
-}
-
-.tooltip:hover::after {
-  visibility: visible;
-  opacity: 1;
-}
-
 
 
 
@@ -271,4 +247,25 @@ html, body {
   height: 100%;
   margin-right: 15px;
   padding-right: 15px;
+}
+
+
+
+
+
+.tooltip {
+  background-color: #000;
+  color: #fff;
+  font-size: 16px;
+  height: 30px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 999999999999999999999999999999999999999999999;
+}
+
+.tooltip .tooltip-arrow::before {
+  border-top-color: #000;
+}
+
+.tooltip-inner {
+  font-size: 13px; /* Replace this value with your desired font size */
 }
