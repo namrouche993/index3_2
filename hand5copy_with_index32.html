@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 <!-- <script src="http://docs.handsontable.com/0.20.2/bower_components/handsontable/dist/handsontable.full.js"></script>
@@ -54,19 +55,37 @@
 <div id="allofthem">
   <div id="toolbar" style="z-index: 999999999;">
     <div id="leftside" style="padding-top:3px;">
-      <button id="undoBttn" style="font-size:18px;cursor:pointer;">
+      
+      <button id="undoBttn" style="font-size:18px;cursor:pointer;"
+      data-bs-toggle="tooltip" 
+      data-bs-placement="bottom" title="Undo ( Ctrl + Z )"
+      >
         <i class="material-icons">undo</i>
       </button>
 
-      <button id="redoBttn" style="font-size:18px;cursor:pointer;">
+      <button id="redoBttn" style="font-size:18px;cursor:pointer;"
+       data-bs-toggle="tooltip"
+       data-bs-placement="bottom" title="Redo ( Ctrl + Y )" 
+       data-bs-delay="100"
+      >
         <i class="material-icons">redo</i>
       </button>
   </div>
     <div id="'rightside">
       
       
-      <button type="button" class="btn btn-light" id="openModalButton" style="font-size:14px;border:0px;cursor: pointer;padding-bottom: 1px;padding-right: 1px;color: cadetblue;background-color: transparent;" data-toggle="modal" data-target="#myModal">
-        <i class="fa-solid fa-globe fa-lg" style=" font-size: 1.25em;line-height: .05em;vertical-align: -0.18em;"></i>
+
+      <button type="button" class="btn btn-light" id="openModalButton"
+      style="font-size:14px;border:0px;cursor: pointer;padding-bottom: 1px;padding-right: 1px;color: cadetblue;background-color: transparent;"
+       data-toggle="modal" data-target="#myModal"
+       data-bs-toggle="tooltip"
+       data-bs-placement="bottom" title="Change the format" 
+       data-bs-delay="100"
+       >
+              <!-- editable language  change the format-->
+
+        
+       <i class="fa-solid fa-globe fa-lg" style=" font-size: 1.25em;line-height: .05em;vertical-align: -0.0em;"></i>
       </button>
       
       
@@ -144,37 +163,79 @@
       </div>
           
       
-      <button id="finishBttn">Términer</button>  <!-- editable -->
+      <button id="finishBttn"
+      data-bs-toggle="tooltip"
+      data-bs-placement="bottom" title="Send data" 
+      data-bs-delay="100"
+   
+      >Términer</button>  <!-- editable -->
       
-      <button id="logoutBttn" style="font-size:18px;cursor:pointer; border: 0px;vertical-align: -0.395em">
+      <button type="button" class="btn" id="logoutBttn"
+        style="font-size:18px;cursor:pointer; border: 0px;vertical-align: -0.395em"
+        data-toggle="modal" data-target="#myModal_logout" 
+        data-bs-toggle="tooltip"
+        data-bs-placement="bottom" title="Edit your preliminary information" 
+        data-bs-delay="100"
+      >
         <i class="material-icons">logout</i>
       </button>
 
+
+
+      <div class="modal fade custom-modal" id="myModal_logout" tabindex="-1" aria-labelledby="exampleModalLabel_logout" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 id='title_formatmodal_logout' class="modal-title">Preliminary information</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <div class="row">
+
+                  <div class="menu-container logout-menu">
+                    <div class="format-options">
+                    
+<!--       
+                      <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Select an option
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownOptions">
+                          <li><a class="dropdown-item" href="#">Option 1</a></li>
+                          <li><a class="dropdown-item" href="#">Option 2</a></li>
+                          <li><a class="dropdown-item" href="#">Option 3</a></li>
+                        </ul>
+                      </div>
+                   -->
+                    </div>
+
+                    </div>
+                </div>
+   
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" id='closeBtn_logout' class="btn btn-secondary close-button" data-bs-dismiss="modal">Close</button>
+              <button type="submit" id="submitBtn_logout" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       
     </div>
   </div>
 
         
     </div>
-
-      </body>
-    
-        
-        
-
-
-
-        <!-- <button  onclick="sendValue()" class='material-symbols-outlined' style="font-size:18px;cursor:pointer;">save</button> 
-           <br>
-        <button onclick="handleFct()" class='material-symbols-outlined' style="font-size:18px;cursor:pointer;">sync</button>        
-      -->
           </div>
 
-          
     <div id="example1" class="hot handsontable htColumnHeaders"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type='module'>
   import { comments_messages } from './tableur/comments_messages.js';
@@ -241,7 +302,6 @@
 
 
 
-  //#region modal script
   function setTitlemodalformat(language2) { //is_date_exist==false pqrt of it
       //var language = getInputValue_userLocale2() || navigator.language || navigator.userLanguage;
       //console.log('langauge of the modal will be : ')
@@ -260,7 +320,8 @@
       var title_us_under_numericformatmodal = document.getElementById("title_us_under_numericformatmodal"); 
 
       var title_formatmodal_date = document.getElementById("title_formatmodal_date"); //is_date_exist==false
-      
+      var title_formatmodal_logout = document.getElementById('title_formatmodal_logout')
+
        if (language.startsWith("fr")) {
   title_formatmodal.textContent = "Choisissez le format";
   title_numericformatmodal.textContent = "Choisissez le format numérique :";
@@ -270,6 +331,7 @@
   title_us_under_numericformatmodal.textContent = "(point . comme séparateur décimal)";
 
   title_formatmodal_date.textContent = "Choisissez le format de date"; //is_date_exist==false
+  title_formatmodal_logout.textContent = "Informations Préliminaires"
 
 } else if (language.startsWith("de")) {
   title_formatmodal.textContent = "Format wählen";
@@ -280,7 +342,9 @@
   title_us_under_numericformatmodal.textContent = "(Punkt . als Dezimaltrennzeichen)";
 
   title_formatmodal_date.textContent = "Wählen Sie das Datumsformat"; //is_date_exist==false
+  title_formatmodal_logout.textContent = "Vorläufige Informationen"
 
+  
 } else if (language.startsWith("es")) {
   title_formatmodal.textContent = "Elegir formato";
   title_numericformatmodal.textContent = "Elegir el formato numérico:";
@@ -290,6 +354,7 @@
   title_us_under_numericformatmodal.textContent = "(punto . como separador decimal)";
 
   title_formatmodal_date.textContent = "Elige el formato de fecha"; //is_date_exist==false
+  title_formatmodal_logout.textContent = "Información Preliminar"
 
   
 } else {
@@ -302,6 +367,7 @@ title_us_numericformatmodal.textContent = "American Format";
 title_us_under_numericformatmodal.textContent = "(dot . as Decimal Separator)";
 
 title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==false
+title_formatmodal_logout.textContent = "Preliminary Information"
 
 
 }      }
@@ -315,6 +381,15 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
     const modalOverlay = document.getElementById("myModal");
     const modal = new bootstrap.Modal(modalOverlay);
 
+    
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    const modalOverlay_logout = document.getElementById("myModal_logout");
+    const modal_logout = new bootstrap.Modal(modalOverlay_logout);
 
 
     openModalButton.addEventListener("click", function() {
@@ -329,10 +404,22 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
     });
 
 
+    logoutBttn.addEventListener("click", function() {
+    
+    modal_logout.show();
+    });
+
+
 
   const closeModalButton = modalOverlay.querySelector(".close-button");
-
+  const closeModalButton_logout = modalOverlay_logout.querySelector(".close-button");
+  console.log('closeModalButton_logout :')
+  console.log(closeModalButton_logout)
+  
   const closeButton = document.getElementById('closeBtn');
+  const closeButton_logout = document.getElementById('closeBtn_logout');
+  console.log(closeButton_logout)
+  
   // const closeButton = modalOverlay.querySelector(".close");
 
 
@@ -341,19 +428,6 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
 
   const numericRadios = document.querySelectorAll('input[name="numeric-format"]');
   const numericValues = Array.from(numericRadios).map(numeric => numeric.value);
-  //console.log('numericValues')
-  //console.log(numericValues)
-
-
-  
-  // openModalButton.setAttribute('data-tooltip', comments_messages("",'tooltip_modalformat',getInputValue_userLocale2()));
-  // openModalButton.addEventListener('mouseenter', () => {
-  //   openModalButton.classList.add('tooltip');
-  //     });
-    
-  // openModalButton.addEventListener('mouseleave', () => {
-  //       openModalButton.classList.remove('tooltip');
-  // });
 
  
   if (!numericValues.includes((1234567.73).toLocaleString(getInputValue_userLocale2(), { style: 'decimal' }).substring(9, 10))){
@@ -376,7 +450,12 @@ title_formatmodal_date.textContent = "Choose the date format"; //is_date_exist==
 
     // const submitButton = document.querySelector(".modal-footer .btn-primary");
     const submitButton = document.getElementById("submitBtn");
+    const submitButton_logout = document.getElementById("submitBtn_logout");
 
+    submitButton.addEventListener("click", function() {
+      modal_logout.hide()
+
+    })
 
 
     // Update the default checked state
@@ -561,9 +640,6 @@ if(getValue_decimalSeparator2()!=selectedNumericFormat){
     });
     //setTitlemodalformat(getInputValue_userLocale2());
 
-
-  //#endregion modal script
-
   
       function undohandstonetable() {
           hot.undo(true);
@@ -699,67 +775,32 @@ doc.save('taaa.pdf')
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    var button_finish = document.getElementById('finishBttn');
+    // var button_finish = document.getElementById('finishBttn');
+    
     var button_undo = document.getElementById('undoBttn');
     var button_redo = document.getElementById('redoBttn');
-    //var button_modalformat = document.getElementById('openModalButton');
-  
-    // var button_logout = document.getElementById('logoutBttn');
-    // const modalOverlay_logout = document.getElementById("myModal_logout");
-    // const closeModalButton_logout = modalOverlay_logout.querySelector(".close-button");
-    // const closeButton_logout = modalOverlay_logout.querySelector(".close");
 
+    const dropdownOptions = document.querySelectorAll("#dropdownOptions .dropdown-item");
 
-    //const myfinishBttn = document.getElementById('finishBttn');
-  
-    button_finish.setAttribute('data-tooltip', comments_messages("",'tooltip_finish',getInputValue_userLocale2()));
-    button_finish.addEventListener('mouseenter', () => {
-      button_finish.classList.add('tooltip');
-      });
+// Add click event listener to each option
+dropdownOptions.forEach(option => {
+  option.addEventListener("click", function() {
+    // Get the selected value
+    const selectedValue = option.textContent.trim();
     
-      button_finish.addEventListener('mouseleave', () => {
-        button_finish.classList.remove('tooltip');
-    });
-
-     
-    button_undo.setAttribute('data-tooltip', comments_messages("",'tooltip_undo',getInputValue_userLocale2()));
-    button_undo.addEventListener('mouseenter', () => {
-      button_undo.classList.add('tooltip');
-      });
-    
-      button_undo.addEventListener('mouseleave', () => {
-        button_undo.classList.remove('tooltip');
-    });
-
-    
-    button_redo.setAttribute('data-tooltip', comments_messages("",'tooltip_redo',getInputValue_userLocale2()));
-    button_redo.addEventListener('mouseenter', () => {
-      button_redo.classList.add('tooltip');
-      });
-    
-    button_redo.addEventListener('mouseleave', () => {
-        button_redo.classList.remove('tooltip');
-    });
-   
-
-    
-    // button_logout.setAttribute('data-tooltip', comments_messages("",'tooltip_logout',getInputValue_userLocale2()));
-    // button_logout.addEventListener('mouseenter', () => {
-    //   button_logout.classList.add('tooltip');
-    //   });
-    
-    //   button_logout.addEventListener('mouseleave', () => {
-    //     button_logout.classList.remove('tooltip');
-    // });
+    // Display the selected value (you can do anything you want with the value here)
+    console.log("Selected value: ", selectedValue);
+  });
+});
 
 
 
-    button_finish.addEventListener('click', function() {
-      // Your code here
-      downloadfile()
-      //console.log('Button clicked!');
+    // button_finish.addEventListener('click', function() {
+    //   // Your code here
+    //   downloadfile()
+    //   //console.log('Button clicked!');
       
-    });
+    // });
 
     button_undo.addEventListener('click', function() {
       undohandstonetable(); 

@@ -1,66 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-  <link rel="stylesheet" type="text/css"
-    href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
-  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
+  <!-- Add Bootstrap CSS link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-  <div id="example"></div>
+  <!-- Button to trigger the modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Open Modal
+  </button>
 
-  <script src="https://cdn.jsdelivr.net/npm/handsontable@9.1.1/dist/handsontable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/handsontable@9.1.1/dist/plugins/autoColumnSize.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var container = document.getElementById("example");
+  <!-- The Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Dropdown content goes here -->
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Select an option
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="#">Option 1</a></li>
+              <li><a class="dropdown-item" href="#">Option 2</a></li>
+              <li><a class="dropdown-item" href="#">Option 3</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      var data = [
-        ["Name", "Age", "Country"],
-        ["John Doe", 25, "USA"],
-        ["Jane Smith", 30, "Canada"],
-        ["Robert Johnson", 35, "Australia"]
-      ];
-
-      var hot = new Handsontable(container, {
-        data: data,
-        colHeaders: true,
-        colWidths: [90,70,60],
-        //wordWrap:false,
-        afterChange: function(changes, source) {
-  // Check if the change was made by the user
-  if (source === 'edit') {
-    var row = changes[0][0];
-    var col = changes[0][1];
-    var newValue = changes[0][3];
-    
-    // Calculate the necessary width based on the length of the new value
-    var newWidth = Math.min(newValue.length * 7, 140); // Adjust the multiplication factor as per your preference
-    var currentWidths = hot.getSettings().colWidths;
-    currentWidths[col] = newWidth;
-
-    console.log('newWidth : ')
-    console.log(newWidth)
-    console.log(newValue.length)
-    // Set the new column width dynamically
-    hot.updateSettings({
-      // modifyColWidth: function(width, col) {
-      //   return newWidth;
-      // }
-
-      colWidths: function(index) {
-                if (index === col) {
-                  return newWidth;
-                }
-                return currentWidths
-              }
-    });
-  }
-},
-
-
-      });
-    });
-  </script>
+  <!-- Add Bootstrap JS and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 </body>
 </html>
