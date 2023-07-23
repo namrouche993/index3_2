@@ -805,20 +805,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var button_undo = document.getElementById('undoBttn');
     var button_redo = document.getElementById('redoBttn');
 
-//     const dropdownButton1 = document.getElementById("dropdownMenuButton1");
-//     const dropdownItems1 = document.querySelectorAll("#dropdownOptions1 .dropdown-item");
-
-    
-// // Attach a click event listener to each dropdown item
-// dropdownItems1.forEach(item => {
-//   item.addEventListener("click", function() {
-//     // Get the selected option text
-//     const selectedOption1 = this.textContent;
-
-//     // Update the button text with the selected option
-//     dropdownButton1.textContent = selectedOption1;
-//   });
-// });
 
   const dropdownOptions1 = ['Option 01', 'Option 02', 'Option 03']; // editable Replace this with your array of options
   const dropdownOptions2 = ['Option 21', 'Option 22', 'Option 23']; // editable Replace this with your array of options
@@ -895,41 +881,82 @@ function validateEmail(email) {
     event.preventDefault();
 
     // Get the form inputs
-    const emailInput = document.getElementById('emailInput').value;
-    const dropdownButton1 = document.getElementById('dropdownMenuButton1').textContent;
-    const dropdownButton2 = document.getElementById('dropdownMenuButton2').textContent;
-
+    const emailInput = document.getElementById('emailInput');
+    const dropdownButton10 = document.getElementById('dropdownMenuButton1');
+    const dropdownButton20 = document.getElementById('dropdownMenuButton2');
+    let checkmodal_logout_email = false;
+    let checkmodal_logout_dropdowns = false;
     // Check email format
-    if (!validateEmail(emailInput)) {
-      alert('Invalid email format. Please enter a valid email address.');
-      return;
+
+    if (!validateEmail(emailInput.value)) {
+       // Apply the invalid-input class to the email input
+       emailInput.style.color = 'red'
+       emailInput.parentElement.style.color = 'red'
+       checkmodal_logout_email=false;
+      //  alert('Invalid email format. Please enter a valid email address.');
+       //return;
+     } else {
+        // Remove the invalid-input class if the email format is valid
+        emailInput.style.color = 'var(--bs-body-color)';
+        emailInput.parentElement.style.color = ''
+        checkmodal_logout_email=true;
+     }
+
+     
+    // Check dropdown selections
+    if (!dropdownOptions1.includes(dropdownButton10.textContent) || !dropdownOptions2.includes(dropdownButton20.textContent)) {
+
+      if(!dropdownOptions1.includes(dropdownButton10.textContent)){
+        dropdownButton10.parentElement.style.color='red';
+      }
+      if(!dropdownOptions2.includes(dropdownButton20.textContent)){
+        dropdownButton20.parentElement.style.color='red';
+      }
+
+      checkmodal_logout_dropdowns=false;
+      // alert('Please select an option from both dropdowns.');
+      // return;
+    } else {
+      checkmodal_logout_dropdowns=true;
     }
 
-    // Check dropdown selections
-    if (!dropdownOptions1.includes(dropdownButton1) || !dropdownOptions2.includes(dropdownButton2)) {
-      alert('Please select an option from both dropdowns.');
-      return;
-    }
+    
+
+ $('#dropdownMenuButton1').on('show.bs.dropdown', function () {
+  dropdownButton10.parentElement.style.color='';  
+
+})
+
+$('#dropdownMenuButton2').on('show.bs.dropdown', function () {
+  dropdownButton20.parentElement.style.color='';  
+})
+
+
 
     // If all validations pass, you can proceed with submitting the form or further processing
 
     // For demonstration purposes, I'm just showing an alert indicating a successful submission.
-    alert('Form submitted successfully!');
+    if(checkmodal_logout_dropdowns && checkmodal_logout_email){
+      alert('Form submitted successfully!');
+    } else {
+      console.log('modal failed')
+      return
+    }
   }
   // Add event listener to the form submit button
   submitButton_logout.addEventListener('click', handleSubmit);
 
+  // Add event listener for the 'input' event
+emailInput.addEventListener('input', function() {
+  console.log('while changing ')
+  emailInput.style.color = 'var(--bs-body-color)';
+  emailInput.parentElement.style.color = '';
+});
 
 
 
 
 
-    // button_finish.addEventListener('click', function() {
-    //   // Your code here
-    //   downloadfile()
-    //   //console.log('Button clicked!');
-      
-    // });
 
     button_undo.addEventListener('click', function() {
       undohandstonetable(); 
@@ -940,22 +967,7 @@ function validateEmail(email) {
     });
 
 
-    
-  //   logoutBttn.addEventListener("click", function() {
-  //   modalOverlay_logout.style.display = "block";
-  // });
-
-  // closeModalButton_logout.addEventListener("click", function() {
-  //   modalOverlay_logout.style.display = "none";  
-
-  // });
-
-  // closeButton_logout.addEventListener("click", function() {
-  //   modalOverlay_logout.style.display = "none";
-
-
-  // });
-
+   
 
 
     
