@@ -311,6 +311,9 @@ html, body {
 
 
 
+.invalid-input {
+  border-color: red;
+}
 
 
 
