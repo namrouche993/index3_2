@@ -228,7 +228,7 @@ html, body {
 }
 
 .custom-modal .menu-container {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 0px solid #ccc;
   padding-bottom: 20px;
   margin-bottom: 20px;
   font-size: 18px;
@@ -269,3 +269,49 @@ html, body {
 .tooltip-inner {
   font-size: 13px; /* Replace this value with your desired font size */
 }
+
+
+.dropdown {
+  width: 150px; /* Set the desired fixed width for the dropdown */
+}
+
+
+
+
+
+
+
+
+/* Custom CSS to center modal body contents */
+.centered-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Optional: Customize the appearance of the modal */
+.modal-content {
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background-color: #f1f1f1;
+  border-radius: 10px 10px 0 0;
+}
+
+.modal-footer {
+  background-color: #f1f1f1;
+  border-radius: 0 0 10px 10px;
+}
+
+.form-label {
+  margin-bottom: 0.1rem;
+}
+
+
+
+
+
+
+
