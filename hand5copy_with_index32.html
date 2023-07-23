@@ -181,58 +181,83 @@
       </button>
 
 
-
-      <div class="modal fade custom-modal" id="myModal_logout" tabindex="-1" aria-labelledby="exampleModalLabel_logout" aria-hidden="true">
+      <div class="modal fade" id="myModal_logout" tabindex="-1" aria-labelledby="exampleModalLabel_logout" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h2 id='title_formatmodal_logout' class="modal-title">Preliminary information</h2>
+              <h2 id="title_formatmodal_logout" class="modal-title">Preliminary information</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-            <div class="modal-body">
-              <div class="row">
-
-                  <div class="menu-container logout-menu">
-                    <div class="format-options">
-                    
-<!--       
-                      <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Select an option
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownOptions">
-                          <li><a class="dropdown-item" href="#">Option 1</a></li>
-                          <li><a class="dropdown-item" href="#">Option 2</a></li>
-                          <li><a class="dropdown-item" href="#">Option 3</a></li>
-                        </ul>
-                      </div>
-                   -->
+      
+            <!-- Convert the modal body into a form -->
+            <form id="myForm">
+              <div class="modal-body centered-modal-body">
+                <div class="menu-container logout-menu">
+                  <div class="format-options">
+                    <div class="dropdown" style="display:inline-grid; width:100%;margin-bottom: 20px;">
+                      <label style="font-weight: bold;" for="dropdownMenuButton1" class="form-label">Organisme : </label>
+                      <button style="border-color: darkslategray;" class="btn btn-outline-dark dropdown-toggle" type="button"
+                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        style="width:100%">
+                        Select an option
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="dropdownOptions1">
+                        <!-- Options will be added dynamically using JavaScript -->
+                      </ul>
                     </div>
-
+      
+                    <br>
+      
+                    <div class="dropdown" style="display:inline-grid; width:100%;margin-bottom: 20px;">
+                      <label style="font-weight: bold;" for="dropdownMenuButton2" class="form-label">Wilaya : </label>
+                      <button style="border-color: darkslategray;" class="btn btn-outline-dark dropdown-toggle" type="button"
+                        id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        style="width:100%">
+                        Select an option
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2" id="dropdownOptions2">
+                        <!-- Options will be added dynamically using JavaScript -->
+                      </ul>
                     </div>
+      
+                    <br>
+      
+                    <div style="display:inline-grid;margin-bottom: 20px;">
+                      <label style="font-weight: bold;" for="emailInput" class="form-label">Email : </label>
+                      <input style="border-color: darkslategray;" type="email" class="form-control" id="emailInput"
+                        placeholder="Enter your email" required>
+                    </div>
+      
+                    <br>
+      
+                    <div style="display:inline-grid">
+                      <label style="font-weight: bold;" for="phoneInput" class="form-label">Phone Number : </label>
+                      <input style="border-color: darkslategray;" type="tel" class="form-control" id="phoneInput"
+                        placeholder="Enter your phone number">
+                    </div>
+                  </div>
                 </div>
-   
               </div>
-            </div>
-
+            </form>
+      
             <div class="modal-footer">
-              <button type="button" id='closeBtn_logout' class="btn btn-secondary close-button" data-bs-dismiss="modal">Close</button>
-              <button type="submit" id="submitBtn_logout" class="btn btn-primary">Submit</button>
+              <button type="button" id="closeBtn_logout" class="btn btn-secondary close-button" data-bs-dismiss="modal">Close</button>
+              <!-- Change the button type to "submit" -->
+              <button type="submit" id="submitBtn_logout" form="myModal_logout" class="btn btn-primary">Submit</button>
             </div>
           </div>
         </div>
       </div>
+      
 
 
       
+
+
     </div>
   </div>
 
         
-    </div>
-          </div>
-
     <div id="example1" class="hot handsontable htColumnHeaders"></div>
   </div>
 
@@ -780,18 +805,122 @@ document.addEventListener('DOMContentLoaded', function() {
     var button_undo = document.getElementById('undoBttn');
     var button_redo = document.getElementById('redoBttn');
 
-    const dropdownOptions = document.querySelectorAll("#dropdownOptions .dropdown-item");
+//     const dropdownButton1 = document.getElementById("dropdownMenuButton1");
+//     const dropdownItems1 = document.querySelectorAll("#dropdownOptions1 .dropdown-item");
 
-// Add click event listener to each option
-dropdownOptions.forEach(option => {
-  option.addEventListener("click", function() {
-    // Get the selected value
-    const selectedValue = option.textContent.trim();
     
-    // Display the selected value (you can do anything you want with the value here)
-    console.log("Selected value: ", selectedValue);
+// // Attach a click event listener to each dropdown item
+// dropdownItems1.forEach(item => {
+//   item.addEventListener("click", function() {
+//     // Get the selected option text
+//     const selectedOption1 = this.textContent;
+
+//     // Update the button text with the selected option
+//     dropdownButton1.textContent = selectedOption1;
+//   });
+// });
+
+  const dropdownOptions1 = ['Option 01', 'Option 02', 'Option 03']; // editable Replace this with your array of options
+  const dropdownOptions2 = ['Option 21', 'Option 22', 'Option 23']; // editable Replace this with your array of options
+
+  // Function to populate the dropdown menu
+  function populateDropdown1() {
+    const dropdownMenu1 = document.getElementById('dropdownOptions1');
+    dropdownMenu1.innerHTML = ''; // Clear the existing items
+
+    dropdownOptions1.forEach(option => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.classList.add('dropdown-item');
+      a.href = '#';
+      a.textContent = option;
+      li.appendChild(a);
+      dropdownMenu1.appendChild(li);
+    });
+  }
+
+  function populateDropdown2() {
+    const dropdownMenu2 = document.getElementById('dropdownOptions2');
+    dropdownMenu2.innerHTML = ''; // Clear the existing items
+
+    dropdownOptions2.forEach(option => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.classList.add('dropdown-item');
+      a.href = '#';
+      a.textContent = option;
+      li.appendChild(a);
+      dropdownMenu2.appendChild(li);
+    });
+  }
+
+  // Call the functions to populate the dropdowns on page load
+  populateDropdown1();
+  populateDropdown2();
+
+  // Initialize Bootstrap Dropdowns
+  const dropdownButton1 = document.getElementById('dropdownMenuButton1');
+  const dropdownMenu1 = new bootstrap.Dropdown(dropdownButton1);
+
+  const dropdownButton2 = document.getElementById('dropdownMenuButton2');
+  const dropdownMenu2 = new bootstrap.Dropdown(dropdownButton2);
+
+  // Add event listener to update the button text when an option is selected
+  const dropdownItems1 = document.querySelectorAll('#dropdownOptions1 .dropdown-item');
+  dropdownItems1.forEach(item => {
+    item.addEventListener('click', function () {
+      dropdownButton1.textContent = item.textContent;
+    });
   });
-});
+
+  const dropdownItems2 = document.querySelectorAll('#dropdownOptions2 .dropdown-item');
+  dropdownItems2.forEach(item => {
+    item.addEventListener('click', function () {
+      dropdownButton2.textContent = item.textContent;
+    });
+  });
+
+
+
+
+
+// Function to validate the email format
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // Function to handle form submission
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    // Get the form inputs
+    const emailInput = document.getElementById('emailInput').value;
+    const dropdownButton1 = document.getElementById('dropdownMenuButton1').textContent;
+    const dropdownButton2 = document.getElementById('dropdownMenuButton2').textContent;
+
+    // Check email format
+    if (!validateEmail(emailInput)) {
+      alert('Invalid email format. Please enter a valid email address.');
+      return;
+    }
+
+    // Check dropdown selections
+    if (!dropdownOptions1.includes(dropdownButton1) || !dropdownOptions2.includes(dropdownButton2)) {
+      alert('Please select an option from both dropdowns.');
+      return;
+    }
+
+    // If all validations pass, you can proceed with submitting the form or further processing
+
+    // For demonstration purposes, I'm just showing an alert indicating a successful submission.
+    alert('Form submitted successfully!');
+  }
+  // Add event listener to the form submit button
+  submitButton_logout.addEventListener('click', handleSubmit);
+
+
+
 
 
 
